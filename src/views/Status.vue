@@ -30,18 +30,18 @@
 
         <ul class="pl-3 mb-2">
        
-          <br><input type="checkbox"  class="symptoms" id="fever" value="1" v-model="checkedSymptoms"  @change="check($event)">
+          <br><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
           <label for="jack">Do you have a fever?</label>
-          <br><input type="checkbox" class="symptoms" id="breath" value="2" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="breath" value=1 v-model="checkedSymptoms" @change="check($event)">
           <label for="john">Do you have shortness of breath?</label>
-          <br><input type="checkbox" class="symptoms" id="cough" value="3" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="cough" value=2 v-model="checkedSymptoms" @change="check($event)">
           <label for="mike">Do you have a cough?</label>
-           <br><input type="checkbox" class="symptoms" id="knowingly" value="4" v-model="checkedSymptoms" @change="check($event)">
+           <br><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
          Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?
           
-          <br><input type="checkbox" class="symptoms" id="positive" value="5" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="positive" value=4 v-model="checkedSymptoms" @change="check($event)">
           Have you tested positive for COVID-19 in the past 14 days?
-           <br><input type="checkbox" class="symptoms" id="symptoms" value="6" v-model="checkedSymptoms" @change="check($event)">
+           <br><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
          Have you experienced any symptoms of COVID-19 in the past 14 days?
           
        
@@ -89,18 +89,18 @@
         <h5 class="mt-2">Possible Exposure</h5>
         <ul class="pl-3 mb-0">
 
-           <br><input type="checkbox"  class="symptoms" id="fever" value="1" v-model="checkedSymptoms"  @change="check($event)">
+           <br><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
           <label for="jack">Do you have a fever?</label>
-          <br><input type="checkbox" class="symptoms" id="breath" value="2" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="breath" value=1 v-model="checkedSymptoms" @change="check($event)">
           <label for="john">Do you have shortness of breath?</label>
-          <br><input type="checkbox" class="symptoms" id="cough" value="3" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="cough" value=2 v-model="checkedSymptoms" @change="check($event)">
           <label for="mike">Do you have a cough?</label>
-           <br><input type="checkbox" class="symptoms" id="knowingly" value="4" v-model="checkedSymptoms" @change="check($event)">
+           <br><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
          Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?
           
-          <br><input type="checkbox" class="symptoms" id="positive" value="5" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="positive" value=4 v-model="checkedSymptoms" @change="check($event)">
           Have you tested positive for COVID-19 in the past 14 days?
-           <br><input type="checkbox" class="symptoms" id="symptoms" value="6" v-model="checkedSymptoms" @change="check($event)">
+           <br><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
          Have you experienced any symptoms of COVID-19 in the past 14 days?
          <hr class="my-2">
 
@@ -172,18 +172,18 @@
     <md-tab class="px-0" id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectedStatus=2" :selectedIndex="activeTab">
       <h5 class="mt-2">Positive Diagnosis</h5>
       <ul class="pl-3 mb-0">
-             <br><input type="checkbox"  class="symptoms" id="fever" value="1" v-model="checkedSymptoms"  @change="check($event)">
+             <br><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
           <label for="jack">Do you have a fever?</label>
-          <br><input type="checkbox" class="symptoms" id="breath" value="2" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="breath" value=1 v-model="checkedSymptoms" @change="check($event)">
           <label for="john">Do you have shortness of breath?</label>
-          <br><input type="checkbox" class="symptoms" id="cough" value="3" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="cough" value=2 v-model="checkedSymptoms" @change="check($event)">
           <label for="mike">Do you have a cough?</label>
-           <br><input type="checkbox" class="symptoms" id="knowingly" value="4" v-model="checkedSymptoms" @change="check($event)">
+           <br><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
          Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?
           
-          <br><input type="checkbox" class="symptoms" id="positive" value="5" v-model="checkedSymptoms" @change="check($event)">
+          <br><input type="checkbox" class="symptoms" id="positive" value=4 v-model="checkedSymptoms" @change="check($event)">
           Have you tested positive for COVID-19 in the past 14 days?
-           <br><input type="checkbox" class="symptoms" id="symptoms" value="6" v-model="checkedSymptoms" @change="check($event)">
+           <br><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
          Have you experienced any symptoms of COVID-19 in the past 14 days?
         
          <li hidden=true>Taken a COVID-19 test and received a positive result, <b>OR</b></li>
@@ -220,7 +220,7 @@
     </md-list-item>
   </md-list>
 
-   <li><span>Checked Symptoms: {{ checkedSymptoms}}</span></li>
+   <li hidden=true><span>Checked Symptoms: {{ checkedSymptoms}}</span></li>
 
   <!-- <button v-if="disableSubmit===false" type="button" class="btn btn-primary btn-lg btn-block text-white" data-toggle="modal" data-target="#exampleModalLong">
     Next
@@ -368,11 +368,34 @@ export default {
   }),
   methods: {
     check: function(e) {
+
+        var symps= [false,false,false,false,false,false];
+        var i;
+          for (i = 0; i < 5; i++) {
+            
+             symps[this.checkedSymptoms[i]] = true
+          }
+
+       
     console.log(this.checkedSymptoms.length)
-    if(this.checkedSymptoms.length==6){
-      console.log("GO TO RED")
+    if(symps[4] === true){
+      console.log(symps)
       this.activeTab = tabIds[2];
-    } 
+    } else {
+      console.log("GO TO ORANGE")
+      this.activeTab = tabIds[1];
+
+    }
+
+    // if(this.checkedSymptoms[4] != true){
+    //   console.log("GO TO RED")
+    //   this.activeTab = tabIds[2];
+    // } 
+
+    // if(this.checkedSymptoms.length==6){
+    //   console.log("GO TO RED")
+    //   this.activeTab = tabIds[2];
+    // } 
     
      if(this.checkedSymptoms.length==0){
       console.log("GO TO GREEN")

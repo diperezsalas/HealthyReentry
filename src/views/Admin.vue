@@ -339,7 +339,7 @@
               </span>
               Status
             </th>
-            <th style="width: 5%" class="text-center">
+            <th hidden=true style="width: 5%" class="text-center">
            
               Symptoms
             </th>
@@ -394,10 +394,10 @@
             <td style="width: 5%" class="text-center">
               <i :class="'fas fa-circle ' + user.status.css_key"></i>
             </td>
-             <td style="width: 5%" class="text-center">
+             <td hidden=true style="width: 5%" class="text-center">
               {{ user.symptoms}}
             </td>
-            <td style="width: 25%">
+            <td  style="width: 25%">
               {{ user.name }}
             </td>
             <td style="width: 15%">
@@ -488,6 +488,7 @@ export default {
   },
   data() {
     return {
+      
       isLoading: false,
       pageNo: 1,
       itemsOnPage: 10,
@@ -520,6 +521,7 @@ export default {
   },
   methods: {
     async downloadGraphForSelectedAsCSV() {
+
       let userEmails = this.selectedUsers.map(u => u.email);  
       if (userEmails.length < 1) return;
       this.isLoading = true;
@@ -541,9 +543,10 @@ export default {
       this.isLoading = false;
     },
     downloadSelectedAsCSV() {
+
       let tot = "Print Name, Company, Status,LastUpdated, Do you have a fever?, Do you have shortness of breath?,Do you have a cough?, Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?, Have you tested positive for COVID-19 in the past 14 days?, Have you experienced any symptoms of COVID-19 in the past 14 days?";
       let csv = this.selectedUsers
-                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},${u.symptoms},${u.status.symptoms},${u.status.symptoms},${u.status.symptoms},${u.status.symptoms},${u.status.symptoms}`)
+                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},${u.symptoms[0]},${u.symptoms[1]},${u.symptoms[2]},${u.symptoms[3]},${u.symptoms[4]},${u.symptoms[5]}`)
                     .reduce((tot, cur) => tot + "\n" + cur, tot);
       downloadCSV(csv, `encounters_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
@@ -582,6 +585,15 @@ export default {
         let code = (hasStatus) ? u.status.status : -1;
         let status = enumStatusMap.filter(i => i.code === code)[0];
         let updateDate = (hasStatus) ? fuzzyTime(new Date(u.status.date)) : '---';
+        var symps= [false,false,false,false,false,false];
+        var i;
+          for (i = 0; i < 5; i++) {
+            
+             symps[u.status.symptoms[i]] = true
+          }
+       
+       console.log(symps);
+
         let user = {
           id: u._id,
           selected: false,
@@ -589,7 +601,7 @@ export default {
           email: u.email,
           officeCode: u.location,
           status: status,
-          symptoms: u.status.symptoms,
+          symptoms: symps,
           statusCode: status.code,
           lastUpdatedFormatted: updateDate,
           lastUpdated: hasStatus ? new Date(u.status.date) : null,
