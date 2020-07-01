@@ -33,6 +33,7 @@ var statusSchema = new mongoose.Schema({
     },
     status: Number,
     date: Date
+    //,symptoms: []
 }, {
     usePushEach: true
 });
@@ -59,6 +60,7 @@ status.save(function(err,savedEncounter){
  */
 statusSchema.pre("save", function(next, user) {
     var status = this;
+   // var symptoms = this;
 
     status.date = new Date();
 

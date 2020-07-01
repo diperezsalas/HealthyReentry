@@ -32,7 +32,7 @@
         </router-link>
       </md-list-item>
 
-      <md-list-item>
+      <md-list-item hidden=true>
         <router-link class="mx-auto" :to="{ name: 'displayqr', params: { id: user._id}}">
           <button type="button" class="btn btn-lg btn-block text-center text-white my-2 md-accent">
           Display QR Code
