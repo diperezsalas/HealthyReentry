@@ -395,7 +395,7 @@
               <i :class="'fas fa-circle ' + user.status.css_key"></i>
             </td>
              <td style="width: 5%" class="text-center">
-              {{ user.symptoms }}
+              {{ user.symptoms}}
             </td>
             <td style="width: 25%">
               {{ user.name }}
@@ -543,7 +543,7 @@ export default {
     downloadSelectedAsCSV() {
       let tot = "Print Name, Company, Status,LastUpdated, Do you have a fever?, Do you have shortness of breath?,Do you have a cough?, Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?, Have you tested positive for COVID-19 in the past 14 days?, Have you experienced any symptoms of COVID-19 in the past 14 days?";
       let csv = this.selectedUsers
-                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},yes,no,no,no,no,no`)
+                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},${u.symptoms},${u.status.symptoms},${u.status.symptoms},${u.status.symptoms},${u.status.symptoms},${u.status.symptoms}`)
                     .reduce((tot, cur) => tot + "\n" + cur, tot);
       downloadCSV(csv, `encounters_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
@@ -558,6 +558,8 @@ export default {
       downloadCSV(csv, `office-stats_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
     updateUsersInView() {
+
+   
 
       let officeArr = this.officesList
                             .filter(o => o.selected)
@@ -576,6 +578,7 @@ export default {
 
       this.usersInView = pageFilteredUsers.map(u => {
         let hasStatus = u.status && u.status.status !== null && u.status.status !== undefined;
+        console.log(u.status.symptoms)
         let code = (hasStatus) ? u.status.status : -1;
         let status = enumStatusMap.filter(i => i.code === code)[0];
         let updateDate = (hasStatus) ? fuzzyTime(new Date(u.status.date)) : '---';
@@ -586,6 +589,7 @@ export default {
           email: u.email,
           officeCode: u.location,
           status: status,
+          symptoms: u.status.symptoms,
           statusCode: status.code,
           lastUpdatedFormatted: updateDate,
           lastUpdated: hasStatus ? new Date(u.status.date) : null,
