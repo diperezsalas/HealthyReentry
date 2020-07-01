@@ -339,6 +339,10 @@
               </span>
               Status
             </th>
+            <th style="width: 5%" class="text-center">
+           
+              Symptoms
+            </th>
             <th style="width: 25%">
               <span
                 style="cursor: pointer"
@@ -349,7 +353,7 @@
               </span>
               Name
             </th>
-            <th style="width: 20%">
+            <th style="width: 15%">
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'officeCode' ? '' : ' disabled')"
@@ -390,10 +394,13 @@
             <td style="width: 5%" class="text-center">
               <i :class="'fas fa-circle ' + user.status.css_key"></i>
             </td>
+             <td style="width: 5%" class="text-center">
+              {{ user.symptoms }}
+            </td>
             <td style="width: 25%">
               {{ user.name }}
             </td>
-            <td style="width: 20%">
+            <td style="width: 15%">
               <span
                 data-toggle="modal"
                 data-target="#updateUserLocationModal"
@@ -409,6 +416,7 @@
             <td style="width: 15%">
               {{ user.dateOfConsentFormatted }}
             </td>
+            
           </tr>
         </tbody>
 
@@ -533,9 +541,9 @@ export default {
       this.isLoading = false;
     },
     downloadSelectedAsCSV() {
-      let tot = "Name,Status,Office,LastUpdated";
+      let tot = "Print Name, Company, Status,LastUpdated, Do you have a fever?, Do you have shortness of breath?,Do you have a cough?, Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?, Have you tested positive for COVID-19 in the past 14 days?, Have you experienced any symptoms of COVID-19 in the past 14 days?";
       let csv = this.selectedUsers
-                    .map(u => `${u.name},${u.status.label},${u.officeCode},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')}`)
+                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},yes,no,no,no,no,no`)
                     .reduce((tot, cur) => tot + "\n" + cur, tot);
       downloadCSV(csv, `encounters_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
@@ -616,6 +624,7 @@ export default {
       this.isLoading = true;
       let res = await this.$api.post("/api/admin/update-users", this.userUpdateData);
       let updatedUsers = res.data;
+      print(updatedUsers );
       updatedUsers.forEach(nu => {
         let idx = this.users.findIndex(u => u._id === nu._id);
         this.users[idx] = nu;

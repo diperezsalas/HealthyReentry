@@ -371,11 +371,12 @@ export default {
     console.log(this.checkedSymptoms.length)
     if(this.checkedSymptoms.length==6){
       console.log("GO TO RED")
-      
+      this.activeTab = tabIds[2];
     } 
+    
      if(this.checkedSymptoms.length==0){
       console.log("GO TO GREEN")
-     
+      this.activeTab = tabIds[0]; 
     } 
 
     },
@@ -385,8 +386,8 @@ export default {
     submitEncounter() {
       // use this when status submitted -- this saves number
       const body = {
-        status: this.selectedStatus
-       // ,symptoms: this.checkedSymptoms
+        status: this.selectedStatus,
+        symptoms: this.checkedSymptoms
       }
       this.$api.post("/api/status/report", body).then(savedStatus => {
         this.latestStatus = savedStatus;

@@ -53,7 +53,7 @@ router.post("/report", function (req, res) {
 
       var status = new Status({
         status: req.body.status,
-        //, symptoms: req.body.symptoms,
+        symptoms: req.body.symptoms,
         user: req.user
       });
 
