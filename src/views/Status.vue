@@ -401,10 +401,12 @@ export default {
 
       if (this.selectedStatus == 1) {
         this.symps[4] = false;
+        this.activeTab = tabIds[1]
         this.checkedSymptoms = this.checkedSymptoms.filter(e => e != '4');
       }
       if (this.selectedStatus == 2) {
         this.symps[4] = true;
+        this.activeTab = tabIds[2]
         if(!this.checkedSymptoms.find(e => e == 4)) {
           this.checkedSymptoms.push("4");
         }
@@ -430,9 +432,7 @@ export default {
             
              this.symps[this.checkedSymptoms[i]] = true
           }
-
        
-    console.log(this.checkedSymptoms.length)
     if(this.symps[4] === true){
       console.log("GO TO RED");
       this.selectedStatus = 2;
