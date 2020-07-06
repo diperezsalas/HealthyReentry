@@ -65,14 +65,14 @@
             }
         },
         methods:{
-            getTasks(){
+            async getTasks(){
                 console.log("here")
                 let me =this;
                 let url = `/api/admin/get-all-users` //Ruta que hemos creado para que nos devuelva todas las tareas
                 axios.get(url).then(function (response) {
                     //creamos un array y guardamos el contenido que nos devuelve el response
                     me.arrayTasks = response.data;
-                    console.log("tasks" + me.arrayTasks)
+                    console.log("tasks" + me.arrayTasks.data)
                 })
                 .catch(function (error) {
                     // handle error
@@ -86,6 +86,7 @@
                  console.log(officesSet)
                 let apiurl = `/api/admin/get-all-users`;
                 let userData = await this.$api.get(apiurl);
+                console.log(userData.data)
                 var users = userData.data;
                 users.sort((a, b) => (a.name < b.name) ? -1 : 1)
                 this.users = users;
@@ -104,22 +105,22 @@
             },
             saveTasks(){
                 let me =this;
-                let url = '/tareas/guardar' //Ruta que hemos creado para enviar una tarea y guardarla
-                axios.post(url,{ //estas variables son las que enviaremos para que crear la tarea
+                let url = '/tareas/guardar' //Route that we have created to send a task and save it
+                axios.post(url,{ // these variables are the ones we will send to create the task
                     'name':this.name,
                     'description':this.description,
                     'content':this.content,
                 }).then(function (response) {
-                    me.getTasks();//llamamos al metodo getTask(); para que refresque nuestro array y muestro los nuevos datos
-                    me.clearFields();//Limpiamos los campos e inicializamos la variable update a 0
+                    me.getTasks();//we call the getTask () method; so that it refreshes our array and shows the new data
+                    me.clearFields();//We clean the fields and initialize the update variable to 0
                 })
                 .catch(function (error) {
                     console.log(error);
                 });   
                 
             },
-            updateTasks(){/*Esta funcion, es igual que la anterior, solo que tambien envia la variable update que contiene el id de la
-                tarea que queremos modificar*/
+            updateTasks(){/*This function is the same as the previous one, only it also sends the update variable that contains the id of the
+                task that we want to modify*/
                 let me = this;
                 axios.put('/tareas/actualizar',{
                     'id':this.update,
@@ -127,14 +128,14 @@
                     'description':this.description,
                     'content':this.content,
                 }).then(function (response) {
-                   me.getTasks();//llamamos al metodo getTask(); para que refresque nuestro array y muestro los nuevos datos
-                   me.clearFields();//Limpiamos los campos e inicializamos la variable update a 0
+                   me.getTasks();//we call the getTask () method; so that it refreshes our array and shows the new data
+                   me.clearFields();//We clean the fields and initialize the update variable to 0
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             },
-            loadFieldsUpdate(data){ //Esta función rellena los campos y la variable update, con la tarea que queremos modificar
+            loadFieldsUpdate(data){ //This function fills in the fields and the variable update, with the task that we want to modify
                 this.update = data.id
                 let me =this;
                 let url = '/tareas/buscar?id='+this.update;
@@ -149,7 +150,7 @@
                     console.log(error);
                 }); 
             },
-            deleteTask(data){//Esta nos abrirá un alert de javascript y si aceptamos borrará la tarea que hemos elegido
+            deleteTask(data){//This will open a javascript alert and if we accept it will delete the task we have chosen
                 let me =this;
                 let task_id = data.id
                 if (confirm('¿Seguro que deseas borrar esta tarea?')) {
@@ -162,7 +163,7 @@
                     }); 
                 }
             },
-            clearFields(){/*Limpia los campos e inicializa la variable update a 0*/
+            clearFields(){/*LClear the fields and initialize the update variable to 0*/
                 this.name = "";
                 this.description = "";
                 this.content = "";
@@ -171,10 +172,11 @@
         },
         beforeMount() {
           this.refreshData();
+          //this.getTasks();
 
         },
         mounted() {
-           this.getTasks();
+           //this.getTasks();
            
         }
     }
