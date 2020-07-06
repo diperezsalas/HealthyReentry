@@ -24,6 +24,11 @@
                   Admin View
                 </router-link>
               </md-menu-item>
+                <md-menu-item  v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin">
+               <router-link :to="{ name: 'officeadmin' }">
+                  Office Admin
+               </router-link>
+               </md-menu-item> 
               <!-- <md-menu-item>Profile</md-menu-item> -->
               <md-menu-item @click="logout()">Log out</md-menu-item>
             </md-menu-content>
