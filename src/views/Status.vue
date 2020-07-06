@@ -92,8 +92,8 @@ Test
 
     </md-tab>
     <md-tab class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
-      
-      <!-- <div v-if="latestStatus.status < 2 || latestStatus.status === 3">
+      <!-- <div v-if="latestStatus.status < 2 || latestStatus.status === 3"> -->
+      <div>
         <h5 class="mt-2">Possible Exposure</h5>
         <ul class="pl-3 mb-0">
 
@@ -141,8 +141,8 @@ Test
             </small>
           </div>
         </div>
-      </div> -->
-      <div>
+      </div>
+      <!-- <div>
         <h5 class="text-muted mt-2">Possible Exposure</h5>
         <ul class="pl-3 mb-0 text-muted">
           <li>Symptomatic of COVID-19, <b>OR</b></li>
@@ -172,7 +172,7 @@ Test
             
           </div>
         </div>
-      </div>
+      </div> -->
 
 
 
