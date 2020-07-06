@@ -22,8 +22,9 @@ Test
   <!-- <small>Please be sure to update your status color at least once per week, or more often if necessary.</small> -->
 
   <md-tabs class="mt-3" md-alignment="fixed" :md-active-tab="activeTab" style="min-height: 270px">
-    <md-tab class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectedStatus=0" :selectedIndex="activeTab">
-      <div v-if="latestStatus.status === 0 || latestStatus.status === 3">
+    <md-tab class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectStatus(0)" :selectedIndex="activeTab">
+      <!-- <div v-if="latestStatus.status === 0 || latestStatus.status === 3"> -->
+      <div>
         <h5 class="mt-2">No Signs or Symptoms</h5>
 
 
@@ -66,7 +67,7 @@ Test
           </div>
         </div>
       </div>
-      <div v-else>
+      <!-- <div v-else>
         <h5 class="text-muted mt-2">No Signs or Symptoms</h5>
         <ul class="pl-3 mb-0 text-muted">
 
@@ -85,12 +86,12 @@ Test
             </small>
           </div>
         </div>
-      </div>
+      </div> -->
 
 
 
     </md-tab>
-    <md-tab class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectedStatus=1" :selectedIndex="activeTab">
+    <md-tab class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
       <div v-if="latestStatus.status < 2 || latestStatus.status === 3">
         <h5 class="mt-2">Possible Exposure</h5>
         <ul class="pl-3 mb-0">
@@ -175,7 +176,7 @@ Test
 
 
     </md-tab>
-    <md-tab class="px-0" id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectedStatus=2" :selectedIndex="activeTab">
+    <md-tab class="px-0" id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
       <h5 class="mt-2">Positive Diagnosis</h5>
       <ul class="pl-3 mb-0">
              <br><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
@@ -214,7 +215,7 @@ Test
       <!-- <md-button class="md-primary md-raised" @click="showDialog=!showDialog" :disabled="disableSubmit" id="nextBtn" style="width:240px">
         <h6 class="mb-0">Next</h6>
       </md-button> -->
-      <button type="button" class="btn btn-lg btn-block text-white md-accent" @click="showDialog=!showDialog" :disabled="disableSubmit" id="nextBtn" style="width:240px">
+      <button type="button" class="btn btn-lg btn-block text-white md-accent" @click="showModal()" :disabled="disableSubmit" id="nextBtn" style="width:240px">
         Next
       </button>
     </md-list-item>
@@ -285,26 +286,34 @@ Test
 // import store from "store/index.js";
 import Vuex from 'vuex';
 
-var tabIds = ["tab-green", "tab-orange", "tab-red", "tab-blue"]
+let tabIds = ["tab-green", "tab-orange", "tab-red", "tab-blue"]
 export default {
   created() {
     this.$api.get("/api/status/get-current").then(returnedStatus => {
-      var curStatus = returnedStatus.data;
+      let curStatus = returnedStatus.data;
+      let symptoms = returnedStatus.data.symptoms;
+
+      for (let symp of symptoms) {
+        this.symps[symp] = true;
+        this.checkedSymptoms.push(symp);
+      }
+
+
       if (curStatus) {
         this.latestStatus = curStatus;
 
         if (curStatus.status !== null) {
           this.activeTab = tabIds[curStatus.status];
           this.selectedStatus = curStatus.status;
+          // this.disableSubmit = true;
+          //if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
 
-          if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
-
-          if (this.latestStatus.status !== 3) { //hahs status and not blue
+          /* if (this.latestStatus.status !== 3) { //hahs status and not blue
             if (this.latestStatus.status > 0) { //either orange or red
               this.iconPath[0] = "/imgs/lens-green-disabled2.svg"
               if (this.latestStatus.status === 2) this.iconPath[1] = "/imgs/lens-orange-disabled2.svg" //red
             }
-          }
+          } */
         }
       } else {
         this.selectedStatus = 0; //default to green
@@ -329,12 +338,14 @@ export default {
 
   },
   data() {
+    
     return {
       checkedSymptoms: [],
       showDialog: false,
       submitSuccess: false,
       notificationDuration: 4000,
       selectedStatus: null,
+      symps: [false,false,false,false,false,false],
       latestStatus: {
         status: 0
       },
@@ -353,8 +364,8 @@ export default {
     };
   },
   watch: {
-    selectedStatus() {
-      this.disableSubmit = true;
+    /* selectedStatus() {
+      this.disableSubmit = false;
       if (typeof this.selectedStatus === "number") {
 
         if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
@@ -367,30 +378,68 @@ export default {
           }
         }
       }
-    }
+    } */
   },
   computed: Vuex.mapState({
     user: state => state.user,
   }),
   methods: {
-    check: function(e) {
+    showModal(){
+      if(!this.checkedSymptoms.length == 0 || this.selectedStatus == 0){
+        this.showDialog=true;  
+      }
+    },
+    selectStatus(status){
+      this.selectedStatus=status;
 
-        var symps= [false,false,false,false,false,false];
-        var i;
-          for (i = 0; i < 5; i++) {
+
+      if (this.selectedStatus == 0) {
+        this.symps[4] = [false,false,false,false,false,false];
+        this.checkedSymptoms = [];
+      }
+
+      if (this.selectedStatus == 1) {
+        this.symps[4] = false;
+        this.checkedSymptoms = this.checkedSymptoms.filter(e => e != '4');
+      }
+      if (this.selectedStatus == 2) {
+        this.symps[4] = true;
+        if(!this.checkedSymptoms.find(e => e == 4)) {
+          this.checkedSymptoms.push("4");
+        }
+      }
+
+      if(this.checkedSymptoms.length === 0 && this.selectedStatus != 0){
+        this.disableSubmit = true;
+      } else {
+        this.disableSubmit = false;
+      }
+    },
+    check(e) {
+
+      if(this.checkedSymptoms.length === 0){
+        this.disableSubmit = true;
+      } else {
+        this.disableSubmit = false;
+      }
+
+          this.symps= [false,false,false,false,false,false];
+          
+          for (let i = 0; i < 5; i++) {
             
-             symps[this.checkedSymptoms[i]] = true
+             this.symps[this.checkedSymptoms[i]] = true
           }
 
        
     console.log(this.checkedSymptoms.length)
-    if(symps[4] === true){
-      console.log(symps)
+    if(this.symps[4] === true){
+      console.log("GO TO RED");
+      this.selectedStatus = 2;
       this.activeTab = tabIds[2];
     } else {
-      console.log("GO TO ORANGE")
+      console.log("GO TO ORANGE");
+      this.selectedStatus = 1;
       this.activeTab = tabIds[1];
-
     }
 
     // if(this.checkedSymptoms[4] != true){
@@ -404,7 +453,9 @@ export default {
     // } 
     
      if(this.checkedSymptoms.length==0){
-      console.log("GO TO GREEN")
+      console.log("GO TO GREEN");
+      this.selectedStatus = 0;
+      this.disableSubmit = false;
       this.activeTab = tabIds[0]; 
     } 
 
