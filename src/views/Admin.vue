@@ -1,6 +1,5 @@
 <template>
   <div class="px-2 pb-4">
-
     <!-- Status Update Modal -->
     <div class="modal fade" id="updateConfModal" tabindex="-1" role="dialog" aria-labelledby="updateConfModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">

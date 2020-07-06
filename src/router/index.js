@@ -10,6 +10,7 @@ import Encounter from '@/views/Encounter.vue';
 import Status from '@/views/Status.vue';
 import DisplayQR from '@/views/DisplayQR.vue';
 import Admin from '@/views/Admin.vue';
+import OfficeAdmin from '@/views/OfficeAdmin.vue';
 import NotFound from '@/views/404.vue';
 
 import store from '@/store/index.js';
@@ -118,6 +119,16 @@ export default new VueRouter({
       component: Admin,
       meta: {
         title: route => "Healthy Reentry: Admin View"
+      },
+      beforeEnter: authGuard,
+      props: true
+    },
+    {
+      path: '/officeadmin',
+      name: 'officeadmin',
+      component: OfficeAdmin,
+      meta: {
+        title: route => "Healthy Reentry: Office Admin View"
       },
       beforeEnter: authGuard,
       props: true
