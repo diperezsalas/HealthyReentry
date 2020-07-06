@@ -15,9 +15,7 @@
             <div class="px-4">
               <b>Status to set: </b>
               <p>
-                <span :class="enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].css_key">
-                  <i class="fas fa-circle fa-xs"></i>
-                </span>
+                <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].css_key "></i>
                 {{ enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].label }}
               </p>
             </div>
@@ -95,21 +93,9 @@
                   {{ selectedUsers[0].officeCode }}
                 </button>
                 <div class="dropdown-menu overflow-auto mx-0" style="height:400px" aria-labelledby="locDDMenuButton">
-
-                  <div class="dropdown-item">
-
-                    <div v-for="region in regions" :key="region.name">
-
-                      <div v-for="ofc in region.offices" :key="ofc.LocationName" class="pl-4">
-                        <p @click="userUpdateData.locationToSet = ofc.LocationName">
-                          {{ ofc.LocationName }}
-                        </p>
-                      </div>
-
-                    </div>
-
-                  </div>
-
+                  <p class="dropdown-item" v-for="ofc in officesList" :key="ofc.LocationID" @click="userUpdateData.locationToSet = ofc.LocationName">
+                    {{ ofc.LocationName }}
+                  </p>
                 </div>
                 <p v-if="userUpdateData.locationToSet !== null">
                   <small><i>
@@ -122,65 +108,6 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData()">Close</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateData">Update</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Office Stats Download Modal -->
-    <div class="modal fade" id="downloadOfficeStatsModal" tabindex="-1" role="dialog" aria-labelledby="downloadOfficeStatsLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="downloadOfficeStatsLabel">Download Stats for Offices</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div>
-              <h6>
-                Download Office Stats
-              </h6>
-              
-              <div class="row overflow-auto mx-0" style="height:400px">
-                <div class="col">
-                  <div v-for="region in regionsForOfcStats" :key="region.name">
-                    
-                    <div class="pt-2">
-                      <i class="fas fa-angle-right"></i>
-                      {{ region.name }}
-                      <small><i>
-                        (
-                        <span
-                          style="cursor: pointer;"
-                          @click="setRegionForOfcStatSelection(region.name, true);"
-                        >All</span>
-                      </i></small>
-                      |
-                      <small><i>
-                        <span
-                          style="cursor: pointer;"
-                          @click="setRegionForOfcStatSelection(region.name, false);"
-                        >None</span>
-                        )
-                      </i></small>
-                    </div>
-
-                    <div v-for="ofc in region.offices" :key="ofc.LocationName" class="pl-4">
-                      <input class="form-check-input" type="checkbox" v-model="ofc.selected">
-                      {{ofc.LocationName}}
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="downloadOfficeStats">Download</button>
           </div>
         </div>
       </div>
@@ -203,10 +130,10 @@
 
             <div class="row">
               <div class="col-12 pl-3">
-                <button class="btn btn-outline-secondary" type="button" @click="setOfficeFilterForAll(true); refreshData(true);">
+                <button class="btn btn-outline-secondary" type="button" @click="setOfficeFilterForAll(true); updateUsersInView();">
                   Select All
                 </button>
-                <button class="btn btn-outline-secondary mx-2" type="button" @click="setOfficeFilterForAll(false); refreshData();">
+                <button class="btn btn-outline-secondary mx-2" type="button" @click="setOfficeFilterForAll(false); updateUsersInView();">
                   Select None
                 </button>
               </div>
@@ -216,37 +143,17 @@
 
             <div class="row overflow-auto mx-0" style="height:400px">
               <div class="col">
-
-                <div v-for="region in regions" :key="region.name">
-                  
-                  <div class="pt-2">
-                    <i class="fas fa-angle-right"></i>
-                    {{ region.name }}
-                    <small><i>
-                      (
-                      <span
-                        style="cursor: pointer;"
-                        @click="setRegionSelection(region.name, true); refreshData();"
-                      >All</span>
-                    </i></small>
-                    |
-                    <small><i>
-                      <span
-                        style="cursor: pointer;"
-                        @click="setRegionSelection(region.name, false); refreshData();"
-                      >None</span>
-                      )
-                    </i></small>
-                  </div>
-
-                  <div v-for="ofc in region.offices" :key="ofc.LocationName" class="pl-4">
-                    <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="refreshData();">
-                    {{ofc.LocationName}}
-                  </div>
-
-                </div>
-                
+                <p v-for="ofc in officesList" :key="ofc.LocationID" class="pl-4">
+                  <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
+                  {{ofc.LocationName}}
+                </p>
               </div>
+              <!-- <div class="col-6">
+                <p v-for="ofc in officesList.slice(15)" :key="ofc.LocationID">
+                  <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
+                  {{ofc.LocationName}}
+                </p>
+              </div> -->
             </div>
 
           </div>
@@ -268,9 +175,9 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Search by name"
-            v-model="nameSearch"
-            @keyup="refreshData"
+            placeholder="Filter by name"
+            v-model="nameFilter"
+            @keyup="updateUsersInView"
             />
         </div>
 
@@ -282,10 +189,10 @@
             </div>
             <select class="form-control" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
               <option>10</option>
-              <option v-if="20 < totalUsersCount">20</option>
-              <option v-if="50 < totalUsersCount">50</option>
-              <option v-if="100 < totalUsersCount">100</option>
-              <option>{{ totalUsersCount }}</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>{{ users.length }}</option>
             </select>
           </div>
 
@@ -315,9 +222,9 @@
             </div>
             <div class="input-group-append">
               <span
-                :style="'cursor: ' + (((pageNo) * itemsOnPage >= totalUsersCount) ? 'not-allowed' : 'pointer') "
+                :style="'cursor: ' + (((pageNo) * itemsOnPage >= users.length) ? 'not-allowed' : 'pointer') "
                 @click="setPageNo(pageNo+1)"
-                :class="'input-group-text ' + (((pageNo) * itemsOnPage >= totalUsersCount) ? 'disabled' : '') "
+                :class="'input-group-text ' + (((pageNo) * itemsOnPage >= users.length) ? 'disabled' : '') "
                 id="pageNav"
               ><i class="fas fa-chevron-right"></i></span>
             </div>
@@ -350,6 +257,12 @@
               @click="userUpdateData.statusCodeToSet = 2;"
             ><i class="fas fa-circle fa-xs en_red"></i> &nbsp;&nbsp; Mark red</span>
 
+            <!-- <div class="dropdown-divider"></div> -->
+
+            <!-- <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
+              @click="userUpdateData.statusCodeToSet = 3;"
+            ><i class="fas fa-circle fa-xs en_blue"></i> &nbsp;&nbsp; Mark blue</span> -->
+
           </div>
 
         </div>
@@ -369,7 +282,7 @@
             <span class="dropdown-item" @click="downloadSelectedAsCSV">
               Download Data
             </span>
-            <span class="dropdown-item" data-toggle="modal" data-target="#downloadOfficeStatsModal">
+            <span class="dropdown-item" @click="downloadOfficeStats">
               Download Office Stats
             </span>
           </div>
@@ -426,6 +339,10 @@
               </span>
               Status
             </th>
+            <th hidden=true style="width: 5%" class="text-center">
+           
+              Symptoms
+            </th>
             <th style="width: 25%">
               <span
                 style="cursor: pointer"
@@ -436,7 +353,7 @@
               </span>
               Name
             </th>
-            <th style="width: 20%">
+            <th style="width: 15%">
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'officeCode' ? '' : ' disabled')"
@@ -470,17 +387,20 @@
         </thead>
 
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in usersInView" :key="user.id">
             <td style="width: 15%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
               {{ (user.selected) ? '&#9745;' : '&#9744;' }}
             </td>
             <td style="width: 5%" class="text-center">
               <i :class="'fas fa-circle ' + user.status.css_key"></i>
             </td>
-            <td style="width: 25%">
+             <td hidden=true style="width: 5%" class="text-center">
+              {{ user.symptoms}}
+            </td>
+            <td  style="width: 25%">
               {{ user.name }}
             </td>
-            <td style="width: 20%">
+            <td style="width: 15%">
               <span
                 data-toggle="modal"
                 data-target="#updateUserLocationModal"
@@ -496,6 +416,7 @@
             <td style="width: 15%">
               {{ user.dateOfConsentFormatted }}
             </td>
+            
           </tr>
         </tbody>
 
@@ -509,7 +430,6 @@
 
 <script>
 import enumStatusMap from "../../server/util/enumStatusMap.js";
-import storedRegions from "../../server/util/officeList.js";
 import graphToCsv from "../../server/util/csvUtils.js";
 
 function downloadCSV(content, fileName) {
@@ -559,37 +479,25 @@ function fuzzyTime(date) {
 }
 
 export default {
+  beforeMount() {
+    this.refreshData();
+
+  },
   created() {},
-  async mounted() {
-    Object.keys(storedRegions).forEach(region => {
-      this.regions.push({
-        name: region,
-        offices: storedRegions[region].map(o => { return { LocationName:o, selected: true } })
-      });
-    });
-    let resp = await this.$api.get("/api/admin/get-uncategorized-offices");
-    let uncategorizedLocations = resp.data;
-    let oth = {
-      name: "Other",
-      offices: []
-    };
-    oth.offices = uncategorizedLocations.map(l => { return {LocationName: l, selected: true} });
-    this.regions.push(oth);
-    this.regionsForOfcStats = JSON.parse(JSON.stringify(this.regions));
-    this.refreshData(true);
+  mounted() {
   },
   data() {
     return {
+      
       isLoading: false,
       pageNo: 1,
       itemsOnPage: 10,
-      nameSearch: "",
+      nameFilter: "",
       sortBy: null,
       sortAsc: true,
-      regions: [],
-      regionsForOfcStats: [],
+      officesList: [],
+      usersInView: [],
       users: [],
-      totalUsersCount: 0,
       incubationDays: 2,
       enumStatusMap: enumStatusMap,
       userUpdateData: {
@@ -601,31 +509,20 @@ export default {
   },
   computed: {
     officesSelectedCount() {
-      let i = 0;
-      this.regions.forEach(r => {
-        r.offices.forEach(o => {
-          if (o.selected) i++;
-        })
-      })
-      return i;
+      return this.officesList.reduce((a, c) => a + (c.selected ? 1 : 0), 0);
     },
     allOfficesSelected() {
-      let ret = true;
-      this.regions.forEach(r => {
-        r.offices.forEach(o => {
-          if (!o.selected) ret = false;
-        })
-      })
-      return ret;
+      return this.officesList.every(o => o.selected);
     },
     selectedUsers() {
-      return this.users
+      return this.usersInView
                   .filter(u => u.selected);
     }
   },
   methods: {
     async downloadGraphForSelectedAsCSV() {
-      let userEmails = this.users.filter(u => u.selected).map(u => u.email);  
+
+      let userEmails = this.selectedUsers.map(u => u.email);  
       if (userEmails.length < 1) return;
       this.isLoading = true;
       let postBody = {
@@ -646,59 +543,57 @@ export default {
       this.isLoading = false;
     },
     downloadSelectedAsCSV() {
-      let tot = "Name,Status,Office,LastUpdated";
+
+      let tot = "Print Name, Company, Status,LastUpdated, Do you have a fever?, Do you have shortness of breath?,Do you have a cough?, Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?, Have you tested positive for COVID-19 in the past 14 days?, Have you experienced any symptoms of COVID-19 in the past 14 days?";
       let csv = this.selectedUsers
-                    .map(u => `${u.name},${u.status.label},${u.officeCode},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')}`)
+                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},${u.symptoms[0]},${u.symptoms[1]},${u.symptoms[2]},${u.symptoms[3]},${u.symptoms[4]},${u.symptoms[5]}`)
                     .reduce((tot, cur) => tot + "\n" + cur, tot);
       downloadCSV(csv, `encounters_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
-    async downloadOfficeStats() {
-      let selectedLocations = [];
-      this.regionsForOfcStats.forEach(r => {
-        selectedLocations = selectedLocations.concat(r.offices.filter(o => o.selected).map(o => o.LocationName));
-      });
-      let postData = {
-        selectedLocations: selectedLocations
-      };
-      let csv = "Office,Green,Orange,Red,Total\n";
-      let resp = await this.$api.post("/api/admin/get-office-stats", postData);
-      let data = resp.data;
-      data.forEach(d => { csv += `${d.office},${d.stats.green},${d.stats.orange},${d.stats.red},${d.stats.total}\n`; });
+    downloadOfficeStats() {
+      let csv = "Office,Orange,Red,Total Signups\r\n";
+      this.officesList.forEach(o => {
+        let locUsers = this.users.filter(u => u.location === o.LocationName);
+        let rCount = locUsers.filter(u => u.status.status === 2).length;
+        let oCount = locUsers.filter(u => u.status.status === 1).length;
+        csv += `${o.LocationName},${oCount},${rCount},${locUsers.length}\r\n`;
+      }),
       downloadCSV(csv, `office-stats_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
-    async refreshData(ignoreOfcFilters) {
+    updateUsersInView() {
 
-      ignoreOfcFilters = !!ignoreOfcFilters;
+   
 
-      this.isLoading = true;
+      let officeArr = this.officesList
+                            .filter(o => o.selected)
+                            .map(o => o.LocationName);
+      let officeFilteredUsers = this.users.filter(u => officeArr.includes(u.location));
 
-      let selectedLocations = null;
-      if(!ignoreOfcFilters) {
-        selectedLocations = [];
-        this.regions.forEach(r => {
-          selectedLocations = selectedLocations.concat(r.offices.filter(o => o.selected).map(o => o.LocationName));
-        });
+      let nameFilteredUsers = officeFilteredUsers;
+      if(this.nameFilter !== "") {
+        let nfLower = this.nameFilter.toLowerCase();
+        nameFilteredUsers = nameFilteredUsers.filter(u => u.name.toLowerCase().includes(nfLower));
       }
 
+      let st = (this.itemsOnPage * (this.pageNo - 1));
+      let ed = (this.itemsOnPage * (this.pageNo));
+      let pageFilteredUsers = nameFilteredUsers.slice(st, ed);
 
-      this.totalUsersCount = (await this.$api.get("/api/admin/get-total-users-stats")).data.total;
-
-      let postData = {
-        skip: (this.pageNo-1)*this.itemsOnPage,
-        limit: this.itemsOnPage,
-        nameSearch: this.nameSearch,
-        offices: selectedLocations
-      };
-
-      let userData = await this.$api.post('/api/admin/get-users-by-filters', postData);
-      let users = userData.data;
-
-
-      this.users = users.map(u => {
+      this.usersInView = pageFilteredUsers.map(u => {
         let hasStatus = u.status && u.status.status !== null && u.status.status !== undefined;
+        console.log(u.status.symptoms)
         let code = (hasStatus) ? u.status.status : -1;
         let status = enumStatusMap.filter(i => i.code === code)[0];
         let updateDate = (hasStatus) ? fuzzyTime(new Date(u.status.date)) : '---';
+        var symps= [false,false,false,false,false,false];
+        var i;
+          for (i = 0; i < 5; i++) {
+            
+             symps[u.status.symptoms[i]] = true
+          }
+       
+       console.log(symps);
+
         let user = {
           id: u._id,
           selected: false,
@@ -706,6 +601,7 @@ export default {
           email: u.email,
           officeCode: u.location,
           status: status,
+          symptoms: symps,
           statusCode: status.code,
           lastUpdatedFormatted: updateDate,
           lastUpdated: hasStatus ? new Date(u.status.date) : null,
@@ -715,7 +611,24 @@ export default {
         return user;
       });
 
+    },
+    async refreshData() {
 
+      this.isLoading = true;
+      let officesSet = new Set();
+
+      let apiurl = `/api/admin/get-all-users`;
+      let userData = await this.$api.get(apiurl);
+      var users = userData.data;
+      users.sort((a, b) => (a.name < b.name) ? -1 : 1)
+      this.users = users;
+      this.users.forEach(u => {
+        let loc = u.location || 'unknown';
+        officesSet.add(loc);
+      });
+      this.officesList = Array.from(officesSet).map(o => { return { LocationName:o, selected: true } });
+      this.officesList.sort((a, b) => a.LocationName < b.LocationName ? -1 : 1);
+      this.updateUsersInView();
       this.isLoading = false;
 
     },
@@ -727,11 +640,12 @@ export default {
       this.isLoading = true;
       let res = await this.$api.post("/api/admin/update-users", this.userUpdateData);
       let updatedUsers = res.data;
+      print(updatedUsers );
       updatedUsers.forEach(nu => {
-        let idx = this.users.findIndex(u => u.id === nu._id);
+        let idx = this.users.findIndex(u => u._id === nu._id);
         this.users[idx] = nu;
+        this.updateUsersInView();
       });
-      this.refreshData();
 
       this.clearUpdateData();
       this.updInviewUserSelectedState(false);
@@ -743,44 +657,36 @@ export default {
       this.isLoading = false;
 
     },
+    updInviewUserSelectedState(val) {
+      this.usersInView.forEach(u => u.selected = (val === 'invert') ? !u.selected : val);
+    },
     async clearUpdateData() {
       this.userUpdateData.statusCodeToSet = -1;
       this.userUpdateData.selectedUserIds = [];
       this.userUpdateData.locationToSet = null;
     },
-    updInviewUserSelectedState(val) {
-      this.users.forEach(u => u.selected = (val === 'invert') ? !u.selected : val);
-    },
     sortUsers(key, inAsc) {
       this.sortBy = key;
       this.sortAsc = inAsc;
       let i = this.sortAsc ? 1 : -1;
-      this.users.sort((a, b) => {
+      this.usersInView.sort((a, b) => {
         return (a[this.sortBy] < b[this.sortBy])
         ? -i : (a[this.sortBy] > b[this.sortBy])
         ?  i : 0;
       });
     },
-    async setPageNo(newNo) {
-      if (newNo < 1 || ((newNo-1) * this.itemsOnPage) > this.totalUsersCount) return;
+    setPageNo(newNo) {
+      if (newNo < 1 || ((newNo-1) * this.itemsOnPage) > this.users.length) return;
       this.pageNo = parseInt(newNo);
-      await this.refreshData();
+      this.updateUsersInView();
     },
-    async setItemsOnPage(newNo) {
+    setItemsOnPage(newNo) {
       if (newNo < 1) return;
       this.itemsOnPage = parseInt(newNo);
-      await this.refreshData();
-    },
-    setRegionSelection(name, val) {
-      this.regions.filter(r => r.name === name)[0].offices.forEach(o => o.selected = val);
-    },
-    setRegionForOfcStatSelection(name, val) {
-      this.regionsForOfcStats.filter(r => r.name === name)[0].offices.forEach(o => o.selected = val);
+      this.updateUsersInView();
     },
     setOfficeFilterForAll(val) {
-      this.regions.forEach(r => {
-        this.setRegionSelection(r.name, val);
-      });
+      this.officesList.forEach(o => o.selected = val);
     }
   }
 };

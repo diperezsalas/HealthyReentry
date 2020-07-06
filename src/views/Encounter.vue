@@ -29,6 +29,10 @@
     </div>
   </div>
 
+  <div class="d-flex">
+    <canvas class="mx-auto" id="canvas"></canvas>
+  </div>
+
   <div class="d-flex align-items-end">
     <b class="mt-3 mb-0">Your New Encounter(s):</b>
     <a class="ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#what-counts-as-an-encounter-that-should-be-logged" target="blank">
@@ -193,6 +197,7 @@
 <script>
 import Vue from 'vue';
 import Vuex from 'vuex';
+import QRCode  from 'qrcode';
 import {
   QrcodeStream
 } from 'vue-qrcode-reader'
@@ -204,7 +209,9 @@ export default {
     QrcodeStream
     // appAlerts
   },
-  created() {},
+  created() {
+     if (this.$auth.userDB) this.user = this.$auth.userDB;
+  },
   beforeMount() {
     this.$api.get("/api/user/get-all").then(all => {
 
@@ -237,6 +244,19 @@ export default {
   },
   mounted() {
     const buttonWidth = screen.width*0.6 > 280? screen.width*0.7 : 280;
+      const screenSize = screen.width > screen.height? screen.height : screen.width;
+    var viewScale = 4;
+    if (screenSize > 300) viewScale = screenSize/60;
+    // if (viewScale > 11) viewScale = 11;
+    // console.log("scale", Math.trunc((screen.width-30)/ 29));
+    // console.log("scale", Math.trunc((screen.height-30)/ 29));
+    // const largeScreenScale = 10;
+    // const viewScale = Math.trunc((screen.width-30)/ 29) > largeScreenScale? largeScreenScale : Math.trunc((screen.width-30)/ 29);
+
+    QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
+      if (error) console.error(error)
+      console.log('success!');
+    })
   },
   data() {
     return {

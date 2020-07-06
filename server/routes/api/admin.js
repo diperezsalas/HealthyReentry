@@ -99,7 +99,10 @@ router.post("/get-users-by-filters", async function(req, res) {
     const st = await Status.find({ "user": nu._id })
                            .sort({ date: -1 })
                            .limit(1);
+
     nu.status = st[0];
+
+    
     ret.push(nu)
   }
 
