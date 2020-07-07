@@ -118,7 +118,7 @@ router.get("/search-office", async function(req, res) {
 
 router.post("/add-office", async function(req, res) {
 
-      var office = new Offices({
+      let office = new Offices({
         name: req.body.name,
         address: req.body.address
       });
@@ -129,19 +129,30 @@ router.post("/add-office", async function(req, res) {
     });
 });
 
+
+
 router.post("/update-office", async function(req, res) {
-  console.log("test acá", office );
-  
-  let office = new Offices({
-    id: req.body.id,
-    name: req.body.name,
-    address: req.body.address
+ 
+
+  const myArray = await Offices.updateOne({"_id" : req.body.id},{ $set: {name: req.body.name, address: req.body.address} },function(err, updateStatus) {
+    if (err) throw err;
+    
+    return res.send(updateStatus); 
   });
+  
 
-  office = await (await Offices.findById(office.id))
+});
 
-  console.log("test acá", office );
 
+
+router.post("/delete-office", async function(req, res) {
+  console.log(req.body.id);
+
+ 
+  const myArray = await Offices.deleteOne({"_id" : req.body.id},function(err, deleteStatus) {
+    if (err) throw err;  
+    return res.send(deleteStatus); 
+  });
 
 });
 
