@@ -63,8 +63,6 @@ router.use('/encounters', [checkJwt, errHandler, addUserToReq], require('./encou
 router.use('/status', [checkJwt, errHandler, addUserToReq], require('./status'));
 
 
-
-
 swaggerAPIDocSetup.setup(router);
 
 
