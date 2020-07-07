@@ -93,35 +93,19 @@ router.get("/get-all-offices", async function(req, res) {
 });
 
 
-router.post("/add-office", async function(req, res) {
-
-      var office = new Offices({
-        name: req.body.name,
-        address: req.body.address,
-        officeadmin: req.body.officeadmin
-      });
-
-      office.save(async function (err, savedStatus) {   
-        return res.send(savedStatus);   
-
-    });
-});
-
-
-
 ///search-office
 router.get("/search-office", async function(req, res) {
+ let office_id = req.query.id
 
   const ret = [];
 
   let include = {
     "_id": 1,
     "name": 1,
-    "address": 1,
-    "officeadmin": 1
+    "address": 1
   }
 
-  const offices = await Offices.find({}, include).exec();
+  const offices = await Offices.find({"_id": req.query.id}, include).exec();
 
   for(let u of offices) {
     let nu = u.toObject();    
@@ -130,6 +114,40 @@ router.get("/search-office", async function(req, res) {
 
   res.json(ret);
 });
+
+
+router.post("/add-office", async function(req, res) {
+
+      var office = new Offices({
+        name: req.body.name,
+        address: req.body.address
+      });
+
+      office.save(async function (err, savedStatus) {   
+        return res.send(savedStatus);   
+
+    });
+});
+
+router.post("/update-office", async function(req, res) {
+
+  
+  var office = new Offices({
+    id: req.body.id,
+    name: req.body.name,
+    address: req.body.address
+  });
+
+  office = await (await Offices.findById(office.id)).set(office)
+
+  office.set(async function (err, savedStatus) {   
+    return res.send(savedStatus);   
+
+});
+});
+
+
+
 
 
 
