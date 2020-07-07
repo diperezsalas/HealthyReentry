@@ -539,14 +539,28 @@ export default {
         fileTxt += `Name,${u.name}\r\nStatus,${u.status.label}\r\nUpdated,${u.lastUpdated}\r\n${gCSV}\r\n`;
         c++;
       });
-      downloadCSV(fileTxt, `encounters(graph)_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
+      //downloadCSV(fileTxt, `encounters(graph)_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
       this.isLoading = false;
     },
     downloadSelectedAsCSV() {
-
       let tot = "Print Name, Company, Status,LastUpdated, Do you have a fever?, Do you have shortness of breath?,Do you have a cough?, Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?, Have you tested positive for COVID-19 in the past 14 days?, Have you experienced any symptoms of COVID-19 in the past 14 days?";
-      let csv = this.selectedUsers
-                    .map(u => `${u.name},${u.officeCode},${u.status.label},${String(this.moment(u.lastUpdated).format('lll')).replace(/\,/g, '')},${u.symptoms[0]},${u.symptoms[1]},${u.symptoms[2]},${u.symptoms[3]},${u.symptoms[4]},${u.symptoms[5]}`)
+      let selectedUsersWithStatus = [];
+
+      for (let user of this.selectedUsers){
+        for (let userStatus of user.allStatus){
+          let userTemp = { ...user };
+          userTemp.status = userStatus;
+          let symptoms = [false,false,false,false,false,false];
+          for (let symptom of userTemp.status.symptoms) {
+            symptoms[symptom] = true;
+          }
+          userTemp.symptoms = symptoms;
+          selectedUsersWithStatus.push(userTemp);
+        }
+      }
+
+      let csv = selectedUsersWithStatus
+                    .map(u => `${u.name},${u.officeCode},${this.enumStatusMap[u.status.status].label},${String(this.moment(u.status.date).format('lll')).replace(/\,/g, '')},${u.symptoms[0]},${u.symptoms[1]},${u.symptoms[2]},${u.symptoms[3]},${u.symptoms[4]},${u.symptoms[5]}`)
                     .reduce((tot, cur) => tot + "\n" + cur, tot);
       downloadCSV(csv, `encounters_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
@@ -580,20 +594,18 @@ export default {
       let pageFilteredUsers = nameFilteredUsers.slice(st, ed);
 
       this.usersInView = pageFilteredUsers.map(u => {
-        let hasStatus = u.status && u.status.status !== null && u.status.status !== undefined;
-        console.log(u.status.symptoms)
-        let code = (hasStatus) ? u.status.status : -1;
+        let hasStatus = u.status[0] && u.status[0].status !== null && u.status[0].status !== undefined;
+        let code = (hasStatus) ? u.status[0].status : -1;
         let status = enumStatusMap.filter(i => i.code === code)[0];
-        let updateDate = (hasStatus) ? fuzzyTime(new Date(u.status.date)) : '---';
-        var symps= [false,false,false,false,false,false];
-        var i;
+        let updateDate = (hasStatus) ? fuzzyTime(new Date(u.status[0].date)) : '---';
+
+        let symps= [false,false,false,false,false,false];
+        let i;
           for (i = 0; i < 5; i++) {
             
-             symps[u.status.symptoms[i]] = true
+             symps[u.status[0].symptoms[i]] = true
           }
        
-       console.log(symps);
-
         let user = {
           id: u._id,
           selected: false,
@@ -601,13 +613,15 @@ export default {
           email: u.email,
           officeCode: u.location,
           status: status,
+          allStatus: u.status,
           symptoms: symps,
           statusCode: status.code,
           lastUpdatedFormatted: updateDate,
-          lastUpdated: hasStatus ? new Date(u.status.date) : null,
+          lastUpdated: hasStatus ? new Date(u.status[0].date) : null,
           dateOfConsent: u.dateOfConsent ? new Date(u.dateOfConsent) : 0,
           dateOfConsentFormatted: u.dateOfConsent ? new Date(u.dateOfConsent).toDateString() : 'Not Available'
         };
+
         return user;
       });
 

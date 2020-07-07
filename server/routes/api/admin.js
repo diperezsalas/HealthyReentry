@@ -15,12 +15,12 @@ const triggerUpdates = require('../../lib/trigger_updates');
  * @apiDescription Only allow admins to access admin routes
  * @apiGroup admin
  */
-router.use(function (req, res, next) {
-  if (!req.user.permissions.admin) {
-    res.status("404").send("Not found");
-  } else {
-    next();
-  }
+router.use(function(req, res, next) {
+    if (!req.user.permissions.admin) {
+        res.status("404").send("Not found");
+    } else {
+        next();
+    }
 });
 
 
@@ -41,31 +41,31 @@ router.use(function (req, res, next) {
  */
 router.get("/get-all-users", async function(req, res) {
 
-  const ret = [];
+    const ret = [];
 
-  let include = {
-    "_id": 1,
-    "dateOfConsent": 1,
-    "name": 1,
-    "email": 1,
-    "location": 1
-  }
+    let include = {
+        "_id": 1,
+        "dateOfConsent": 1,
+        "name": 1,
+        "email": 1,
+        "location": 1
+    }
 
-  const users = await User.find({}, include).exec();
+    const users = await User.find({}, include).exec();
 
-  for(let u of users) {
-    let nu = u.toObject();
-    const st = await Status.find({ "user": nu._id })
-                           .sort({ date: -1 })
-                           .limit(1);
+    for (let u of users) {
+        let nu = u.toObject();
+        const st = await Status.find({ "user": nu._id })
+            .sort({ date: -1 });
 
-    nu.status = st[0];
+        nu.status = [];
 
-    
-    ret.push(nu)
-  }
+        nu.status = st;
 
-  res.json(ret);
+        ret.push(nu);
+    }
+
+    res.json(ret);
 
 });
 
@@ -165,68 +165,68 @@ router.get("/search-office", async function(req, res) {
  */
 router.post("/update-users", async function(req, res) {
 
-  const data = req.body;
-  const mustSetStatus = data.statusCodeToSet > -1 && data.statusCodeToSet < 5;
-  const mustSetLocation = data.locationToSet !== null;
-  data.selectedUserIds = data.selectedUserIds || [];
+    const data = req.body;
+    const mustSetStatus = data.statusCodeToSet > -1 && data.statusCodeToSet < 5;
+    const mustSetLocation = data.locationToSet !== null;
+    data.selectedUserIds = data.selectedUserIds || [];
 
-  const savedData = [];
+    const savedData = [];
 
-  for(const userData of data.selectedUserIds) {
+    for (const userData of data.selectedUserIds) {
 
-    let user = await User.findById(userData.userId);
+        let user = await User.findById(userData.userId);
 
-    if(mustSetLocation) {
-      user.location = data.locationToSet;
-      await user.save();
+        if (mustSetLocation) {
+            user.location = data.locationToSet;
+            await user.save();
+        }
+
+        let savedStatus;
+
+        if (mustSetStatus) {
+
+            let statusEnum = parseInt(data.statusCodeToSet);
+
+            const latestStatus = await Status.find({ "user": userData.userId })
+                .sort({ date: -1 })
+                .limit(1);
+            var ls;
+            if (latestStatus && latestStatus.length > 0) ls = latestStatus[0];
+
+            const st = new Status({
+                status: statusEnum,
+                user: user
+            });
+
+            savedStatus = await st.save();
+
+            // trigger graph update only if the post request was meant to update status
+            const triggerData = {
+                user: user,
+                statusEnum: statusEnum
+            };
+
+            // dont holdup the response for current trigger to percolate
+            triggerUpdateQueue.push(triggerData);
+            triggerQueue(ls);
+
+        } else {
+
+            const st = await Status.find({ "user": user._id })
+                .sort({ date: -1 })
+                .limit(1);
+            savedStatus = st[0];
+
+        }
+
+        const newUser = user.toObject();
+        newUser.status = savedStatus;
+
+        savedData.push(newUser);
+
     }
 
-    let savedStatus;
-
-    if (mustSetStatus) {
-
-      let statusEnum = parseInt(data.statusCodeToSet);
-
-      const latestStatus = await Status.find({ "user": userData.userId })
-                             .sort({ date: -1 })
-                             .limit(1);
-      var ls;
-      if (latestStatus && latestStatus.length > 0) ls = latestStatus[0];
-
-      const st = new Status({
-        status: statusEnum,
-        user: user
-      });
-
-      savedStatus = await st.save();
-
-      // trigger graph update only if the post request was meant to update status
-      const triggerData = {
-        user: user,
-        statusEnum: statusEnum
-      };
-
-      // dont holdup the response for current trigger to percolate
-      triggerUpdateQueue.push(triggerData);
-      triggerQueue(ls);
-
-    } else {
-
-      const st = await Status.find({ "user": user._id })
-                              .sort({ date: -1 })
-                              .limit(1);
-      savedStatus = st[0];
-
-    }
-
-    const newUser = user.toObject();
-    newUser.status = savedStatus;
-
-    savedData.push(newUser);
-
-  }
-
-  res.json(savedData);
+    res.json(savedData);
 
 });
 
@@ -260,18 +260,18 @@ router.post("/update-users", async function(req, res) {
  *          description: Server error.
  */
 router.post("/get-graph", async function(req, res) {
-  let emailList = req.body.emails;
-  let incubationDays = parseInt(req.body.incubationDays);
-  if (!emailList || emailList.length < 1 || !incubationDays) {
-    res.status(400).send("Missing parameters.");
-    return;
-  }
-  let graphs = [];
-  for(let email of emailList) {
-    let graph = await eg(email, incubationDays);
-    graphs.push(graph);
-  }
-  res.json(graphs);
+    let emailList = req.body.emails;
+    let incubationDays = parseInt(req.body.incubationDays);
+    if (!emailList || emailList.length < 1 || !incubationDays) {
+        res.status(400).send("Missing parameters.");
+        return;
+    }
+    let graphs = [];
+    for (let email of emailList) {
+        let graph = await eg(email, incubationDays);
+        graphs.push(graph);
+    }
+    res.json(graphs);
 });
 
 
@@ -281,15 +281,15 @@ const triggerUpdateQueue = [];
 
 async function triggerQueue(ls) {
 
-  while(triggerUpdateQueue.length > 0) {
-    let triggerData = triggerUpdateQueue.shift();
+    while (triggerUpdateQueue.length > 0) {
+        let triggerData = triggerUpdateQueue.shift();
 
-    let success = await triggerUpdates(triggerData, true, ls);
-    if (!success) {
-      console.log('Trigger failed for following data');
-      console.log(triggerData);
+        let success = await triggerUpdates(triggerData, true, ls);
+        if (!success) {
+            console.log('Trigger failed for following data');
+            console.log(triggerData);
+        }
     }
-  }
 
 }
 
