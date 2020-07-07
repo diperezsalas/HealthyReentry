@@ -130,20 +130,19 @@ router.post("/add-office", async function(req, res) {
 });
 
 router.post("/update-office", async function(req, res) {
-
+  console.log("test acá", office );
   
-  var office = new Offices({
+  let office = new Offices({
     id: req.body.id,
     name: req.body.name,
     address: req.body.address
   });
 
-  office = await (await Offices.findById(office.id)).set(office)
+  office = await (await Offices.findById(office.id))
 
-  office.set(async function (err, savedStatus) {   
-    return res.send(savedStatus);   
+  console.log("test acá", office );
 
-});
+
 });
 
 
