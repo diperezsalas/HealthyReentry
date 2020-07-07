@@ -434,11 +434,9 @@ export default {
           }
        
     if(this.symps[4] === true){
-      console.log("GO TO RED");
       this.selectedStatus = 2;
       this.activeTab = tabIds[2];
     } else {
-      console.log("GO TO ORANGE");
       this.selectedStatus = 1;
       this.activeTab = tabIds[1];
     }
@@ -454,7 +452,6 @@ export default {
     // } 
     
      if(this.checkedSymptoms.length==0){
-      console.log("GO TO GREEN");
       this.selectedStatus = 0;
       this.disableSubmit = false;
       this.activeTab = tabIds[0]; 
