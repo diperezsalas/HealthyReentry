@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const User = require('../../models/User');
 const Status = require('../../models/Status');
+const Offices = require('../../models/Offices');
 
 const eg = require('../../lib/build_encounter_graph');
 const triggerUpdates = require('../../lib/trigger_updates');
@@ -67,6 +68,70 @@ router.get("/get-all-users", async function(req, res) {
     res.json(ret);
 
 });
+
+
+router.get("/get-all-offices", async function(req, res) {
+
+  const ret = [];
+
+  let include = {
+    "_id": 1,
+    "name": 1,
+    "address": 1,
+    "officeadmin": 1
+  }
+
+  const offices = await Offices.find({}, include).exec();
+
+  for(let u of offices) {
+    let nu = u.toObject();    
+    ret.push(nu)
+  }
+
+  res.json(ret);
+
+});
+
+
+router.post("/add-office", async function(req, res) {
+
+      var office = new Offices({
+        name: req.body.name,
+        address: req.body.address,
+        officeadmin: req.body.officeadmin
+      });
+
+      office.save(async function (err, savedStatus) {   
+        return res.send(savedStatus);   
+
+    });
+});
+
+
+
+///search-office
+router.get("/search-office", async function(req, res) {
+
+  const ret = [];
+
+  let include = {
+    "_id": 1,
+    "name": 1,
+    "address": 1,
+    "officeadmin": 1
+  }
+
+  const offices = await Offices.find({}, include).exec();
+
+  for(let u of offices) {
+    let nu = u.toObject();    
+    ret.push(nu)
+  }
+
+  res.json(ret);
+});
+
+
 
 
 /**
