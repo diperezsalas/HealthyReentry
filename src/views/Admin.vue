@@ -113,7 +113,8 @@
       </div>
     </div>
 
-    <h5 class="text-muted">Admin Dashboard</h5>
+    <h5 class="text-muted" v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h5>
+    <h5 class="text-muted" v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h5>
 
     <hr class="my-3"/>
 
@@ -123,9 +124,12 @@
 
         <div class="col-lg-3 col-md-6 mb-1">
 
-          <button class="btn btn-outline-tertiary btn-secondary dropdown-toggle" type="button" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Office List
-          </button>
+            <button v-if="$auth.userDB.permissions.admin" class="btn btn-outline-tertiary btn-secondary dropdown-toggle" type="button" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Office List               
+            </button>
+             <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
+              Refresh 
+             </button> 
           <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
             <div class="row">
@@ -159,7 +163,7 @@
           </div>
 
           <small><i>
-          <span class="text-muted ml-3">
+          <span v-if="$auth.userDB.permissions.admin" class="text-muted ml-3">
             <span v-if="allOfficesSelected">
               All offices selected
             </span>
@@ -353,7 +357,7 @@
               </span>
               Name
             </th>
-            <th style="width: 15%">
+            <th style="width: 15%" v-if="$auth.userDB.permissions.admin">
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'officeCode' ? '' : ' disabled')"
@@ -400,7 +404,7 @@
             <td  style="width: 25%">
               {{ user.name }}
             </td>
-            <td style="width: 15%">
+            <td style="width: 15%" v-if="$auth.userDB.permissions.admin">
               <span
                 data-toggle="modal"
                 data-target="#updateUserLocationModal"
@@ -489,6 +493,10 @@ export default {
     })
   },
   mounted() {
+     setTimeout(() => {
+        console.log(this);
+        this.$refs.refreshoffice.click();
+    }, 1000);
   },
   data() {
     return {
@@ -717,6 +725,12 @@ export default {
     },
     setOfficeFilterForAll(val) {
       this.officesList.forEach(o => o.selected = val);
+    },
+    setOfficeFilterForOneOffice(val) {
+      console.log("justify");
+      console.log(val);
+      this.officesList.forEach(o => o.LocationName = val);
+  
     }
   }
 };
