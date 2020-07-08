@@ -483,7 +483,11 @@ export default {
     this.refreshData();
 
   },
-  created() {},
+  created() {
+    this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
+       this.offices = returnedOffices.data;
+    })
+  },
   mounted() {
   },
   data() {
@@ -500,6 +504,7 @@ export default {
       users: [],
       incubationDays: 2,
       enumStatusMap: enumStatusMap,
+      offices: [],
       userUpdateData: {
         statusCodeToSet: -1,
         selectedUserIds: [],
@@ -512,6 +517,7 @@ export default {
       return this.officesList.reduce((a, c) => a + (c.selected ? 1 : 0), 0);
     },
     allOfficesSelected() {
+      console.log(this.offices);
       return this.officesList.every(o => o.selected);
     },
     selectedUsers() {
@@ -634,10 +640,16 @@ export default {
       var users = userData.data;
       users.sort((a, b) => (a.name < b.name) ? -1 : 1)
       this.users = users;
-      this.users.forEach(u => {
-        let loc = u.location || 'unknown';
+      this.offices.forEach(office => {
+        console.log(office.name);
+        let loc = office.name || 'unknown';
         officesSet.add(loc);
       });
+        officesSet.add('N/A');
+     /*  this.users.forEach(u => {
+        let loc = u.location || 'unknown';
+        officesSet.add(loc);
+      }); */
       this.officesList = Array.from(officesSet).map(o => { return { LocationName:o, selected: true } });
       this.officesList.sort((a, b) => a.LocationName < b.LocationName ? -1 : 1);
       this.updateUsersInView();
