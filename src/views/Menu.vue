@@ -93,7 +93,7 @@ export default {
       this.latestStatus = returnedStatus.data;
       this.styleObject.backgroundColor = statusColors[returnedStatus.data.status];
     });
-      this.$api.get("/api/admin/get-all-offices").then( returnedOffices => {
+      this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
        this.offices = returnedOffices.data;
     }),
     setTimeout(()=>{
@@ -151,7 +151,7 @@ export default {
                           id: this.user._id,
                           location: selectedOffice.value
                       }
-        let apiurl = `/api/admin/update-user`;
+        let apiurl = `/api/status/update-user`;
         let res = await this.$api.post(apiurl , body).then(()=>{
           this.user.location = selectedOffice.value;
           this.showDialog = false;

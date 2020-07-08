@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
+const User = require('../../models/User');
 const Status = require('../../models/Status');
+const Offices = require('../../models/Offices');
 
 const triggerUpdates = require('../../lib/trigger_updates');
 
@@ -104,6 +106,40 @@ router.get("/get-current", function (req, res) {
 
 });
 
+
+router.get("/get-all-offices", async function(req, res) {
+
+  const ret = [];
+
+  let include = {
+      "_id": 1,
+      "name": 1,
+      "address": 1,
+      "officeadmin": 1
+  }
+
+  const offices = await Offices.find({}, include).exec();
+
+  for (let u of offices) {
+      let nu = u.toObject();
+      ret.push(nu)
+  }
+
+  res.json(ret);
+
+});
+
+router.post("/update-user", async function(req, res) {
+
+
+  const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { location: req.body.location } }, function(err, updateStatus) {
+      if (err) throw err;
+
+      return res.send(updateStatus);
+  });
+
+
+});
 
 
 module.exports = router;

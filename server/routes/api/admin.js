@@ -59,12 +59,9 @@ router.get("/get-all-users", async function(req, res) {
         "email": 1,
         "location": 1
     }
-  // if (req.user.permissions.office_admin){
- //   const users = await User.find({"location": req.user.location }, include).exec();
 
-  // }else{
     const users = await User.find({}, include).exec();
-  // }
+
 
     for (let u of users) {
         let nu = u.toObject();
