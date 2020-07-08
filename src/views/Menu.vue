@@ -1,6 +1,9 @@
 <template>
 <!-- <div class="mx-auto" style="transform: translateY(150%)"> -->
 <div>
+  <div v-if="showAlert" class="alert alert-success" role="alert">
+    You have sucessfully changed your office to {{user.location}}
+  </div>
   <div v-if="latestStatus" class="card mx-auto" id="statusCard" style="margin-top: 10px;">
     <div class="card-body p-2 text-white" id="statusCardBackground" :style="styleObject">
       <h6 class="ml-auto mt-auto mb-0">
@@ -8,6 +11,10 @@
       </h6>
     </div>
   </div>
+
+  <h3 class="mt-5">
+    Office: {{user.location}}
+  </h3>
   <div class="mx-5 center" id="mainControls">
     <md-list v-if="user" id="controlButtons">
       <md-list-item>
@@ -45,22 +52,57 @@
       <!-- </div> -->
     </md-list>
   </div>
+  <!-- Modal -->
+  <md-dialog :md-close-on-esc="false" :md-click-outside-to-close="false" :md-active.sync="showDialog" :md-fullscreen="false">
+    <md-dialog-title>Welcome {{user.name}}</md-dialog-title>
+    <md-subheader class="mx-2 mb-0">
+      You are not assigned to any office. Select which office you are in and then press <b class="ml-1 mr-0 px-0">Submit</b>.
+    </md-subheader>
+    <md-content class="mx-4">
+
+      <div class="card mx-auto">
+        <div class="card-header">
+          <h6>Select your office</h6>
+      </div>
+      <select class="form-control" id="selectedOffice" v-model="selectedOffice">
+        <option disabled value="">Select your office</option>
+        <option :value='office.name' v-for="office of offices" :key="office.name">
+          {{office.name}}
+        </option>
+        
+      </select>
+        
+      </div>
+    </md-content>
+    <md-dialog-actions class="mx-4 my-2">
+      <md-button class="md-accent md-raised text-white" @click="assignOffice()">Submit</md-button>
+    </md-dialog-actions>
+  </md-dialog>
 </div>
 </template>
 <script>
 // import store from "store/index.js";
 const statusColors = ["#00C851", "#FF9800", "#DC3545"]
 
-import Vuex from 'vuex';
+import {Vuex, mapState} from 'vuex';
 
 export default {
   // props: ["user"],
   created() {
     this.$api.get("/api/status/get-current").then(returnedStatus => {
       this.latestStatus = returnedStatus.data;
-
       this.styleObject.backgroundColor = statusColors[returnedStatus.data.status];
-    })
+    });
+      this.$api.get("/api/admin/get-all-offices").then( returnedOffices => {
+       this.offices = returnedOffices.data;
+    }),
+    setTimeout(()=>{
+        if(!this.user.location || this.user.location == '' || this.user.location == 'N/A'){
+          this.showDialog = true;
+          console.log(this.user);
+        }
+      }, 1000);
+
   },
   mounted() {
     this.mapButtonCSS();
@@ -70,7 +112,11 @@ export default {
   },
   data() {
     return {
+      showDialog: false,
       latestStatus: null,
+      offices: [],
+      showAlert: false,
+      selectedOffice: '',
       styleObject: {
         backgroundColor: 'lightgray'
         // fontSize: '13px'
@@ -81,9 +127,9 @@ export default {
       ],
     };
   },
-  computed: Vuex.mapState({
-    user: state => state.user,
-  }),
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
     mapButtonCSS() {
       const buttonWidth = screen.width * 0.6 > 310 ? screen.width * 0.7 : 310;
@@ -97,7 +143,23 @@ export default {
     },
     showDisplayDate(date) {
       return this.moment(date).format('ll');
+    },
+
+    async assignOffice() {
+      if (selectedOffice.value != '') {
+        const body = {
+                          id: this.user._id,
+                          location: selectedOffice.value
+                      }
+        let apiurl = `/api/admin/update-user`;
+        let res = await this.$api.post(apiurl , body).then(()=>{
+          this.user.location = selectedOffice.value;
+          this.showDialog = false;
+          this.showAlert = true;
+        });
+      }
     }
+    
   }
 };
 </script>
