@@ -3,7 +3,6 @@ const router = require('express').Router();
 const User = require('../../models/User');
 const Status = require('../../models/Status');
 const Offices = require('../../models/Offices');
-
 const eg = require('../../lib/build_encounter_graph');
 const triggerUpdates = require('../../lib/trigger_updates');
 let office_admin_location;
