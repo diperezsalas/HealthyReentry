@@ -53,6 +53,7 @@
 
 <script>
      import axios from "axios";
+import { json } from 'body-parser';
 
     export default {
         data(){
@@ -61,11 +62,20 @@
                 name:"", 
                 address:"", 
                 officeadmin:"", 
+                users: [],
                 update:0,
                 arrayTasks:[], 
+                nameToUpdate: ''
             }
         },
+
         methods:{
+
+            async getAllUsersByOffice(office){
+                let apiurl = `/api/admin/get-all-users`;
+                let userData = await this.$api.get(apiurl);
+                return userData.data.filter((user) => user.location == office);
+            },
         
             async refreshData() {
                 let me =this;
@@ -122,8 +132,15 @@
                 let res = await this.$api.post(apiurl , body);
               
                 if (res.data) {
-                
-                  
+
+                  let name = this.name;
+
+                  this.getAllUsersByOffice(this.nameToUpdate).then((users) => {
+                    users.forEach((user)=>{
+                        this.asignOffice(user, name);
+                    });
+                  });
+
                     me.refreshData();
                     me.clearFields();
 
@@ -135,6 +152,16 @@
                 }
             
             },
+
+            async asignOffice(user, name){
+                let apiurl = `/api/status/update-user`;
+                const body = {
+                    id: user._id,
+                    location: name
+                }
+                let res = await this.$api.post(apiurl , body);
+            },
+
             async loadFieldsUpdate(data){ //This function fills in the fields and the variable update, with the task that we want to modify
                this.update = data.id
      
@@ -150,10 +177,7 @@
                 me.id= response.data[0]._id;
                 me.name= response.data[0].name;
                 me.address= response.data[0].address;
-               
-                
-               
-               
+                this.nameToUpdate=response.data[0].name;
                
                 this.isLoading = false; 
           
@@ -170,21 +194,22 @@
                             name: data.name,
                             address: data.address
                         }
-               console.log(body);
                 let apiurl = `/api/admin/delete-office`;
                 let res = await this.$api.post(apiurl , body);
               
                 if (res.data) {
+
+                    this.getAllUsersByOffice(data.name).then((users) => {
+                        users.forEach((user)=>{
+                            this.asignOffice(user, 'N/A');
+                        });
+                    });
                 
-                  
                     me.refreshData();
                     me.clearFields();
 
-            
-
                 }else{
                     console.log("error delete location")
-
                 }
             }
             },

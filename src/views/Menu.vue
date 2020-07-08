@@ -12,9 +12,12 @@
     </div>
   </div>
 
+<div >
   <h3 class="mt-5">
     Office: {{user.location}}
   </h3>
+</div>
+
   <div class="mx-5 center" id="mainControls">
     <md-list v-if="user" id="controlButtons">
       <md-list-item>
@@ -60,10 +63,8 @@
     </md-subheader>
     <md-content class="mx-4">
 
-      <div class="card mx-auto">
-        <div class="card-header">
-          <h6>Select your office</h6>
-      </div>
+    <div class="card mx-auto">
+        
       <select class="form-control" id="selectedOffice" v-model="selectedOffice">
         <option disabled value="">Select your office</option>
         <option :value='office.name' v-for="office of offices" :key="office.name">

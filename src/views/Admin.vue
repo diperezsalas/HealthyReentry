@@ -113,25 +113,19 @@
       </div>
     </div>
 
-    <h5 class="text-muted" v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h5>
-    <h5 class="text-muted" v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h5>
+    <h5 class="text-muted">Admin Dashboard</h5>
 
     <hr class="my-3"/>
 
     <div class="mb-2">
 
       <div class="row mb-1">
-            
 
-        <div class="col-lg-3 col-md-6 mb-1">  
-          
-            <button v-if="$auth.userDB.permissions.admin" class="btn btn-outline-tertiary btn-secondary dropdown-toggle" type="button" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Office List               
-            </button>
-             <button  v-else  @show="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice"  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();"  @load="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();">
-              Refresh            
-            </button>
-          
+        <div class="col-lg-3 col-md-6 mb-1">
+
+          <button class="btn btn-outline-tertiary btn-secondary dropdown-toggle" type="button" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Office List
+          </button>
           <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
             <div class="row">
@@ -142,23 +136,18 @@
                 <button class="btn btn-outline-secondary mx-2" type="button" @click="setOfficeFilterForAll(false); updateUsersInView();">
                   Select None
                 </button>
-               
-                
               </div>
             </div>
 
             <hr />
 
-        
-
             <div class="row overflow-auto mx-0" style="height:400px">
-              <div   class="col">
+              <div class="col">
                 <p v-for="ofc in officesList" :key="ofc.LocationID" class="pl-4">
                   <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
                   {{ofc.LocationName}}
                 </p>
               </div>
-              
               <!-- <div class="col-6">
                 <p v-for="ofc in officesList.slice(15)" :key="ofc.LocationID">
                   <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
@@ -170,8 +159,8 @@
           </div>
 
           <small><i>
-          <span v-if="$auth.userDB.permissions.admin" class="text-muted ml-3">
-            <span  v-if="allOfficesSelected">
+          <span class="text-muted ml-3">
+            <span v-if="allOfficesSelected">
               All offices selected
             </span>
             <span v-else>
@@ -364,7 +353,7 @@
               </span>
               Name
             </th>
-            <th  style="width: 15%">
+            <th style="width: 15%">
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'officeCode' ? '' : ' disabled')"
@@ -411,7 +400,7 @@
             <td  style="width: 25%">
               {{ user.name }}
             </td>
-            <td  style="width: 15%">
+            <td style="width: 15%">
               <span
                 data-toggle="modal"
                 data-target="#updateUserLocationModal"
@@ -478,8 +467,6 @@ function fuzzyTime(date) {
   } else if (Math.floor(delta / hour) == 1) {
     fuzzy = '1 hour ago'
   } else if (delta < day) {
-
-
     fuzzy = `${Math.floor(delta / hour)} hours ago`;
   } else if (delta < day * 2) {
     fuzzy = 'yesterday';
@@ -494,22 +481,14 @@ function fuzzyTime(date) {
 export default {
   beforeMount() {
     this.refreshData();
-    
 
   },
-
   created() {
-   
-
+    this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
+       this.offices = returnedOffices.data;
+    })
   },
   mounted() {
-      console.log("monted")
-     console.log(this.$auth.userDB.location)
-     setTimeout(()=>{
-        setOfficeFilterForOneOffice(this.$auth.userDB.location); 
-        updateUsersInView();
-     },1000)
-     
   },
   data() {
     return {
@@ -525,6 +504,7 @@ export default {
       users: [],
       incubationDays: 2,
       enumStatusMap: enumStatusMap,
+      offices: [],
       userUpdateData: {
         statusCodeToSet: -1,
         selectedUserIds: [],
@@ -537,6 +517,7 @@ export default {
       return this.officesList.reduce((a, c) => a + (c.selected ? 1 : 0), 0);
     },
     allOfficesSelected() {
+      console.log(this.offices);
       return this.officesList.every(o => o.selected);
     },
     selectedUsers() {
@@ -600,7 +581,7 @@ export default {
       downloadCSV(csv, `office-stats_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
     updateUsersInView() {
-      console.log(this.officesList);
+
       let officeArr = this.officesList
                             .filter(o => o.selected)
                             .map(o => o.LocationName);
@@ -644,7 +625,6 @@ export default {
           dateOfConsent: u.dateOfConsent ? new Date(u.dateOfConsent) : 0,
           dateOfConsentFormatted: u.dateOfConsent ? new Date(u.dateOfConsent).toDateString() : 'Not Available'
         };
-        
 
         return user;
       });
@@ -660,14 +640,16 @@ export default {
       var users = userData.data;
       users.sort((a, b) => (a.name < b.name) ? -1 : 1)
       this.users = users;
-      
-      
-      this.users.forEach(u => {
-        let loc = u.location || 'unknown';
+      this.offices.forEach(office => {
+        console.log(office.name);
+        let loc = office.name || 'unknown';
         officesSet.add(loc);
       });
-
-    
+        officesSet.add('N/A');
+     /*  this.users.forEach(u => {
+        let loc = u.location || 'unknown';
+        officesSet.add(loc);
+      }); */
       this.officesList = Array.from(officesSet).map(o => { return { LocationName:o, selected: true } });
       this.officesList.sort((a, b) => a.LocationName < b.LocationName ? -1 : 1);
       this.updateUsersInView();
@@ -703,11 +685,10 @@ export default {
       });
       
       this.isLoading = false;
-     
+
     },
     updInviewUserSelectedState(val) {
       this.usersInView.forEach(u => u.selected = (val === 'invert') ? !u.selected : val);
-      
     },
     async clearUpdateData() {
       this.userUpdateData.statusCodeToSet = -1;
@@ -736,12 +717,6 @@ export default {
     },
     setOfficeFilterForAll(val) {
       this.officesList.forEach(o => o.selected = val);
-    },
-    setOfficeFilterForOneOffice(val) {
-      console.log("justify");
-      console.log(val);
-      this.officesList.forEach(o => o.LocationName = val);
-  
     }
   }
 };
