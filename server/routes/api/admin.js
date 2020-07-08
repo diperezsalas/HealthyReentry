@@ -6,7 +6,8 @@ const Offices = require('../../models/Offices');
 
 const eg = require('../../lib/build_encounter_graph');
 const triggerUpdates = require('../../lib/trigger_updates');
-
+let office_admin_location;
+let office_admin_permmision = false;
 
 
 /**
@@ -16,10 +17,18 @@ const triggerUpdates = require('../../lib/trigger_updates');
  * @apiGroup admin
  */
 router.use(function(req, res, next) {
-    if (!req.user.permissions.admin) {
-        res.status("404").send("Not found");
-    } else {
+    if (req.user.permissions.admin) {
         next();
+    } else {
+        if (req.user.permissions.office_admin) {
+            office_admin_location = req.user.location;
+            office_admin_permmision = true;
+            next();
+        }else{
+            res.status("404").send("Not found");
+        }    
+        
+        
     }
 });
 
@@ -50,8 +59,12 @@ router.get("/get-all-users", async function(req, res) {
         "email": 1,
         "location": 1
     }
+  // if (req.user.permissions.office_admin){
+ //   const users = await User.find({"location": req.user.location }, include).exec();
 
+  // }else{
     const users = await User.find({}, include).exec();
+  // }
 
     for (let u of users) {
         let nu = u.toObject();

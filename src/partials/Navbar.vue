@@ -19,6 +19,11 @@
 
             <md-menu-content>
               <md-menu-item disabled>{{$auth.userDB.name}}</md-menu-item>
+                 <md-menu-item v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.office_admin">
+                <router-link :to="{ name: 'admin' }">
+                  {{$auth.userDB.location}} Admin 
+                </router-link>
+              </md-menu-item>
               <md-menu-item v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin">
                 <router-link :to="{ name: 'admin' }">
                   Admin View
@@ -26,7 +31,7 @@
               </md-menu-item>
                 <md-menu-item  v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin">
                <router-link :to="{ name: 'officeadmin' }">
-                  Office Admin
+                  Offices
                </router-link>
                </md-menu-item> 
               <!-- <md-menu-item>Profile</md-menu-item> -->

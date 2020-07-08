@@ -58,12 +58,11 @@
         data(){
             return{
                 id:"",
-                name:"", //Esta variable, mediante v-model esta relacionada con el input del formulario
-                address:"", //Esta variable, mediante v-model esta relacionada con el input del formulario
-                officeadmin:"", //Esta variable, mediante v-model esta relacionada con el input del formulario
-                update:0, /*Esta variable contrarolará cuando es una nueva tarea o una modificación, si es 0 significará que no hemos seleccionado
-                          ninguna tarea, pero si es diferente de 0 entonces tendrá el id de la tarea y no mostrará el boton guardar sino el modificar*/
-                arrayTasks:[], //Este array contendrá las tareas de nuestra bd
+                name:"", 
+                address:"", 
+                officeadmin:"", 
+                update:0,
+                arrayTasks:[], 
             }
         },
         methods:{
@@ -164,8 +163,8 @@
      
              
              let me =this;
-                let task_id = data.id
-                if (confirm('¿Seguro que deseas borrar esta tarea?')) {
+                let task_id = data._id
+                if (confirm('Are you sure you want to delete ' + data.name + '?')) {
                  const body = {
                             id: data._id,
                             name: data.name,

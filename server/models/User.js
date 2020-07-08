@@ -66,6 +66,10 @@ const UserSchema = new mongoose.Schema({
     admin: {
       type: Boolean,
       default: false
+    },
+    office_admin: {
+      type: Boolean,
+      default: false
     }
   }
 }, {timestamps: true});
@@ -74,6 +78,7 @@ UserSchema.pre("save", function (next) {
     var user = this;
     // set admin
     if(variables.ADMIN_USERS.includes(user.email.toLowerCase())) user.permissions.admin= true;
+    if(variables.ADMIN_OFFICE_USERS.includes(user.email.toLowerCase())) user.permissions.office_admin= true;
     next();
 
 });
