@@ -61,9 +61,7 @@ var OfficesSchema = new mongoose.Schema({
 
 OfficesSchema.pre("save", function (next) {
     var office = this;
-    // set admin
-    if(variables.ADMIN_USERS.includes(user.email.toLowerCase())) user.permissions.admin= true;
-    if(variables.ADMIN_USERS.includes(user.email.toLowerCase())) user.permissions.office_admin= true;
+
     next();
 
 });
