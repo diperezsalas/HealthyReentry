@@ -387,12 +387,12 @@
         </thead>
 
         <tbody>
-          <tr v-for="user in usersInView" :key="user.id">
+          <tr class="user-table" v-for="user in usersInView" :key="user.id">
             <td style="width: 15%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
               {{ (user.selected) ? '&#9745;' : '&#9744;' }}
             </td>
             <td style="width: 5%" class="text-center">
-              <i :class="'fas fa-circle ' + user.status.css_key"></i>
+              <i :class="'fas fa-circle ' + user.status.css_key + ' ' + user.id"></i>
             </td>
              <td hidden=true style="width: 5%" class="text-center">
               {{ user.symptoms}}
@@ -576,8 +576,6 @@ export default {
     },
     updateUsersInView() {
 
-   
-
       let officeArr = this.officesList
                             .filter(o => o.selected)
                             .map(o => o.LocationName);
@@ -650,15 +648,21 @@ export default {
 
       this.userUpdateData.selectedUserIds = this.selectedUsers
                                                 .map(u => { return { userId: u.id }});
-
+                                                console.log(this.selectedUsers);
       this.isLoading = true;
       let res = await this.$api.post("/api/admin/update-users", this.userUpdateData);
       let updatedUsers = res.data;
-      print(updatedUsers );
+
       updatedUsers.forEach(nu => {
         let idx = this.users.findIndex(u => u._id === nu._id);
         this.users[idx] = nu;
+        this.users[idx].status = [this.users[idx].status];
+        console.log(this.users);
+        this.refreshData();
         this.updateUsersInView();
+        const color = enumStatusMap.filter(s => s.code === this.users[idx].status[0].status)[0].label;
+          $('.' + this.users[idx]._id).removeClass(['en_green', 'en_red', 'en_orange']);
+          $('.' + this.users[idx]._id).addClass('en_' + color.toLowerCase());
       });
 
       this.clearUpdateData();

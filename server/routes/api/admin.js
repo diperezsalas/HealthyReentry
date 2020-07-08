@@ -72,59 +72,59 @@ router.get("/get-all-users", async function(req, res) {
 
 router.get("/get-all-offices", async function(req, res) {
 
-  const ret = [];
+    const ret = [];
 
-  let include = {
-    "_id": 1,
-    "name": 1,
-    "address": 1,
-    "officeadmin": 1
-  }
+    let include = {
+        "_id": 1,
+        "name": 1,
+        "address": 1,
+        "officeadmin": 1
+    }
 
-  const offices = await Offices.find({}, include).exec();
+    const offices = await Offices.find({}, include).exec();
 
-  for(let u of offices) {
-    let nu = u.toObject();    
-    ret.push(nu)
-  }
+    for (let u of offices) {
+        let nu = u.toObject();
+        ret.push(nu)
+    }
 
-  res.json(ret);
+    res.json(ret);
 
 });
 
 
 ///search-office
 router.get("/search-office", async function(req, res) {
- let office_id = req.query.id
+    let office_id = req.query.id
 
-  const ret = [];
+    const ret = [];
 
-  let include = {
-    "_id": 1,
-    "name": 1,
-    "address": 1
-  }
+    let include = {
+        "_id": 1,
+        "name": 1,
+        "address": 1
+    }
 
-  const offices = await Offices.find({"_id": req.query.id}, include).exec();
+    const offices = await Offices.find({ "_id": req.query.id }, include).exec();
 
-  for(let u of offices) {
-    let nu = u.toObject();    
-    ret.push(nu)
-  }
+    for (let u of offices) {
+        let nu = u.toObject();
+        ret.push(nu)
+    }
 
-  res.json(ret);
+    res.json(ret);
 });
 
 
 router.post("/add-office", async function(req, res) {
 
-      let office = new Offices({
+    let office = new Offices({
         name: req.body.name,
         address: req.body.address
-      });
+    });
 
-      office.save(async function (err, savedStatus) {   
-        return res.send(savedStatus);   
+    office.save(async function(err, savedStatus) {
+        return res.send(savedStatus);
 
     });
 });
@@ -132,27 +132,39 @@ router.post("/add-office", async function(req, res) {
 
 
 router.post("/update-office", async function(req, res) {
- 
 
-  const myArray = await Offices.updateOne({"_id" : req.body.id},{ $set: {name: req.body.name, address: req.body.address} },function(err, updateStatus) {
-    if (err) throw err;
-    
-    return res.send(updateStatus); 
-  });
-  
+
+    const myArray = await Offices.updateOne({ "_id": req.body.id }, { $set: { name: req.body.name, address: req.body.address } }, function(err, updateStatus) {
+        if (err) throw err;
+
+        return res.send(updateStatus);
+    });
+
+
+});
+
+router.post("/update-user", async function(req, res) {
+
+
+    const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { location: req.body.location } }, function(err, updateStatus) {
+        if (err) throw err;
+
+        return res.send(updateStatus);
+    });
+
 
 });
 
 
 
 router.post("/delete-office", async function(req, res) {
-  console.log(req.body.id);
+    console.log(req.body.id);
 
- 
-  const myArray = await Offices.deleteOne({"_id" : req.body.id},function(err, deleteStatus) {
-    if (err) throw err;  
-    return res.send(deleteStatus); 
-  });
+
+    const myArray = await Offices.deleteOne({ "_id": req.body.id }, function(err, deleteStatus) {
+        if (err) throw err;
+        return res.send(deleteStatus);
+    });
 
 });
 
