@@ -4,56 +4,45 @@
   <div v-if="showAlert" class="alert alert-success" role="alert">
     You have sucessfully changed your office to {{user.location}}
   </div>
-  <div v-if="latestStatus" class="card mx-auto" id="statusCard" style="margin-top: 10px;">
-    <div class="card-body p-2 text-white" id="statusCardBackground" :style="styleObject">
-      <h6 class="ml-auto mt-auto mb-0">
-        <b>Last Updated on:</b> {{showDisplayDate(new Date(latestStatus.date))}} as {{status[latestStatus.status]}}
-      </h6>
+  <div v-if="latestStatus">
+    <div class="text-white text-center mt-5">
+        <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
+        <div> 
+          <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
+        </div>
     </div>
   </div>
 
-<div >
-  <h3 class="mt-5">
-    Office: {{user.location}}
-  </h3>
-</div>
-
-  <div class="mx-5 center" id="mainControls">
-    <md-list v-if="user" id="controlButtons">
-      <md-list-item>
+  <div class="center">
+    <section v-if="user" id="controlButtons">
+      <div style="position:relative;">
         <router-link class="mx-auto" :to="{ name: 'status', params: { id: user._id}}">
-          <button type="button" class="btn btn-lg btn-block text-center text-white my-2 md-accent">
-            Report Your Status
-          </button>
+          <div class="text-white menu-link">
+            <i class="menu-icon far fa-clock"></i> 
+            <div>Report Your Status</div>
+            <i class="arrow fas fa-arrow-right"></i>
+          </div>
           <!-- <md-button class="md-raised md-accent menu-button">
             <h6 class="my-3 text-white">Report Your Health Status</h6>
           </md-button> -->
         </router-link>
-      </md-list-item>
+          <div class="color-hover"></div>
+      </div>
 
-      <md-list-item>
+      <div>
         <router-link class="mx-auto" :to="{ name: 'encounter', params: { id: user._id}}">
-          <button type="button" class="btn btn-lg btn-block text-center text-white my-2 md-accent">
-          Record a TT Encounter
-        </button>
+          <div class="text-white menu-link">
+            <i class="menu-icon fas fa-microphone-alt"></i>
+            <div>Record a TT Encounter</div>
+            <i class="arrow fas fa-arrow-right"></i>
+          </div>
           <!-- <md-button class="md-raised md-accent menu-button" style="margin-top: 16px;">
             <h6 class="mb-0 text-white">Record a TT Encounter</h6>
           </md-button> -->
         </router-link>
-      </md-list-item>
+      </div>
 
-      <md-list-item hidden=true>
-        <router-link class="mx-auto" :to="{ name: 'displayqr', params: { id: user._id}}">
-          <button type="button" class="btn btn-lg btn-block text-center text-white my-2 md-accent">
-          Display QR Code
-        </button>
-          <!-- <md-button class="md-raised md-accent menu-button" style="margin-top: 16px;">
-            <h6 class="mb-0 text-white">Display QR Code</h6>
-          </md-button> -->
-        </router-link>
-      </md-list-item>
-      <!-- </div> -->
-    </md-list>
+    </section>
   </div>
   <!-- Modal -->
   <md-dialog :md-close-on-esc="false" :md-click-outside-to-close="false" :md-active.sync="showDialog" :md-fullscreen="false">
@@ -82,17 +71,18 @@
 </div>
 </template>
 <script>
+
 // import store from "store/index.js";
 const statusColors = ["#00C851", "#FF9800", "#DC3545"]
 
 import {Vuex, mapState} from 'vuex';
+import enumStatusMap from "../../server/util/enumStatusMap.js";
 
 export default {
   // props: ["user"],
   created() {
     this.$api.get("/api/status/get-current").then(returnedStatus => {
       this.latestStatus = returnedStatus.data;
-      this.styleObject.backgroundColor = statusColors[returnedStatus.data.status];
     });
       this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
        this.offices = returnedOffices.data;
@@ -100,9 +90,8 @@ export default {
     setTimeout(()=>{
         if(!this.user.location || this.user.location == '' || this.user.location == 'N/A'){
           this.showDialog = true;
-          console.log(this.user);
         }
-      }, 1000);
+      }, 5000);
 
   },
   mounted() {
@@ -114,17 +103,14 @@ export default {
   data() {
     return {
       showDialog: false,
+      enumStatusMap: enumStatusMap,
       latestStatus: null,
       offices: [],
       showAlert: false,
       selectedOffice: '',
-      styleObject: {
-        backgroundColor: 'lightgray'
-        // fontSize: '13px'
-      },
-      status: ["Green - No Signs or Symptoms",
-        "Orange - Possible Exposure",
-        "Red - Positive Diagnosis"
+      status: ["No Signs or Symptoms",
+        "Possible Exposure",
+        "Positive Diagnosis"
       ],
     };
   },
@@ -178,4 +164,6 @@ export default {
   height: 65vh;
   /* border: 3px solid green; */
 }
+
+
 </style>

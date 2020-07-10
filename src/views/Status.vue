@@ -1,224 +1,92 @@
 Test
 <template>
 <div>
-  <!-- <div class="d-flex"> -->
-  <h4 class="text-muted">Report Your Health Status</h4>
-  <p v-if="latestStatus" class="ml-auto mt-auto mb-0"> <b>Last Updated on:</b> {{showDisplayDate(new Date(latestStatus.date))}} as {{status[latestStatus.status]}}</p>
-  <!-- </div> -->
-
-  <!-- <hr class="mt-2 mb-0" /> -->
-
-  <div class="card mt-2 mb-0">
-    <div class="card-body bg-info p-2 text-white">
-      <p class="mb-2">
-        Click on a color to see the definition, then select the appropriate color that matches your current status in regards to COVID-19. Click <b>Next</b>.
-      </p>
-      <p class="mb-0">
-        <i>If you are seeing colors with a strike through, you are unable to select them due to your previously selected status.</i>
-      </p>
+  <h4>Report Your Health Status</h4>
+  <div v-if="latestStatus">
+    <div class="text-white text-center mt-3">
+        <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
+        <div> 
+          <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
+        </div>
     </div>
   </div>
 
-  <!-- <small>Please be sure to update your status color at least once per week, or more often if necessary.</small> -->
-
+  <div class="mt-2 alert-info">
+    <i class="fa fa-info"></i>
+    <div>
+      <p class="mb-2">
+        Click on a color to see the definition, then select the appropriate color that matches your current status in regards to COVID-19. Click <b>Next</b>.
+      </p>
+    </div>
+  </div>
   <md-tabs class="mt-3" md-alignment="fixed" :md-active-tab="activeTab" style="min-height: 270px">
     <md-tab class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectStatus(0)" :selectedIndex="activeTab">
-      <!-- <div v-if="latestStatus.status === 0 || latestStatus.status === 3"> -->
-      <div>
+      <div class="container">
         <h5 class="mt-2">No Signs or Symptoms</h5>
-
-
-
-
-        <ul class="pl-3 mb-2">
-        
-          <br><input hidden=true type="checkbox"  class="symptoms" value=0 v-model="checkedSymptoms"  @change="check($event)">
-          <li>
-          <label for="jack">Do you have a fever? <b>NO</b></label>
-         
-          <br><input hidden=true type="checkbox" class="symptoms" value=1 v-model="checkedSymptoms" @change="check($event)">
-          <li>
-          <label for="john">Do you have shortness of breath? <b>NO</b></label>
+          <div class="question-muted-row">Do you have a fever? <b class="green">NO</b></div>
+          <div class="question-muted-row">Do you have shortness of breath? <b class="green">NO</b></div>
+          <div class="question-muted-row">Do you have a cough? <b class="green">NO</b></div>
+          <div class="question-muted-row">Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19? <b class="green">NO</b></div>
           
-          <br><input hidden=true type="checkbox" class="symptoms" value=2 v-model="checkedSymptoms" @change="check($event)">
-          <li>
-          <label for="mike">Do you have a cough? <b>NO</b></label>
-           <br><input hidden=true type="checkbox" class="symptoms"  value=3 v-model="checkedSymptoms" @change="check($event)">
-         <li>Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19? <b>NO</b>
-          
-          <br><input hidden=true type="checkbox" class="symptoms" value=4 v-model="checkedSymptoms" @change="check($event)">
-         <li> Have you tested positive for COVID-19 in the past 14 days? <b>NO</b>
-           <br><input  hidden=true type="checkbox" class="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
-        <li> Have you experienced any symptoms of COVID-19 in the past 14 days? <b>NO</b>
-          
-       
-          <li hidden=true>Not sick (asymptomatic), <b>AND</b></li>
-          <li hidden=true>No known exposure to any symptomatic or COVID-positive individuals.</li>
-          <hr class="my-2">
-        
-          <li hidden=true>Fully recovered and cleared by a healthcare provider, or tested negative after possible exposure.</li>
-        </ul>
-
-        <div class="card mt-2" hidden=true>
-          <div class="card-body bg-light p-1">
-            <small class="mb-1">
-              Click on <b>Orange</b> to see a list of COVID-19 symptoms.
-            </small>
-          </div>
-        </div>
+           <div class="question-muted-row">Have you tested positive for COVID-19 in the past 14 days? <b class="green">NO</b></div>
+           <div class="question-muted-row">Have you experienced any symptoms of COVID-19 in the past 14 days? <b class="green">NO</b></div>
+           
       </div>
-      <!-- <div v-else>
-        <h5 class="text-muted mt-2">No Signs or Symptoms</h5>
-        <ul class="pl-3 mb-0 text-muted">
-
-          
-          <li>Not sick (asymptomatic), <b>AND</b></li>
-          <li>No known exposure to any symptomatic or COVID-positive individuals.</li>
-          <hr class="my-2">
-          <li>Fully recovered and cleared by a healthcare provider, or tested negative after possible exposure.</li>
-        </ul>
-
-
-        <div class="card mt-2">
-          <div class="card-body bg-light p-1">
-            <small class="mb-1">
-              Click on <b>Orange</b> to see a list of COVID-19 symptoms.
-            </small>
-          </div>
-        </div>
-      </div> -->
-
-
 
     </md-tab>
     <md-tab class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
-      <!-- <div v-if="latestStatus.status < 2 || latestStatus.status === 3"> -->
-      <div>
+      <div class="container">
         <h5 class="mt-2">Possible Exposure</h5>
-        <ul class="pl-3 mb-0">
 
-           <br><input  type="checkbox"  class="symptoms" id="fever2" value=0 v-model="checkedSymptoms"  @change="check($event)">
-          <label for="fever2">Do you have a fever?</label>
-          <br><input type="checkbox" class="symptoms" id="breath2" value=1 v-model="checkedSymptoms" @change="check($event)">
-          <label for="breath2">Do you have shortness of breath?</label>
-          <br><input type="checkbox" class="symptoms" id="cough2" value=2 v-model="checkedSymptoms" @change="check($event)">
-          <label for="cough2">Do you have a cough?</label>
-           <br><input type="checkbox" class="symptoms" id="knowingly2" value=3 v-model="checkedSymptoms" @change="check($event)">
-         <label for="knowingly2">Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label>
+           <div class="question-row"><input  type="checkbox"  class="symptoms" id="fever2" value=0 v-model="checkedSymptoms"  @change="check($event)">
+          <label for="fever2">Do you have a fever?</label></div>
+          <div class="question-row"><input type="checkbox" class="symptoms" id="breath2" value=1 v-model="checkedSymptoms" @change="check($event)">
+          <label for="breath2">Do you have shortness of breath?</label></div>
+          <div class="question-row"><input type="checkbox" class="symptoms" id="cough2" value=2 v-model="checkedSymptoms" @change="check($event)">
+          <label for="cough2">Do you have a cough?</label></div>
+           <div class="question-row"><input type="checkbox" class="symptoms" id="knowingly2" value=3 v-model="checkedSymptoms" @change="check($event)">
+         <label for="knowingly2">Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label></div>
           
-          <br><input type="checkbox" class="symptoms" id="positive2" value=4 v-model="checkedSymptoms" @change="check($event)">
-          <label for="positive2">Have you tested positive for COVID-19 in the past 14 days?</label>
-           <br><input type="checkbox" class="symptoms" id="symptoms2" value=5 v-model="checkedSymptoms" @change="check($event)">
-         <label for="symptoms2">Have you experienced any symptoms of COVID-19 in the past 14 days?</label>
-         <hr class="my-2">
+          <div class="question-row"><input type="checkbox" class="symptoms" id="positive2" value=4 v-model="checkedSymptoms" @change="check($event)">
+          <label for="positive2">Have you tested positive for COVID-19 in the past 14 days?</label></div>
+           <div class="question-row"><input type="checkbox" class="symptoms" id="symptoms2" value=5 v-model="checkedSymptoms" @change="check($event)">
+         <label for="symptoms2">Have you experienced any symptoms of COVID-19 in the past 14 days?</label></div>
 
-          <li hidden=true>Symptomatic of COVID-19, <b>OR</b></li>
-          <li hidden=true>Awaiting personal test results of COVID-19, <b>OR</b></li>
-          <li hidden=true>Had in-person contact with symptomatic individuals or someone who has tested positive for COVID-19.</li>
-        </ul>
-        <div class="card mt-2" hidden=true>
-          <div class="card-body bg-light p-1">
-            <small class="mb-0 d-flex">
-              <b style="margin-top:2px">Symptoms of COVID-19</b>
-              <a class="m-0 p-0 ml-2" href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" target="blank">
-                <md-icon class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg"></md-icon>
-              </a>
-            </small>
-            <small class="mb-0">
-              <ul class="pl-3 mb-0">
-                <li>Fever or chills</li>
-                <li>Cough</li>
-                <li>Shortness of breath or difficulty breathing</li>
-                <li>Fatigue</li>
-                <li>Muscle or body aches</li>
-                <li>Headache</li>
-                <li>New loss of taste or smell</li>
-                <li>Sore throat</li>
-                <li>Congestion or runny nose</li>
-                <li>Nausea or vomiting</li>
-                <li>Diarrhea</li>
-              </ul>
-            </small>
-          </div>
-        </div>
+        
       </div>
-      <!-- <div>
-        <h5 class="text-muted mt-2">Possible Exposure</h5>
-        <ul class="pl-3 mb-0 text-muted">
-          <li>Symptomatic of COVID-19, <b>OR</b></li>
-          <li>Awaiting personal test results of COVID-19, <b>OR</b></li>
-          <li>Had in-person contact with symptomatic individuals or someone who has tested positive for COVID-19.</li>
-        </ul>
-        <div class="card mt-2">
-          <div class="card-body bg-light p-1">
-            <small class="mb-0 d-flex">
-              <b style="margin-top:2px">Symptoms of COVID-19</b>
-              <a class="m-0 p-0 ml-2" href="https://www.cdc.gov/coronavirus/2019-ncov/symptoms-testing/symptoms.html" target="blank">
-                <md-icon class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg"></md-icon>
-              </a>
-            </small>
-            <small class="mb-0">
-              <ul class="pl-3 mb-0">
-                <li>Cough</li>
-                <li>Shortness of breath or difficulty breathing</li>
-                <li>Fever</li>
-                <li>Chills</li>
-                <li>Muscle pain</li>
-                <li>Sore throat</li>
-                <li>New loss of taste or smell</li>
-                
-              </ul>
-            </small>
-            
-          </div>
-        </div>
-      </div> -->
-
-
-
+  
     </md-tab>
-    <md-tab class="px-0" id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
+    <md-tab id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
+      <div class="container">
       <h5 class="mt-2">Positive Diagnosis</h5>
-      <ul class="pl-3 mb-0">
-             <br><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
-          <label for="fever">Do you have a fever?</label>
-          <br><input type="checkbox" class="symptoms" id="breath" value=1 v-model="checkedSymptoms" @change="check($event)">
-          <label for="breath">Do you have shortness of breath?</label>
-          <br><input type="checkbox" class="symptoms" id="cough" value=2 v-model="checkedSymptoms" @change="check($event)">
-          <label for="cough">Do you have a cough?</label>
-           <br><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
-          <label for="knowingly"> Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label>
+         <div class="question-row"><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
+          <label for="fever">Do you have a fever?</label></div>
+          <div class="question-row"><input type="checkbox" class="symptoms" id="breath" value=1 v-model="checkedSymptoms" @change="check($event)">
+          <label for="breath">Do you have shortness of breath?</label></div>
+          <div class="question-row"><input type="checkbox" class="symptoms" id="cough" value=2 v-model="checkedSymptoms" @change="check($event)">
+          <label for="cough">Do you have a cough?</label></div>
+           <div class="question-row"><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
+          <label for="knowingly"> Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label></div>
           
-          <br><input type="checkbox" class="symptoms" id="positive" value=4 v-model="checkedSymptoms" @change="check($event)">
-          <label for="positive">Have you tested positive for COVID-19 in the past 14 days?</label>
-           <br><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
-         <label for="symptoms">Have you experienced any symptoms of COVID-19 in the past 14 days?</label>
+          <div class="question-row"><input type="checkbox" class="symptoms" id="positive" value=4 v-model="checkedSymptoms" @change="check($event)">
+          <label for="positive">Have you tested positive for COVID-19 in the past 14 days?</label></div>
+           <div class="question-row"><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
+         <label for="symptoms">Have you experienced any symptoms of COVID-19 in the past 14 days?</label></div>
         
          <li hidden=true>Taken a COVID-19 test and received a positive result, <b>OR</b></li>
         <li hidden=true>Received an isolation order from your country, state or local government, or a public health authority.</li>
          <hr class="my-2">
-      </ul>
+      </div>
     </md-tab>
     
-    <!-- <md-tab class="px-0" id="tab-blue" md-label="Blue" :md-icon="iconPath[3]" @click="selectedStatus=3">
-      <h5 class="text-muted mt-2">Recovered (disbled)</h5>
-      <ul class="pl-3 mb-2 text-muted">
-        <li>Has fully recovered, <b>AND</b></li>
-        <li>Cleared by a healthcare provider. </li>
-      </ul>
-    </md-tab> -->
   </md-tabs>
   
-
   <!-- Button trigger modal -->
   <md-list>
     <md-list-item class="mx-auto">
-      <!-- <md-button class="md-primary md-raised" @click="showDialog=!showDialog" :disabled="disableSubmit" id="nextBtn" style="width:240px">
-        <h6 class="mb-0">Next</h6>
-      </md-button> -->
-      <button type="button" class="btn btn-lg btn-block text-white md-accent" @click="showModal()" :disabled="disableSubmit" id="nextBtn" style="width:240px">
+      <div class="turner-button" @click="showModal()" :disabled="disableSubmit" id="nextBtn">
         Next
-      </button>
+      </div>
     </md-list-item>
 
     <md-list-item class="mx-auto">
@@ -286,6 +154,7 @@ Test
 <script>
 // import store from "store/index.js";
 import Vuex from 'vuex';
+import enumStatusMap from "../../server/util/enumStatusMap.js";
 
 let tabIds = ["tab-green", "tab-orange", "tab-red", "tab-blue"]
 export default {
@@ -342,6 +211,7 @@ export default {
     
     return {
       checkedSymptoms: [],
+      enumStatusMap: enumStatusMap,
       showDialog: false,
       submitSuccess: false,
       notificationDuration: 4000,
@@ -352,9 +222,9 @@ export default {
       },
       enableBlue: false,
       disableSubmit: false,
-      status: ["Green - No Signs or Symptoms",
-        "Orange - Possible Exposure",
-        "Red - Positive Diagnosis"
+      status: ["No Signs or Symptoms",
+        " Possible Exposure",
+        "Positive Diagnosis"
       ],
       activeTab: "tab-green",
       iconPath: [
@@ -494,6 +364,41 @@ export default {
 .symptoms{
   margin: 10px 
 }
- 
+.green {
+  color: green;
+} 
+label {
+    display: inline-block;
+    margin-bottom: inherit;
+    padding: 10px;
+}
+.question-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    background: #fafafa;
+    transition: all .3s;
+}
+.question-row:hover{
+     background: #efefef;
+}
 
+.question-muted-row {
+      padding: 5px;
+      background: #fafafa;
+      font-size: 13px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+  }
+  .alert-info {
+    background: #f6eddf;
+    color: #93744d;
+    padding: 10px;
+    display: flex;
+  }
+  .alert-info .fa-info {
+    font-size: 20px;
+    margin: 0 20px;
+  }
 </style>

@@ -1,33 +1,206 @@
-// body {
-//   background-color: red;
-// }
-@import '~bootstrap/scss/bootstrap';
-
-@import "~vue-material/dist/vue-material";
-
-
-// vue material theme customization
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
-
-@include md-register-theme("default", (
-  primary: #004050, // The primary color of your application
-  accent: #00a3ad // The accent or secondary color
-));
-
-@import "~vue-material/dist/theme/all"; // Apply the theme
-
-.md-active {
-  border-style: solid;
-  border-width: 2px;
-  border-color: #63666a;
-}
-
-.md-accent {
-     background-color: #00a3ad;
-}
-
-.md-primary {
-     color: #004050;
-}
-
-
+    // body {
+    //   background-color: red;
+    // }
+    @import './colors.scss';
+    @import '~bootstrap/scss/bootstrap';
+    @import "~vue-material/dist/vue-material";
+    // vue material theme customization
+    @import "~vue-material/dist/theme/engine"; // Import the theme engine
+    @include md-register-theme("default", ( primary: #004050, // The primary color of your application
+    accent: #00a3ad // The accent or secondary color
+    ));
+    @import "~vue-material/dist/theme/all"; // Apply the theme
+    .md-active {
+        border-style: solid;
+        border-width: 2px;
+        border-color: #63666a;
+    }
+    
+    .md-accent {
+        background-color: #00a3ad;
+    }
+    
+    .md-primary {
+        color: #004050;
+    }
+    
+    html {
+        background-color: #00275d;
+        background-image: linear-gradient(to bottom right, #00275d, #000b1b);
+    }
+    
+    body {
+        background-color: $primary-color;
+        background-image: linear-gradient(to bottom right, $primary-color, $primary-color-dark);
+        max-width: 1200px;
+        margin: 0 auto;
+        background: none;
+        .md-list-item-content.md-ripple:hover {
+            background: none !important;
+        }
+        .table {
+            background: white;
+            display: block;
+            overflow-x: auto;
+        }
+        .md-list-item-content.md-ripple:hover {
+            background: #aaaaaa;
+            color: white;
+        }
+        .turner-button {
+            padding: 10px 30px;
+            text-transform: uppercase;
+            color: white;
+            font-weight: bold;
+            width: fit-content;
+            margin: 0 auto;
+            border-radius: 30px;
+            background-color: $primary-color;
+            background-image: linear-gradient(to bottom right, $button1, $bright-blue);
+            transition: all .3s;
+            cursor: pointer;
+            &:hover {
+                box-shadow: 2px 2px 2px #dadada;
+                background-image: linear-gradient(to bottom right, $bright-blue, $button1);
+            }
+        }
+        .intro-logo {
+            max-width: 250px;
+        }
+        .down-logo {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+        }
+        .text-inherit {
+            margin-top: 20px;
+            padding: 10px;
+            color: white;
+            font-size: 12px;
+        }
+        .img-container {
+            position: absolute;
+            left: 50%;
+            margin-top: 30px;
+            img {
+                position: relative;
+                left: -50%;
+                max-width: 300px;
+            }
+        }
+        .disabled {
+            color: #DEDEDE;
+        }
+        .en_green {
+            color: #00C851;
+        }
+        .en_orange {
+            color: #FF9800;
+        }
+        .en_red {
+            color: #DC3545;
+        }
+        .en_blue {
+            color: #007BFF;
+        }
+        .unknown {
+            color: #898989;
+        }
+        .primary-color {
+            color: $primary-color;
+        }
+        .bright-blue {
+            color: $bright-blue;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        .md-theme-default a:not(.md-button):hover {
+            text-decoration: none;
+        }
+        #controlButtons {
+            .color-hover {
+                background: black;
+                height: 100%;
+                position: absolute;
+                border-radius: 5px;
+                width: 0;
+            }
+            .menu-link {
+                background: $bright-blue;
+                width: 80vw;
+                max-width: 400px;
+                margin-bottom: 10px;
+                font-size: 12px;
+                padding: 10px;
+                border-left: 5px solid $button1;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                transition: all .3s;
+                &:hover {
+                    color: $primary-color !important;
+                    background: $button1;
+                    .menu-icon {
+                        color: white;
+                    }
+                }
+                .menu-icon {
+                    padding: 6px;
+                    font-size: 40px !important;
+                    background: $primary-color;
+                    border-radius: 50%;
+                    width: 30px !important;
+                    height: 30px !important;
+                    border: 2px solid;
+                    margin-right: 10px;
+                    transition: all .3s;
+                }
+                .arrow {
+                    margin-left: auto;
+                }
+            }
+        }
+        .last-update {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .fa-clock,
+        .last-update {
+            font-size: 14px;
+        }
+        .last-date {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 10px;
+        }
+        .symtomps {
+            font-size: 10px;
+            font-weight: bold;
+        }
+        h4 {
+            color: white;
+            font-size: 17px;
+            text-align: center;
+            border-left: 5px solid $button1;
+            background: $bright-blue;
+            font-size: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        h5 {
+            font-size: 17px;
+            padding: 10px;
+            border-left: 7px solid $button1;
+        }
+        .md-active {
+            border-width: 0;
+        }
+        .md-accent {
+            background-color: $bright-blue;
+        }
+        label[data-v-2c1299ac] {
+            width: 100%;
+            cursor: pointer;
+        }
+    }

@@ -113,8 +113,8 @@
       </div>
     </div>
 
-    <h5 class="text-muted" v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h5>
-    <h5 class="text-muted" v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h5>
+    <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h4>
+    <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
 
     <hr class="my-3"/>
 
@@ -754,27 +754,4 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.disabled {
-  color: #DEDEDE;
-}
-
-.en_green {
-  color: #00C851;
-}
-
-.en_orange {
-  color: #FF9800;
-}
-
-.en_red {
-  color: #DC3545;
-}
-
-.en_blue {
-  color: #007BFF;
-}
-
-.unknown {
-  color: #898989;
-}
 </style>

@@ -1,9 +1,9 @@
 <template>
 <div class="page-container" id="app">
-  <Navbar />
+  <Navbar v-if="$route.name != 'home'" />
   <!-- <hr /> -->
   <!-- <md-content class="mx-3" style="max-width:600px"> -->
-  <md-content class="mx-auto" style="padding-top:75px;padding-bottom:40px;">
+  <md-content class="mx-auto" style="padding-bottom:40px;background: transparent">
     <router-view class="px-3" @disclosureMsg="disclosureMsg" @statusMsg="statusMsg" @encounterMsg="encounterMsg"/>
   </md-content>
 
@@ -18,7 +18,7 @@
     <span> Encounter submitted successfully.</span>
   </md-snackbar>
 
-  <Footer />
+  <!-- <Footer /> -->
 </div>
 </template>
 
