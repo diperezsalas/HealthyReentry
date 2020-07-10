@@ -54,6 +54,7 @@ router.get("/get-all-users", async function(req, res) {
     let include = {
         "_id": 1,
         "dateOfConsent": 1,
+        "permissions":1,
         "name": 1,
         "email": 1,
         "location": 1
@@ -217,6 +218,7 @@ router.post("/update-users", async function(req, res) {
     const data = req.body;
     const mustSetStatus = data.statusCodeToSet > -1 && data.statusCodeToSet < 5;
     const mustSetLocation = data.locationToSet !== null;
+    const newOfficeAdminStatus = data.office_admin;
     data.selectedUserIds = data.selectedUserIds || [];
 
     const savedData = [];
@@ -227,6 +229,11 @@ router.post("/update-users", async function(req, res) {
 
         if (mustSetLocation) {
             user.location = data.locationToSet;
+            await user.save();
+        }
+
+        if (newOfficeAdminStatus) {
+            user.permissions.office_admin= data.newOfficeAdminStatus;
             await user.save();
         }
 

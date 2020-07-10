@@ -113,6 +113,50 @@
       </div>
     </div>
 
+
+
+      <!-- Update User Office Admin -->
+    <div class="modal fade" id="updateUserOfficeAdminnModal" tabindex="-1" role="dialog" aria-labelledby="updateUserLocationLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateUserLocationLabel">Do you like to change office admin profile? </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="updInviewUserSelectedState(false); clearUpdateData()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div v-if="selectedUsers.length > 0">
+              <h6>
+                <i :class="'fas fa-circle ' + selectedUsers[0].status.css_key"></i>
+                {{ selectedUsers[0].name }}
+              </h6>
+              <p>{{ selectedUsers[0].email }}</p>
+              <div class="dropdown">
+                <button class="btn btn-secondary-outline dropdown-toggle" type="button" id="locDDMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ selectedUsers[0].office_admin }}
+                </button>
+                <div class="dropdown-menu overflow-auto mx-0" style="height:400px" aria-labelledby="locDDMenuButton">
+                  <p class="dropdown-item" v-for="ofc in ofc_admin" :key="ofc.id" @click="selectedUsers[0].office_admin =ofc">
+                    {{ ofc }}
+                  </p>
+                </div>
+                <p >
+                  <small><i>
+                    Will be updated to: {{ selectedUsers[0].office_admin }}
+                  </i></small>
+                </p>
+              </div> 
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData()">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateData">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <h5 class="text-muted" v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h5>
     <h5 class="text-muted" v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h5>
 
@@ -152,12 +196,12 @@
                   {{ofc.LocationName}}
                 </p>
               </div>
-              <!-- <div class="col-6">
+             <div class="col-6">
                 <p v-for="ofc in officesList.slice(15)" :key="ofc.LocationID">
                   <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
                   {{ofc.LocationName}}
                 </p>
-              </div> -->
+              </div>
             </div>
 
           </div>
@@ -333,6 +377,12 @@
               </span>
               Select
             </th>
+
+           <th  v-if="$auth.userDB.permissions.admin" c  style="width: 5%" class="text-center">
+           
+              Office Admin
+            </th>
+
             <th style="width: 5%" class="text-center">
               <span
                 style="cursor: pointer"
@@ -343,10 +393,7 @@
               </span>
               Status
             </th>
-            <th hidden=true style="width: 5%" class="text-center">
            
-              Symptoms
-            </th>
             <th style="width: 25%">
               <span
                 style="cursor: pointer"
@@ -392,15 +439,25 @@
 
         <tbody>
           <tr class="user-table" v-for="user in usersInView" :key="user.id">
-            <td style="width: 15%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
+            <td style="width: 5%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
               {{ (user.selected) ? '&#9745;' : '&#9744;' }}
+            </td>
+            <td   v-if="$auth.userDB.permissions.admin" style="width: 5%; cursor: pointer;" class="text-center" >
+              <div
+                data-toggle="modal"
+                data-target="#updateUserOfficeAdminnModal"
+                @click="updInviewUserSelectedState(false); clearUpdateData(); user.selected = true; user.office_admin = !user.office_admin"
+                class="text-secondary">
+                 {{ (user.office_admin) ? '&#9745;' : '&#9744;' }}
+              </div>
+              
+             
+            
             </td>
             <td style="width: 5%" class="text-center">
               <i :class="'fas fa-circle ' + user.status.css_key + ' ' + user.id"></i>
             </td>
-             <td hidden=true style="width: 5%" class="text-center">
-              {{ user.symptoms}}
-            </td>
+         
             <td  style="width: 25%">
               {{ user.name }}
             </td>
@@ -494,9 +551,9 @@ export default {
   },
   mounted() {
      setTimeout(() => {
-        console.log(this);
+       // console.log(this);
         this.$refs.refreshoffice.click();
-    }, 1000);
+    }, 500);
   },
   data() {
     return {
@@ -513,6 +570,7 @@ export default {
       incubationDays: 2,
       enumStatusMap: enumStatusMap,
       offices: [],
+      ofc_admin: [true,false],
       userUpdateData: {
         statusCodeToSet: -1,
         selectedUserIds: [],
@@ -525,7 +583,7 @@ export default {
       return this.officesList.reduce((a, c) => a + (c.selected ? 1 : 0), 0);
     },
     allOfficesSelected() {
-      console.log(this.offices);
+      
       return this.officesList.every(o => o.selected);
     },
     selectedUsers() {
@@ -617,11 +675,14 @@ export default {
             
              symps[u.status[0].symptoms[i]] = true
           }
-       
+      
+
+
         let user = {
           id: u._id,
           selected: false,
           name: u.name,
+          office_admin: u.permissions.office_admin,
           email: u.email,
           officeCode: u.location,
           status: status,
@@ -645,11 +706,12 @@ export default {
 
       let apiurl = `/api/admin/get-all-users`;
       let userData = await this.$api.get(apiurl);
+      //console.log(userData);
       var users = userData.data;
       users.sort((a, b) => (a.name < b.name) ? -1 : 1)
       this.users = users;
       this.offices.forEach(office => {
-        console.log(office.name);
+       
         let loc = office.name || 'unknown';
         officesSet.add(loc);
       });
@@ -677,7 +739,7 @@ export default {
         let idx = this.users.findIndex(u => u._id === nu._id);
         this.users[idx] = nu;
         this.users[idx].status = [this.users[idx].status];
-        console.log(this.users);
+       // console.log(this.users);
         this.refreshData();
         this.updateUsersInView();
         const color = enumStatusMap.filter(s => s.code === this.users[idx].status[0].status)[0].label;
@@ -693,6 +755,11 @@ export default {
       });
       
       this.isLoading = false;
+       
+       setTimeout(() => {
+      //  console.log(this);
+        this.$refs.refreshoffice.click();
+       }, 500);
 
     },
     updInviewUserSelectedState(val) {
@@ -727,8 +794,8 @@ export default {
       this.officesList.forEach(o => o.selected = val);
     },
     setOfficeFilterForOneOffice(val) {
-      console.log("justify");
-      console.log(val);
+    
+    
       this.officesList.forEach(o => o.LocationName = val);
   
     }

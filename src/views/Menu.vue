@@ -10,12 +10,16 @@
         <b>Last Updated on:</b> {{showDisplayDate(new Date(latestStatus.date))}} as {{status[latestStatus.status]}}
       </h6>
     </div>
+  
   </div>
-
+  
 <div >
-  <h3 class="mt-5">
+  <h3 v-if="user.location != 'N/A'" class="mt-5">
     Office: {{user.location}}
   </h3>
+
+  <button v-else @click="showDialog=true">  Choose an office</button>
+ 
 </div>
 
   <div class="mx-5 center" id="mainControls">
@@ -56,7 +60,7 @@
     </md-list>
   </div>
   <!-- Modal -->
-  <md-dialog :md-close-on-esc="false" :md-click-outside-to-close="false" :md-active.sync="showDialog" :md-fullscreen="false">
+  <md-dialog :md-close-on-esc="true" :md-click-outside-to-close="true" :md-active.sync="showDialog" :md-fullscreen="false">
     <md-dialog-title>Welcome {{user.name}}</md-dialog-title>
     <md-subheader class="mx-2 mb-0">
       You are not assigned to any office. Select which office you are in and then press <b class="ml-1 mr-0 px-0">Submit</b>.
@@ -72,12 +76,27 @@
         </option>
         
       </select>
-        
+
+     
+
+      
       </div>
+     
+      
     </md-content>
-    <md-dialog-actions class="mx-4 my-2">
-      <md-button class="md-accent md-raised text-white" @click="assignOffice()">Submit</md-button>
-    </md-dialog-actions>
+     
+       <md-dialog-actions class="mx-4 my-2">
+         <router-link :to="{ name: 'officeadmin' }">
+             <md-button class="md-accent md-raised text-white" style="margin: 5px" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Add Office</md-button>  
+         </router-link>
+               <md-divider> dd</md-divider>
+          <md-button class="md-accent md-raised text-white" style="margin: 5px" @click="assignOffice()"> Submit</md-button>
+         
+        </md-dialog-actions>
+
+  
+     
+  
   </md-dialog>
 </div>
 </template>
