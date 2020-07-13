@@ -1,26 +1,22 @@
 <template>
   <div>
-    <div class="row mt-4 home-intro">
+    <div class="row home-intro">
       <div class="col">
-        <div>
-          <img src="/imgs/logo-256.png" alt="healthy reentry logo" style="margin-bottom: 30px">
-          <!-- <h3>Welcome to Encounter!</h3> -->
-          <p>At {{company}}, our first priority – now and always – is the health and safety of our employees.
-            <br>
-            <br>
-            The COVID-19 outbreak has challenged us to find creative ways to <b>best protect our employees.</b>
-          </p>
-          <!-- <a class="btn btn-primary btn-lg text-white mb-4" align="center" style="width: 300px; border-radius: 10px; margin-top: 125px;">
+        <div style="padding-top: calc(30vh - 50px);">
+          <img class="intro-logo" src="/imgs/turner-white.svg" alt="healthy reentry logo" style="margin-bottom: 10px">
+          <div class="down-logo">COVID Health Check by<br>Turner Construction</div>
 
-            Get Started &raquo;
-          </a> -->
+          <div class="text-inherit">
+            At Turner Construction the health and safety of our employees is our top priority.
+          </div>
           <!-- <router-link :to="{ name: 'menu' }"> -->
-            <md-button class="md-primary md-raised" style="width:280px" @click="login()">
-               Get Started &raquo;
-            </md-button>
-          <!-- </router-link> -->
-          <!-- <a class="btn btn-primary" href="/users/login-tt">Get Started</a> -->
-          <div><a class="btn btn-link" :href="url" target="_blank">Directions</a> </div>
+            <div class="turner-button"  @click="login()">
+               Get Started
+            </div>
+            <div class="img-container">
+              <img class="home-icon" src="/imgs/home-icon.svg" alt="healthy reentry logo" style="margin-bottom: 10px">
+            </div>
+
 
         </div>
       </div>
