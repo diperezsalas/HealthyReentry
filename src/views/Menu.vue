@@ -55,8 +55,9 @@
   <md-dialog :md-close-on-esc="true" :md-click-outside-to-close="true" :md-active.sync="showDialog" :md-fullscreen="false">
     <md-dialog-title>Welcome {{user.name}}</md-dialog-title>
     <md-subheader class="mx-2 mb-0">
-      You are not assigned to any office. Select which office you are in and then press <b class="ml-1 mr-0 px-0">Submit</b>.
+      You are not assigned to any office. Please select your office location and then press submit.
     </md-subheader>
+    <br>
     <md-content class="mx-4">
 
     <div class="card mx-auto">
