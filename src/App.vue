@@ -1,9 +1,10 @@
 <template>
 <div class="page-container" id="app">
+  <section id="body-section">
   <Navbar v-if="$route.name != 'home'" />
   <!-- <hr /> -->
   <!-- <md-content class="mx-3" style="max-width:600px"> -->
-  <md-content class="mx-auto" style="padding-bottom:40px;background: transparent">
+  <md-content class="mx-auto" style="padding-bottom:20px;background: transparent">
     <router-view class="px-3" @disclosureMsg="disclosureMsg" @statusMsg="statusMsg" @encounterMsg="encounterMsg"/>
   </md-content>
 
@@ -17,8 +18,8 @@
   <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showEncounterMsg" md-persistent style="margin-bottom:55px; background-color: #004050">
     <span> Encounter submitted successfully.</span>
   </md-snackbar>
-
-  <!-- <Footer /> -->
+  </section>
+  <Footer v-if="$route.name != 'home'"/>
 </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div>
     <div class="row home-intro">
       <div class="col">
-        <div style="padding-top: calc(30vh - 50px);">
+        <div>
           <img class="intro-logo" src="/imgs/turner-white.svg" alt="healthy reentry logo" style="margin-bottom: 10px">
           <div class="down-logo">COVID Health Check by<br>Turner Construction</div>
 

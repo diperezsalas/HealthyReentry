@@ -11,8 +11,7 @@ Test
     </div>
   </div>
 
-  <div class="mt-2 alert-info">
-    <i class="fa fa-info"></i>
+  <div class="mt-2 alert-info2">
     <div>
       <p class="mb-2">
         Click on a color to see the definition, then select the appropriate color that matches your current status in regards to COVID-19. Click <b>Next</b>.
@@ -22,7 +21,7 @@ Test
   <md-tabs class="mt-3" md-alignment="fixed" :md-active-tab="activeTab" style="min-height: 270px">
     <md-tab class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectStatus(0)" :selectedIndex="activeTab">
       <div class="container">
-        <h5 class="mt-2">No Signs or Symptoms</h5>
+        <h4 style="color:black" class="mt-2">No Signs or Symptoms</h4>
           <div class="question-muted-row">Do you have a fever? <b class="green">NO</b></div>
           <div class="question-muted-row">Do you have shortness of breath? <b class="green">NO</b></div>
           <div class="question-muted-row">Do you have a cough? <b class="green">NO</b></div>
@@ -36,7 +35,7 @@ Test
     </md-tab>
     <md-tab class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
       <div class="container">
-        <h5 class="mt-2">Possible Exposure</h5>
+        <h4 style="color:black" class="mt-2">Possible Exposure</h4>
 
            <div class="question-row"><input  type="checkbox"  class="symptoms" id="fever2" value=0 v-model="checkedSymptoms"  @change="check($event)">
           <label for="fever2">Do you have a fever?</label></div>
@@ -58,7 +57,7 @@ Test
     </md-tab>
     <md-tab id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
       <div class="container">
-      <h5 class="mt-2">Positive Diagnosis</h5>
+      <h4 style="color:black" class="mt-2">Positive Diagnosis</h4>
          <div class="question-row"><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
           <label for="fever">Do you have a fever?</label></div>
           <div class="question-row"><input type="checkbox" class="symptoms" id="breath" value=1 v-model="checkedSymptoms" @change="check($event)">
@@ -75,7 +74,7 @@ Test
         
          <li hidden=true>Taken a COVID-19 test and received a positive result, <b>OR</b></li>
         <li hidden=true>Received an isolation order from your country, state or local government, or a public health authority.</li>
-         <hr class="my-2">
+
       </div>
     </md-tab>
     
@@ -87,12 +86,6 @@ Test
       <div class="turner-button" @click="showModal()" :disabled="disableSubmit" id="nextBtn">
         Next
       </div>
-    </md-list-item>
-
-    <md-list-item class="mx-auto">
-      <router-link :to="{ name: 'menu' }">
-        <p class="text-muted">Back</p>
-      </router-link>
     </md-list-item>
   </md-list>
 
@@ -109,10 +102,22 @@ Test
   <!-- <div class="text-center mt-0 mb-5pr-2 btn btn-lg btn-block">
     <router-link :to="{ name: 'menu' }">Back</router-link>
   </div> -->
-
-  <br>
-  <br>
-
+  <section class="buttons-sections" style="margin-top: 30px;">
+    <div class="center">
+      <div v-if="user" class="control-button">
+        <div style="position:relative;">
+          <router-link class="mx-auto" :to="{ name: 'menu'}">
+            <div class="text-white menu-link">
+              <i class="menu-icon fa fa-tachometer-alt"></i> 
+              <div>Back to Dashboard</div>
+              <i class="arrow fas fa-arrow-right"></i>
+            </div>
+          </router-link>
+            <div class="color-hover"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
   <!-- Modal -->
@@ -391,14 +396,10 @@ label {
       display: flex;
       justify-content: space-between;
   }
-  .alert-info {
-    background: #f6eddf;
-    color: #93744d;
-    padding: 10px;
-    display: flex;
-  }
-  .alert-info .fa-info {
-    font-size: 20px;
-    margin: 0 20px;
-  }
+  .alert-info2 {
+    color: white;
+    text-align: center;
+    padding: 40px 10px 10px;
+    font-family: endurance-light;
+}
 </style>

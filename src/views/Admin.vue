@@ -6,7 +6,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="updateConfModalLabel">Updates</h5>
+            <h4 class="modal-title" id="updateConfModalLabel">Updates</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -37,7 +37,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="graphDownloadModalLabel">Download Logged Interactions</h5>
+            <h4 class="modal-title" id="graphDownloadModalLabel">Download Logged Interactions</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -76,7 +76,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="updateUserLocationLabel">Update User Location</h5>
+            <h4 class="modal-title" id="updateUserLocationLabel">Update User Location</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="updInviewUserSelectedState(false); clearUpdateData()">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -121,7 +121,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="updateUserLocationLabel">Do you like to change office admin profile? </h5>
+            <h4 class="modal-title" id="updateUserLocationLabel">Do you like to change office admin profile? </h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="updInviewUserSelectedState(false); clearUpdateData()">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -158,8 +158,7 @@
       </div>
     </div>
 
-    <h5 class="text-muted" v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h5>
-    <h5 class="text-muted" v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h5>
+    <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
 
     <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h4>
     <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
@@ -812,6 +811,10 @@ export default {
 .custom-dd-size {
   padding-left: 40px;
   width: 400px !important;
+}
+
+#updateConfModalLabel {
+  color: black
 }
 
 /* Chrome, Safari, Edge, Opera */

@@ -10,6 +10,21 @@
     accent: #00a3ad // The accent or secondary color
     ));
     @import "~vue-material/dist/theme/all"; // Apply the theme
+    @font-face {
+        font-family: 'endurance-light';
+        src: url('/fonts/EnduranceProLight.TTF');
+    }
+    
+    @font-face {
+        font-family: 'endurance-regular';
+        src: url('/fonts/EnduranceProRegular.TTF');
+    }
+    
+    @font-face {
+        font-family: 'endurance-bold';
+        src: url('/fonts/EnduranceProBold.TTF');
+    }
+    
     .md-active {
         border-style: solid;
         border-width: 2px;
@@ -25,16 +40,57 @@
     }
     
     html {
-        background-color: #00275d;
-        background-image: linear-gradient(to bottom right, #00275d, #000b1b);
+        background-color: $primary-color-dark;
+        background-image: linear-gradient(to bottom right, $primary-color-dark, $primary-color-dark);
     }
     
     body {
-        background-color: $primary-color;
-        background-image: linear-gradient(to bottom right, $primary-color, $primary-color-dark);
+        font-family: endurance-regular;
         max-width: 1200px;
         margin: 0 auto;
         background: none;
+        .md-title {
+            color: $primary-color-dark;
+            font-size: 16px;
+        }
+        .md-subheader {
+            font-size: 13px;
+            color: $light-dark !important
+        }
+        .md-dialog-actions {
+            padding: 8px 8px 8px 8px;
+            justify-content: space-between;
+        }
+        .md-dialog-container.md-theme-default {
+            border-radius: 20px;
+        }
+        .md-toolbar.md-theme-default.md-primary {
+            background: $primary-color-dark !important;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            max-width: 1168px;
+        }
+        #selectedOffice {
+            border: none;
+            border-bottom: 1px solid $light-dark;
+            border-radius: 0;
+            color: $light-dark;
+            padding: 0;
+        }
+        .card {
+            border: none;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #body-section {
+            min-height: 70vh;
+            margin-top: 80px;
+            position: relative;
+        }
         .md-list-item-content.md-ripple:hover {
             background: none !important;
         }
@@ -63,6 +119,9 @@
                 box-shadow: 2px 2px 2px #dadada;
                 background-image: linear-gradient(to bottom right, $bright-blue, $button1);
             }
+        }
+        .modal-title {
+            color: $primary-color-dark;
         }
         .intro-logo {
             max-width: 250px;
@@ -117,46 +176,55 @@
         .md-theme-default a:not(.md-button):hover {
             text-decoration: none;
         }
-        #controlButtons {
-            .color-hover {
-                background: black;
-                height: 100%;
-                position: absolute;
-                border-radius: 5px;
-                width: 0;
+        .buttons-sections {
+            margin-top: 80px;
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            &.menu {
+                height: 40vh;
             }
-            .menu-link {
-                background: $bright-blue;
-                width: 80vw;
-                max-width: 400px;
-                margin-bottom: 10px;
-                font-size: 12px;
-                padding: 10px;
-                border-left: 5px solid $button1;
-                border-radius: 5px;
-                display: flex;
-                align-items: center;
-                transition: all .3s;
-                &:hover {
-                    color: $primary-color !important;
-                    background: $button1;
-                    .menu-icon {
-                        color: white;
-                    }
+            .control-button {
+                .color-hover {
+                    background: black;
+                    height: 100%;
+                    position: absolute;
+                    border-radius: 5px;
+                    width: 0;
                 }
-                .menu-icon {
-                    padding: 6px;
-                    font-size: 40px !important;
-                    background: $primary-color;
-                    border-radius: 50%;
-                    width: 30px !important;
-                    height: 30px !important;
-                    border: 2px solid;
-                    margin-right: 10px;
+                .menu-link {
+                    background: $bright-blue;
+                    width: 80vw;
+                    max-width: 400px;
+                    margin-bottom: 10px;
+                    font-size: 12px;
+                    padding: 10px;
+                    border-left: 5px solid $button1;
+                    border-radius: 5px;
+                    display: flex;
+                    align-items: center;
                     transition: all .3s;
-                }
-                .arrow {
-                    margin-left: auto;
+                    &:hover {
+                        color: $primary-color !important;
+                        background: $button1;
+                        .menu-icon {
+                            color: white;
+                        }
+                    }
+                    .menu-icon {
+                        background: $primary-color;
+                        border-radius: 50%;
+                        width: 40px !important;
+                        height: 40px !important;
+                        border: 2px solid;
+                        margin-right: 10px;
+                        transition: all .3s;
+                        padding: 8px;
+                    }
+                    .arrow {
+                        margin-left: auto;
+                    }
                 }
             }
         }
@@ -177,16 +245,9 @@
         }
         h4 {
             color: white;
+            font-family: endurance-bold;
             font-size: 17px;
             text-align: center;
-            border-left: 5px solid $button1;
-            background: $bright-blue;
-            font-size: 12px;
-            padding: 10px;
-            border-radius: 5px;
-            color: white;
-            max-width: 400px;
-            margin: 0 auto;
         }
         h5 {
             font-size: 17px;
@@ -202,5 +263,28 @@
         label[data-v-2c1299ac] {
             width: 100%;
             cursor: pointer;
+        }
+        #footer {
+            img {
+                max-width: 140px;
+                margin: 0 auto;
+                display: block;
+            }
+            p {
+                color: rgba(255, 255, 255, 0.7);
+                font-family: endurance-light;
+                max-width: 310px;
+                font-size: 12px;
+                margin: 20px auto;
+                a {
+                    color: $bright-blue;
+                }
+            }
+        }
+        .md-tabs-navigation {
+            border-radius: 20px 20px 0 0;
+        }
+        .md-list.md-theme-default {
+            border-radius: 0 0 20px 20px;
         }
     }

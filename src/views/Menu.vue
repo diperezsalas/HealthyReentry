@@ -14,8 +14,9 @@
   
   </div>
 
+<section class="buttons-sections menu">
   <div class="center">
-    <section v-if="user" id="controlButtons">
+    <div v-if="user" class="control-button">
       <div style="position:relative;">
         <router-link class="mx-auto" :to="{ name: 'status', params: { id: user._id}}">
           <div class="text-white menu-link">
@@ -29,11 +30,10 @@
         </router-link>
           <div class="color-hover"></div>
       </div>
-  </section>
   </div>
- <center>
-  <div class="botton">
-    <section v-if="user" id="controlButtons">
+  </div>
+  <div class="center bottom">
+    <div v-if="user" class="control-button">
       <div>
         <router-link class="mx-auto" :to="{ name: 'encounter', params: { id: user._id}}">
           <div class="text-white menu-link">
@@ -46,16 +46,16 @@
           </md-button> -->
         </router-link>
       </div>
-       </section>
+       </div>
   </div>
-   </center>
+  </section>
 
   
   <!-- Modal -->
   <md-dialog :md-close-on-esc="true" :md-click-outside-to-close="true" :md-active.sync="showDialog" :md-fullscreen="false">
     <md-dialog-title>Welcome {{user.name}}</md-dialog-title>
     <md-subheader class="mx-2 mb-0">
-      You are not assigned to any office. Please select your office location and then press submit.
+      You are not assigned to any office. Please select your office location and press submit.
     </md-subheader>
     <br>
     <md-content class="mx-4">
@@ -79,15 +79,15 @@
     </md-content>
      
        <md-dialog-actions class="mx-4 my-2">
+         
          <router-link :to="{ name: 'officeadmin' }">
-             <md-button class="md-accent md-raised text-white" style="margin: 5px" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Add Office</md-button>  
+             <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Add Office</div>  
          </router-link>
                <md-divider> dd</md-divider>
-          <md-button class="md-accent md-raised text-white" style="margin: 5px" @click="assignOffice()"> Submit</md-button>
-         
+           <div class="turner-button" style="margin:initial" @click="assignOffice()">
+               Submit
+          </div>
         </md-dialog-actions>
-
-  
      
   
   </md-dialog>
@@ -179,14 +179,5 @@ export default {
   height: 7vh;
   /* background-color: #72DDF7; */
 }
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 65vh;
-  /* border: 3px solid green; */
-}
-
 
 </style>
