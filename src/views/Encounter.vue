@@ -1,4 +1,4 @@
-<template>
+<template >
 <div>
   <!-- <appAlerts v-bind:alerts="alerts"/> -->
   <h4 class="text-muted">Record a TT Encounter</h4>
@@ -13,7 +13,7 @@
           Log ALL encounters with TT colleagues where there is a breach of our current protocol.
         </p>
         <a class="ml-1" href="https://spark.thorntontomasetti.com/docs/DOC-17243" target="blank">
-          <md-icon class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" style="color:white"></md-icon>
+          <md-icon  class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" style="color:white"></md-icon>
         </a>
       </div>
       <p class="mb-0">
@@ -34,7 +34,7 @@
   </div>
 
   <div class="d-flex align-items-end">
-    <b class="mt-3 mb-0">Your New Encounter(s):</b>
+    <b style="color:white" class="mt-3 mb-0">Your New Encounter(s):</b>
     <a class="ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#what-counts-as-an-encounter-that-should-be-logged" target="blank">
       <md-icon class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" ></md-icon>
     </a>
@@ -54,9 +54,9 @@
       <!-- <autocomplete v-if="minUsers.length > 0" label="Encounters:" v-bind:items="minUsers" v-bind:split="splitChar" :frequentEncounters="frequentEncounters" placeholder="Search by email or name" @sendBack="getAutoFillUser"></autocomplete> -->
 
       <md-autocomplete v-model="selectedEmployee" :md-options="minUsers" :md-fuzzy-search="true" :md-open-on-focus="false" @md-selected="nameSelected()">
-        <label>Search by email or name</label>
+        <label style="color:white">Search by email or name</label>
 
-        <template slot="md-autocomplete-item" slot-scope="{ item, term }">
+        <template style="color:white" slot="md-autocomplete-item" slot-scope="{ item, term }">
           <md-highlight-text :md-term="term">{{ item }}</md-highlight-text>
         </template>
 
@@ -79,7 +79,7 @@
     </div>
 
   </div>
-  <small>NOTE: You will only be able to search for employees who have opted into the app.</small>
+  <small style="color:white">NOTE: You will only be able to search for employees who have opted into the app.</small>
 
 
 
@@ -87,7 +87,7 @@
     <input v-if="encountered.length > 1" class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1">
     <input v-else class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1" disabled>
     <div class="d-flex align-items-end">
-      <label class="form-check-label d-flex" for="defaultCheck1">
+      <label style="color:white" class="form-check-label d-flex" for="defaultCheck1">
         Group
       </label>
       <a class="mb-0 ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#when-should-i-use-the-group-checkbox" target="blank">
@@ -99,20 +99,20 @@
   <qrcode-stream v-if="camera!=='off'" @decode="onDecode" :camera="camera"></qrcode-stream>
 
   <div class="row mt-3">
-    <legend class="col-form-label col-sm-1 pt-0">Date:</legend>
+    <legend style="color:white" class="col-form-label col-sm-1 pt-0">Date:</legend>
     <div class="col-sm-11">
       <div class="form-check">
         <input class="form-check-input" type="radio" name="gridRadios" id="today" value="option1" @click="todaySelected=true;" checked>
-        <label class="form-check-label" for="gridRadios1">
+        <label style="color:white" class="form-check-label" for="gridRadios1">
           Today
         </label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="gridRadios" id="customDate" value="option2" @click="todaySelected=false;showDatePicker=true">
-        <label class="form-check-label" for="gridRadios2">
+        <label style="color:white"  class="form-check-label" for="gridRadios2">
           Pick a Date
         </label>
-        <md-datepicker v-if="showDatePicker" v-model="date" :md-disabled-dates="checkFuture">
+        <md-datepicker style="color:white" v-if="showDatePicker" v-model="date" :md-disabled-dates="checkFuture">
           <label>Select date</label>
         </md-datepicker>
       </div>

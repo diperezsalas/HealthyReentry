@@ -2,7 +2,7 @@
     <div class="container container-task">
         <div class="row">
             <div class="col-md-6">
-                <h2>Offices</h2>
+                <h2 style="color:white">Offices</h2>
                 <table class="table text-center" ><!--We create a table that needs all the Offices-->
                         <thead>
                             <tr>
@@ -32,10 +32,10 @@
                     <label hidden = true >ID</label>
                     <input hidden = true v-model="id" type="text" class="form-control">
 
-                    <label>Name</label>
+                    <label style="color:white">Name</label>
                     <input v-model="name" type="text" class="form-control">
-
-                    <label>Address</label>
+                    <br>
+                    <label style="color:white">Address</label>
                     <input v-model="address" type="text" class="form-control">
                 </div>
                 <div class="container-buttons">
