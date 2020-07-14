@@ -243,8 +243,15 @@ export default {
   }),
   methods: {
     showModal(){
-      if(!this.checkedSymptoms.length == 0 || this.selectedStatus == 0){
-        this.showDialog=true;  
+      if(this.latestStatus.status == 0){
+        if(!this.checkedSymptoms.length == 0 || this.selectedStatus == 0){
+          this.showDialog = true;  }
+      }else if(this.latestStatus.status == 1){
+           console.log(this.latestStatus.status)
+           this.showDialog=false; 
+      }else if(this.latestStatus.status==2){
+          console.log(this.latestStatus.status)
+          this.showDialog=false; 
       }
     },
     selectStatus(status){
