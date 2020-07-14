@@ -1,6 +1,8 @@
 Test
 <template>
 <div>
+    <div style="height: 80px"></div>
+
   <h4>Report Your Health Status</h4>
   <div v-if="latestStatus">
     <div class="text-white text-center mt-3">
@@ -14,7 +16,7 @@ Test
   <div class="mt-2 alert-info2">
     <div>
       <p class="mb-2">
-        Click on a color to see the definition, then select the appropriate color that matches your current status in regards to COVID-19. Click <b>Next</b>.
+        Click on a color to see the definition, then select the appropriate color that matches your current status in regards to COVID-19. Click <b>Submit</b>.
       </p>
     </div>
   </div>
@@ -81,43 +83,19 @@ Test
   </md-tabs>
   
   <!-- Button trigger modal -->
-  <md-list>
-    <md-list-item class="mx-auto">
-      <div class="turner-button" @click="showModal()" :disabled="disableSubmit" id="nextBtn">
-        Next
+
+    <md-dialog-actions class="mx-4 my-2">
+      
+      <router-link :to="{ name: 'menu' }">
+          <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Back</div>  
+      </router-link>
+        <div class="turner-button" @click="showModal()" :disabled="disableSubmit" id="nextBtn">
+        Submit
       </div>
-    </md-list-item>
-  </md-list>
+   </md-dialog-actions>
+
 
    <li hidden=true><span>Checked Symptoms: {{ checkedSymptoms}}</span></li>
-
-  <!-- <button v-if="disableSubmit===false" type="button" class="btn btn-primary btn-lg btn-block text-white" data-toggle="modal" data-target="#exampleModalLong">
-    Next
-  </button> -->
-  <!-- <div v-else class="btn btn-lg btn-block text-white" style="backgroundColor:#b8b8b8">
-    <md-tooltip md-direction="top" class="bg-danger">Cannot select this color; contact Lizette Agostini.</md-tooltip>
-    Next (disabled)
-  </div> -->
-
-  <!-- <div class="text-center mt-0 mb-5pr-2 btn btn-lg btn-block">
-    <router-link :to="{ name: 'menu' }">Back</router-link>
-  </div> -->
-  <section class="buttons-sections" style="margin-top: 30px;">
-    <div class="center">
-      <div v-if="user" class="control-button">
-        <div style="position:relative;">
-          <router-link class="mx-auto" :to="{ name: 'menu'}">
-            <div class="text-white menu-link">
-              <i class="menu-icon fa fa-tachometer-alt"></i> 
-              <div>Back to Dashboard</div>
-              <i class="arrow fas fa-arrow-right"></i>
-            </div>
-          </router-link>
-            <div class="color-hover"></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
 
   <!-- Modal -->
@@ -396,10 +374,13 @@ label {
       display: flex;
       justify-content: space-between;
   }
-  .alert-info2 {
-    color: white;
-    text-align: center;
-    padding: 40px 10px 10px;
-    font-family: endurance-light;
+.turner-button {
+    margin: 0;
+}
+.md-dialog-actions {
+  margin: 0 !important;
+  background: white;
+  padding: 30px;
+  border-radius: 0 0 20px 20px;
 }
 </style>

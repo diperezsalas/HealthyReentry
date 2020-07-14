@@ -9,7 +9,7 @@
    
       <div class="d-flex align-items-center" style="margin-left:auto;margin-right:4px;">
         
-        <div class="display-name">
+        <div v-if="$auth.userDB" class="display-name">
           {{$auth.userDB.name}}
         </div>
 

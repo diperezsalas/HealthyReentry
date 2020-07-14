@@ -4,12 +4,15 @@
   <div v-if="showAlert" class="alert alert-success" role="alert">
     You have sucessfully changed your office to {{user.location}}
   </div>
-  <div v-if="latestStatus">
-    <div class="text-white text-center mt-5">
-        <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
-        <div> 
-          <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
-        </div>
+  <div style="height: 80px"></div>
+  <div style="height: 42px;" >
+    <div v-if="latestStatus">
+      <div  class="text-white text-center">
+          <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
+          <div> 
+            <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
+          </div>
+      </div>
     </div>
   
   </div>
@@ -83,7 +86,6 @@
          <router-link :to="{ name: 'officeadmin' }">
              <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Add Office</div>  
          </router-link>
-               <md-divider> dd</md-divider>
            <div class="turner-button" style="margin:initial" @click="assignOffice()">
                Submit
           </div>
@@ -178,6 +180,10 @@ export default {
 .md-button {
   height: 7vh;
   /* background-color: #72DDF7; */
+}
+
+#body-section {
+  margin-top: 0;
 }
 
 </style>

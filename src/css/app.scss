@@ -46,9 +46,46 @@
     
     body {
         font-family: endurance-regular;
-        max-width: 1200px;
         margin: 0 auto;
         background: none;
+        .container-box {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .alert-info2 {
+            color: white;
+            text-align: center;
+            padding: 40px 10px 10px;
+            font-family: endurance-light;
+        }
+        .alert-info3 {
+            background: #edf5ff;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            font-family: endurance-bold;
+            font-size: 12px;
+            color: $primary-color;
+            position: relative;
+            p {
+                margin-bottom: 20px !important;
+            }
+            &:after {
+                clear: both;
+                right: 50%;
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -20px;
+                width: 0;
+                height: 0;
+                border-top: solid 20px #edf5ff;
+                border-left: solid 20px transparent;
+                border-right: solid 20px transparent;
+            }
+        }
         .md-title {
             color: $primary-color-dark;
             font-size: 16px;
@@ -69,7 +106,6 @@
             position: fixed;
             top: 0;
             z-index: 10;
-            max-width: 1168px;
         }
         #selectedOffice {
             border: none;
@@ -87,9 +123,10 @@
             align-items: center;
         }
         #body-section {
-            min-height: 70vh;
-            margin-top: 80px;
+            min-height: 80vh;
             position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         .md-list-item-content.md-ripple:hover {
             background: none !important;
@@ -178,7 +215,6 @@
         }
         .buttons-sections {
             margin-top: 80px;
-            margin-top: 80px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -252,7 +288,7 @@
         h5 {
             font-size: 17px;
             padding: 10px;
-            border-left: 7px solid $button1;
+            font-family: endurance-bold;
         }
         .md-active {
             border-width: 0;
@@ -284,7 +320,32 @@
         .md-tabs-navigation {
             border-radius: 20px 20px 0 0;
         }
-        .md-list.md-theme-default {
-            border-radius: 0 0 20px 20px;
+        .md-datepicker-day-button.md-datepicker-selected {
+            color: black !important;
+            box-shadow: 0 0 0 2px $bright-blue;
+            background: none !important;
+        }
+        .md-datepicker-header {
+            background: $primary-color-dark !important;
+        }
+        .badge-info {
+            background-color: $primary-color-dark;
+        }
+    }
+    
+    @media (min-width: 450px) {
+        .logo-nav {
+            img {
+                max-width: 100px !important;
+            }
+            .logo-text {
+                font-size: 15px !important;
+            }
+        }
+        .md-toolbar.md-theme-default.md-primary {
+            height: 70px;
+        }
+        .display-name {
+            font-size: 15px !important;
         }
     }
