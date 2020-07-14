@@ -1,7 +1,7 @@
 <template>
 <div class="page-container" id="app">
-  <section id="body-section">
   <Navbar v-if="$route.name != 'home'" />
+  <section id="body-section">
   <!-- <hr /> -->
   <!-- <md-content class="mx-3" style="max-width:600px"> -->
   <md-content class="mx-auto" style="padding-bottom:20px;background: transparent">
