@@ -137,7 +137,7 @@
                 <button class="btn btn-secondary-outline dropdown-toggle" type="button" id="locDDMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {{ selectedUsers[0].office_admin }}
                 </button>
-                <div class="dropdown-menu overflow-auto mx-0" style="height:400px" aria-labelledby="locDDMenuButton">
+                <div class="dropdown-menu overflow-auto mx-0" style="" aria-labelledby="locDDMenuButton">
                   <p class="dropdown-item" v-for="ofc in ofc_admin" :key="ofc.id" @click="selectedUsers[0].office_admin =ofc">
                     {{ ofc }}
                   </p>
@@ -152,7 +152,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData()">Close</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateData">Update</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateOfficeAdmin">Update</button>
           </div>
         </div>
       </div>
@@ -728,6 +728,12 @@ export default {
       this.officesList.sort((a, b) => a.LocationName < b.LocationName ? -1 : 1);
       this.updateUsersInView();
       this.isLoading = false;
+
+    },
+    async sendUpdateOfficeAdmin(){
+      this.userUpdateData.selectedUserIds = this.selectedUsers
+                                                .map(u => { return { userId: u.id }});
+                                                console.log(this.selectedUsers);
 
     },
     async sendUpdateData() {

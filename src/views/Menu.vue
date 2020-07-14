@@ -52,7 +52,7 @@
 
   
   <!-- Modal -->
-  <md-dialog :md-close-on-esc="true" :md-click-outside-to-close="true" :md-active.sync="showDialog" :md-fullscreen="false">
+  <md-dialog :md-close-on-esc="false" :md-click-outside-to-close="false" :md-active.sync="showDialog" :md-fullscreen="false">
     <md-dialog-title>Welcome {{user.name}}</md-dialog-title>
     <md-subheader class="mx-2 mb-0">
       You are not assigned to any office. Please select your office location and press submit.

@@ -1,7 +1,7 @@
 <template >
 <div>
   <!-- <appAlerts v-bind:alerts="alerts"/> -->
-  <h4 class="text-muted">Record a TT Encounter</h4>
+  <h4 class="text-muted">Record an Encounter</h4>
   <!-- <hr class="my-2" /> -->
   <div class="card mt-2">
     <div class="card-body bg-info p-2 text-white">
