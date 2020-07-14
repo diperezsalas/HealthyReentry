@@ -127,7 +127,7 @@
       <md-dialog-actions class="mx-4 my-2">
          
          <router-link :to="{ name: 'menu' }">
-             <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Back</div>  
+             <div class="back"> Back</div>  
          </router-link>
            <div v-if="disableSubmitUser" class="turner-button" style="margin:initial">
                Next
@@ -210,7 +210,11 @@ export default {
     // appAlerts
   },
   created() {
-     if (this.$auth.userDB) this.user = this.$auth.userDB;
+        setTimeout(()=>{
+
+     this.user = this.$auth.userDB;
+             }, 1000);
+
   },
   beforeMount() {
     this.$api.get("/api/user/get-all").then(all => {
@@ -252,18 +256,17 @@ export default {
     // console.log("scale", Math.trunc((screen.height-30)/ 29));
     // const largeScreenScale = 10;
     // const viewScale = Math.trunc((screen.width-30)/ 29) > largeScreenScale? largeScreenScale : Math.trunc((screen.width-30)/ 29);
-console.log(this.user);
-if (typeof this.user.email !== 'undefined') {
-    QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
-      if (error) console.error(error)
-      console.log('success!');
-    })
-}
+        setTimeout(()=>{
+          QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
+            if (error) console.error(error)
+          })
+        }, 1001);
   },
   data() {
     return {
       userAdded: false,
       dupUser: false,
+      user: [],
       scanSucceed: false,
       notificationDuration: 4000,
       showEncounterMsg: false,
@@ -292,6 +295,7 @@ if (typeof this.user.email !== 'undefined') {
     // selectedEmployee() {
     //
     //   if (this.selectedEmployee) {
+
     //     var u = this.userDictionary[this.selectedEmployee];
     //     if (!u) return;
     //     if (this.encountered.length === 0){
@@ -323,9 +327,7 @@ if (typeof this.user.email !== 'undefined') {
       }
     }
   },
-  computed: Vuex.mapState({
-    user: state => state.user,
-  }),
+
   methods: {
     nameSelected() {
       if (this.selectedEmployee) {

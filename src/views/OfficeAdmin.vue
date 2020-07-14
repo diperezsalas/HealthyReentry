@@ -1,5 +1,6 @@
 <template>
     <div class="container container-task">
+        <div style="height: 80px"></div>
         <div class="row">
             <div class="col-md-6">
                 <h2 style="color:white">Offices</h2>

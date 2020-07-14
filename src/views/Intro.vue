@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div style="height: 80px"></div>
     <div class="row home-intro">
       <div class="col">
         <div>
