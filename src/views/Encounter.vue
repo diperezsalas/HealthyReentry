@@ -1,32 +1,35 @@
 <template >
 <div>
+    <div style="height: 80px"></div>
+
   <!-- <appAlerts v-bind:alerts="alerts"/> -->
-  <h4 class="text-muted">Record an Encounter</h4>
+  <h4 >Record Encounter</h4>
   <!-- <hr class="my-2" /> -->
-  <div class="card mt-2">
-    <div class="card-body bg-info p-2 text-white">
-      <p class="mb-2">
+  <section class="container-box">
+  <div class="mt-2 alert-info3">
+      <p class="mb-0">
         Search for colleagues by typing their name(s) or scanning their QR code.
       </p>
-      <div class="d-flex mb-2 mx-0 align-items-center">
         <p class="mb-0">
           Log ALL encounters with colleagues where there is a breach of our current protocol.
         </p>
-        <a class="ml-1" href="https://spark.thorntontomasetti.com/docs/DOC-17243" target="blank">
-          <md-icon  class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" style="color:white"></md-icon>
-        </a>
-      </div>
-      <p class="mb-0">
+        
+      <p class="mb-0" style="margin-bottom: 0px !important;">
         For a group encounter, check the <i>Group</i> box (only one person needs to submit to account for everyone in the group).
       </p>
+  </div>
+
+  <h5 v-if="encountersToday && encountersToday.length > 0" class="mb-1 mt-5">Today's Recorded Encounter(s):</h5>
+  <div v-if="encountersToday  && encountersToday.length > 0" class="row mx-0 mb-2">
+    <div v-for="encounter in encountersToday" :key="encounter.id">
+      <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
     </div>
   </div>
 
-  <p v-if="encountersToday && encountersToday.length > 0" class="mb-1 mt-3">Today's Recorded Encounter(s):</p>
-  <div v-if="encountersToday  && encountersToday.length > 0" class="row mx-0 mb-2">
-    <div v-for="encounter in encountersToday">
-      <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
-    </div>
+  <div class="mt-2 alert-info2">
+      <p class="mb-0">
+        Show your QR Code to an employer
+      </p>
   </div>
 
   <div class="d-flex">
@@ -34,14 +37,14 @@
   </div>
 
   <div class="d-flex align-items-end">
-    <b style="color:white" class="mt-3 mb-0">Your New Encounter(s):</b>
+    <h5 class="mt-5 mb-0">Your New Encounter(s):</h5>
     <a class="ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#what-counts-as-an-encounter-that-should-be-logged" target="blank">
-      <md-icon class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" ></md-icon>
+      <md-icon style="top: -9px; position: relative;" md-src="/imgs/warning.svg"></md-icon>
     </a>
   </div>
 
   <div v-if="encountered" class="row mx-0 mt-2">
-    <div v-for="encounter in encountered">
+    <div v-for="encounter in encountered" :key="encounter.id">
       <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
       <button type="button" class="close text-center" aria-label="Close" v-on:click="removeUser(encounter)" data-toggle="modal" data-target="#deleteUserModal">
         <span class="text-center" aria-hidden="true">&times;</span>
@@ -50,11 +53,11 @@
   </div>
 
   <div class="mb-0 d-flex align-items-center">
-    <div class="mt-1 px-0 mr-2 col" style="min-width:18rem;">
+    <div class="mt-1 px-0 mr-2 col" style="min-width:14rem;">
       <!-- <autocomplete v-if="minUsers.length > 0" label="Encounters:" v-bind:items="minUsers" v-bind:split="splitChar" :frequentEncounters="frequentEncounters" placeholder="Search by email or name" @sendBack="getAutoFillUser"></autocomplete> -->
 
       <md-autocomplete v-model="selectedEmployee" :md-options="minUsers" :md-fuzzy-search="true" :md-open-on-focus="false" @md-selected="nameSelected()">
-        <label style="color:white">Search by email or name</label>
+        <label>Search by email or name</label>
 
         <template style="color:white" slot="md-autocomplete-item" slot-scope="{ item, term }">
           <md-highlight-text :md-term="term">{{ item }}</md-highlight-text>
@@ -79,7 +82,7 @@
     </div>
 
   </div>
-  <small style="color:white">NOTE: You will only be able to search for employees who have opted into the app.</small>
+  <small>NOTE: You will only be able to search for employees who have opted into the app.</small>
 
 
 
@@ -87,32 +90,32 @@
     <input v-if="encountered.length > 1" class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1">
     <input v-else class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1" disabled>
     <div class="d-flex align-items-end">
-      <label style="color:white" class="form-check-label d-flex" for="defaultCheck1">
+      <label class="form-check-label d-flex" for="defaultCheck1">
         Group
       </label>
       <a class="mb-0 ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#when-should-i-use-the-group-checkbox" target="blank">
-        <md-icon class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" ></md-icon>
+        <md-icon class="md-size-1x m-0" md-src="/imgs/warning.svg" ></md-icon>
       </a>
     </div>
 
   </div>
   <qrcode-stream v-if="camera!=='off'" @decode="onDecode" :camera="camera"></qrcode-stream>
 
-  <div class="row mt-3">
-    <legend style="color:white" class="col-form-label col-sm-1 pt-0">Date:</legend>
+  <div class="row mt-5">
+    <legend style="font-family: endurance-bold;" class="col-form-label col-sm-1 pt-0">Date:</legend>
     <div class="col-sm-11">
       <div class="form-check">
         <input class="form-check-input" type="radio" name="gridRadios" id="today" value="option1" @click="todaySelected=true;" checked>
-        <label style="color:white" class="form-check-label" for="gridRadios1">
+        <label class="form-check-label" for="today">
           Today
         </label>
       </div>
       <div class="form-check">
         <input class="form-check-input" type="radio" name="gridRadios" id="customDate" value="option2" @click="todaySelected=false;showDatePicker=true">
-        <label style="color:white"  class="form-check-label" for="gridRadios2">
+        <label  class="form-check-label" for="customDate">
           Pick a Date
         </label>
-        <md-datepicker style="color:white" v-if="showDatePicker" v-model="date" :md-disabled-dates="checkFuture">
+        <md-datepicker v-if="showDatePicker" v-model="date" :md-disabled-dates="checkFuture">
           <label>Select date</label>
         </md-datepicker>
       </div>
@@ -120,24 +123,20 @@
   </div>
 
   <br>
-  <md-list>
-    <md-list-item class="mx-auto">
-      <md-tooltip md-direction="top" v-if="disableSubmitUser">Please select at least one encounter.</md-tooltip>
-      <!-- <md-button class="md-primary md-raised" @click="showDialog=!showDialog" :disabled="disableSubmitUser" id="nextBtn" style="width:240px">
-        <h6 class="mb-0">Next</h6>
-      </md-button> -->
-      <button type="button" class="btn btn-lg btn-block text-white md-accent" @click="showDialog=!showDialog" :disabled="disableSubmitUser" id="nextBtn" style="width:240px">
-        Next
-      </button>
-    </md-list-item>
 
-    <md-list-item class="mx-auto">
-      <md-button class="mx-auto">
-        <router-link :to="{ name: 'menu' }"> <p class="text-muted mb-0">Back</p> </router-link>
-      </md-button>
-    </md-list-item>
-  </md-list>
-
+      <md-dialog-actions class="mx-4 my-2">
+         
+         <router-link :to="{ name: 'menu' }">
+             <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Back</div>  
+         </router-link>
+           <div v-if="disableSubmitUser" class="turner-button" style="margin:initial">
+               Next
+          </div>
+           <div v-else class="turner-button" style="margin:initial" @click="showDialog=!showDialog">
+               Next
+          </div>
+        </md-dialog-actions>
+</section>
 
   <!-- Modal -->
   <md-dialog :md-active.sync="showDialog" :md-fullscreen="false">
@@ -154,7 +153,7 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Name(s):</b>
               <div v-if="encountered.length>0">
-                <div v-for="encounter in encountered">
+                <div v-for="encounter in encountered" :key="encounter.id">
                   <span class="mx-1">{{encounter.name}}</span>
                 </div>
               </div>
@@ -201,8 +200,6 @@ import QRCode  from 'qrcode';
 import {
   QrcodeStream
 } from 'vue-qrcode-reader'
-
-
 export default {
   name: "encounter",
   components: {
@@ -214,8 +211,6 @@ export default {
   },
   beforeMount() {
     this.$api.get("/api/user/get-all").then(all => {
-
-
       const arrayToObject = (array) =>
         array.reduce((obj, item) => {
           // obj[item.name + "_" + item.email] = item
@@ -223,24 +218,19 @@ export default {
           obj[item.name] = item
           return obj
         }, {})
-
       const dictionary = arrayToObject(all.data);
       Vue.set(this, "userDictionary", dictionary);
       Vue.set(this, "minUsers", Object.keys(dictionary));
     });
-
     this.$api.get("/api/encounters/find-frequent-encounters").then(mostEncountered => {
       const userToday = mostEncountered.data.filter(u=>u.encounteredToday===true);
       this.encountersToday = userToday;
       // Vue.set(this, "frequentEncounters", mostEncountered.data.map(item=>item.name + "_" + item.email));
       Vue.set(this, "encountersToday", mostEncountered.data.filter(u=>u.encounteredToday===true));
-
       if (this.$route.params.scannedUser) {
         this.searchUserByEmail(this.$route.params.scannedUser);
       }
     });
-
-
   },
   mounted() {
     const buttonWidth = screen.width*0.6 > 280? screen.width*0.7 : 280;
@@ -252,11 +242,13 @@ export default {
     // console.log("scale", Math.trunc((screen.height-30)/ 29));
     // const largeScreenScale = 10;
     // const viewScale = Math.trunc((screen.width-30)/ 29) > largeScreenScale? largeScreenScale : Math.trunc((screen.width-30)/ 29);
-
+console.log(this.user);
+if (typeof this.user.email !== 'undefined') {
     QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
       if (error) console.error(error)
       console.log('success!');
     })
+}
   },
   data() {
     return {
@@ -314,7 +306,7 @@ export default {
       this.disableSubmitUser = true;
       if (this.encountered.length > 0) {
         // this.$emit("getNotification", [{
-        //   message: "Please selector at least one employee as your encounter.",
+        //   message: "Please selector at least one TT employee as your encounter.",
         //   type: "warning"
         // }]);
         this.disableSubmitUser = false;
@@ -343,7 +335,6 @@ export default {
         }
         // this.selectedEmployee = null;
       }
-
     },
     checkFuture(date) {
       return new Date() <= date;
@@ -375,7 +366,6 @@ export default {
         }
         this.$api.post("/api/user/user-by-email", body).then(res => {
           const encountered = this.encountered.map(en=>en._id);
-
           if (res.data && res.data._id) {
             if (res.data.email.toLowerCase() === this.user.email.toLowerCase()) {
               this.selfScan = true;
@@ -392,11 +382,9 @@ export default {
             else {
               this.encountered.push(res.data);//adding scanned user to encounter
               this.scanSucceed = true;
-
               this.camera = 'off';
             }
           }
-
         });
       }
     },
@@ -435,7 +423,6 @@ export default {
       );
     },
     saveEncounters() {
-
       var body = {
         encounters: this.encountered,
         date: this.date,
@@ -472,9 +459,18 @@ export default {
   padding-top: 0px;
   padding-bottom: 0px;
 } */
+#canvas{
+    height: initial !important;
+    width: 80% !important;
+    max-width: 400px ;
+}
 .md-dialog /deep/ .md-dialog-container {
   transform: none;
 }
-
-
+.alert-info2{
+  color: black;
+}
+.container-box {
+  color: black
+}
 </style>
