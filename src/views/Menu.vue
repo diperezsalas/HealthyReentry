@@ -11,6 +11,7 @@
           <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
           <div> 
             <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
+
           </div>
       </div>
     </div>

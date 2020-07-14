@@ -16,8 +16,13 @@
             <div class="px-4">
               <b>Status to set: </b>
               <p>
-                <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].css_key "></i>
+                <strong v-if="userUpdateData.statusCodeToSet === 0" style="color:#00C851; font-size: 20px;">&#9899;</strong>
+               <strong v-else-if="userUpdateData.statusCodeToSet === 1" style="color:#FF9800; font-size: 20px;">&#x2688;</strong>
+               <strong v-else-if="userUpdateData.statusCodeToSet === 2" style="color:#DC3545; font-size: 20px;">&#x2688;</strong>
+
                 {{ enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].label }}
+         
+           
               </p>
             </div>
             <b class="px-4">Persons selected: </b>
