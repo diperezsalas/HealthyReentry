@@ -90,7 +90,7 @@ Test
       <router-link :to="{ name: 'menu' }">
           <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Back</div>  
       </router-link>
-        <div class="turner-button" @click="showModal()" :disabled="disableSubmit" id="nextBtn">
+        <div class="turner-button" @click="showModal()" id="nextBtn">
         Submit
       </div>
    </md-dialog-actions>
@@ -208,7 +208,6 @@ export default {
         status: null
       },
       enableBlue: false,
-      disableSubmit: false,
       status: ["No Signs or Symptoms",
         " Possible Exposure",
         "Positive Diagnosis"
@@ -222,21 +221,6 @@ export default {
     };
   },
   watch: {
-    selectedStatus() {
-      this.disableSubmit = false;
-      if (typeof this.selectedStatus === "number") {
-
-        if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
-        else { //selected green, orange, and red
-          if (this.latestStatus.status === 0) this.disableSubmit = false;
-          else if (this.latestStatus.status === 1) { //cur status is orange
-            if (this.selectedStatus === 1 || this.selectedStatus === 2) this.disableSubmit = false
-          } else if (this.latestStatus.status === 2) { //cur status is red
-            if (this.selectedStatus === 2) this.disableSubmit = false
-          }
-        }
-      }
-    } 
   },
   computed: Vuex.mapState({
     user: state => state.user,
@@ -276,19 +260,9 @@ export default {
         }
       }
 
-      if(this.checkedSymptoms.length === 0 && this.selectedStatus != 0){
-        this.disableSubmit = true;
-      } else {
-        this.disableSubmit = false;
-      }
     },
     check(e) {
 
-      if(this.checkedSymptoms.length === 0){
-        this.disableSubmit = true;
-      } else {
-        this.disableSubmit = false;
-      }
 
           this.symps= [false,false,false,false,false,false];
           
@@ -317,7 +291,6 @@ export default {
     
      if(this.checkedSymptoms.length==0){
       this.selectedStatus = 0;
-      this.disableSubmit = false;
       this.activeTab = tabIds[0]; 
     } 
 
