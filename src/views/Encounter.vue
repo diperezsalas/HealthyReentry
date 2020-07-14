@@ -200,9 +200,6 @@ import QRCode  from 'qrcode';
 import {
   QrcodeStream
 } from 'vue-qrcode-reader'
-
-
-
 export default {
   name: "encounter",
   components: {
@@ -218,8 +215,6 @@ export default {
   },
   beforeMount() {
     this.$api.get("/api/user/get-all").then(all => {
-
-
       const arrayToObject = (array) =>
         array.reduce((obj, item) => {
           // obj[item.name + "_" + item.email] = item
@@ -227,24 +222,19 @@ export default {
           obj[item.name] = item
           return obj
         }, {})
-
       const dictionary = arrayToObject(all.data);
       Vue.set(this, "userDictionary", dictionary);
       Vue.set(this, "minUsers", Object.keys(dictionary));
     });
-
     this.$api.get("/api/encounters/find-frequent-encounters").then(mostEncountered => {
       const userToday = mostEncountered.data.filter(u=>u.encounteredToday===true);
       this.encountersToday = userToday;
       // Vue.set(this, "frequentEncounters", mostEncountered.data.map(item=>item.name + "_" + item.email));
       Vue.set(this, "encountersToday", mostEncountered.data.filter(u=>u.encounteredToday===true));
-
       if (this.$route.params.scannedUser) {
         this.searchUserByEmail(this.$route.params.scannedUser);
       }
     });
-
-
   },
   mounted() {
     const buttonWidth = screen.width*0.6 > 280? screen.width*0.7 : 280;
@@ -347,7 +337,6 @@ export default {
         }
         // this.selectedEmployee = null;
       }
-
     },
     checkFuture(date) {
       return new Date() <= date;
@@ -379,7 +368,6 @@ export default {
         }
         this.$api.post("/api/user/user-by-email", body).then(res => {
           const encountered = this.encountered.map(en=>en._id);
-
           if (res.data && res.data._id) {
             if (res.data.email.toLowerCase() === this.user.email.toLowerCase()) {
               this.selfScan = true;
@@ -396,11 +384,9 @@ export default {
             else {
               this.encountered.push(res.data);//adding scanned user to encounter
               this.scanSucceed = true;
-
               this.camera = 'off';
             }
           }
-
         });
       }
     },
@@ -439,7 +425,6 @@ export default {
       );
     },
     saveEncounters() {
-
       var body = {
         encounters: this.encountered,
         date: this.date,
@@ -476,7 +461,6 @@ export default {
   padding-top: 0px;
   padding-bottom: 0px;
 } */
-
 #canvas{
     height: initial !important;
     width: 80% !important;
@@ -485,12 +469,10 @@ export default {
 .md-dialog /deep/ .md-dialog-container {
   transform: none;
 }
-
 .alert-info2{
   color: black;
 }
 .container-box {
   color: black
 }
-
 </style>

@@ -118,7 +118,7 @@
 
 
       <!-- Update User Office Admin -->
-    <div class="modal fade" id="updateUserOfficeAdminnModal" tabindex="-1" role="dialog" aria-labelledby="updateUserLocationLabel" aria-hidden="true">
+    <div class="modal fade" id="updateUserOfficeAdminModal" tabindex="-1" role="dialog" aria-labelledby="updateUserLocationLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -138,7 +138,7 @@
                 <button class="btn btn-secondary-outline dropdown-toggle" type="button" id="locDDMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {{ selectedUsers[0].office_admin }}
                 </button>
-                <div class="dropdown-menu overflow-auto mx-0" style="height:400px" aria-labelledby="locDDMenuButton">
+                <div class="dropdown-menu overflow-auto mx-0" style="" aria-labelledby="locDDMenuButton">
                   <p class="dropdown-item" v-for="ofc in ofc_admin" :key="ofc.id" @click="selectedUsers[0].office_admin =ofc">
                     {{ ofc }}
                   </p>
@@ -152,8 +152,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData()">Close</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateData">Update</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData() ">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateOfficeAdmin(selectedUsers[0])">Update</button>
           </div>
         </div>
       </div>
@@ -450,10 +450,10 @@
             <td   v-if="$auth.userDB.permissions.admin" style="width: 5%; cursor: pointer;" class="text-center" >
               <div
                 data-toggle="modal"
-                data-target="#updateUserOfficeAdminnModal"
-                @click="updInviewUserSelectedState(false); clearUpdateData(); user.selected = true; user.office_admin = !user.office_admin"
+                data-target="#updateUserOfficeAdminModal"
+                @click="updInviewUserSelectedState(false); clearUpdateData(); user.selected = true; "
                 class="text-secondary">
-                 {{ (user.office_admin) ? '&#9745;' : '&#9744;' }}
+                 {{   (user.office_admin) ? '&#9745;' : '&#9744;' }}
               </div>
               
              
@@ -729,6 +729,25 @@ export default {
       this.officesList.sort((a, b) => a.LocationName < b.LocationName ? -1 : 1);
       this.updateUsersInView();
       this.isLoading = false;
+
+    },
+    async sendUpdateOfficeAdmin(me){
+
+       const body = {
+                        id: me.id, 
+                        name: me.name,
+                        email: me.email,
+                        permissions:me.office_admin
+                        }
+                      
+        this.isLoading = true;
+         let res = await this.$api.post("/api/admin/update-office-admin", body);
+        // this.clearUpdateData();
+        // this.updInviewUserSelectedState(false);
+         this.refreshData();
+          this.updateUsersInView();
+         this.isLoading = false;                                      
+
 
     },
     async sendUpdateData() {

@@ -45,7 +45,7 @@
             <i class="arrow fas fa-arrow-right"></i>
           </div>
           <!-- <md-button class="md-raised md-accent menu-button" style="margin-top: 16px;">
-            <h6 class="mb-0 text-white">Record a TT Encounter</h6>
+            <h6 class="mb-0 text-white">Record an Encounter</h6>
           </md-button> -->
         </router-link>
       </div>
@@ -55,7 +55,7 @@
 
   
   <!-- Modal -->
-  <md-dialog :md-close-on-esc="true" :md-click-outside-to-close="true" :md-active.sync="showDialog" :md-fullscreen="false">
+  <md-dialog :md-close-on-esc="false" :md-click-outside-to-close="false" :md-active.sync="showDialog" :md-fullscreen="false">
     <md-dialog-title>Welcome {{user.name}}</md-dialog-title>
     <md-subheader class="mx-2 mb-0">
       You are not assigned to any office. Please select your office location and press submit.
