@@ -42,7 +42,7 @@
             <i class="arrow fas fa-arrow-right"></i>
           </div>
           <!-- <md-button class="md-raised md-accent menu-button" style="margin-top: 16px;">
-            <h6 class="mb-0 text-white">Record a TT Encounter</h6>
+            <h6 class="mb-0 text-white">Record an Encounter</h6>
           </md-button> -->
         </router-link>
       </div>

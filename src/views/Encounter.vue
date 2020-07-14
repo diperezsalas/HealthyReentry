@@ -10,7 +10,7 @@
       </p>
       <div class="d-flex mb-2 mx-0 align-items-center">
         <p class="mb-0">
-          Log ALL encounters with TT colleagues where there is a breach of our current protocol.
+          Log ALL encounters with colleagues where there is a breach of our current protocol.
         </p>
         <a class="ml-1" href="https://spark.thorntontomasetti.com/docs/DOC-17243" target="blank">
           <md-icon  class="md-size-1x m-0" md-src="/imgs/info-circle-solid-small.svg" style="color:white"></md-icon>
@@ -314,7 +314,7 @@ export default {
       this.disableSubmitUser = true;
       if (this.encountered.length > 0) {
         // this.$emit("getNotification", [{
-        //   message: "Please selector at least one TT employee as your encounter.",
+        //   message: "Please selector at least one employee as your encounter.",
         //   type: "warning"
         // }]);
         this.disableSubmitUser = false;

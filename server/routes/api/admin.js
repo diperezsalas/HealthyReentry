@@ -153,8 +153,23 @@ router.post("/update-office", async function(req, res) {
 
 });
 
-router.post("/update-user", async function(req, res) {
 
+
+router.post("/delete-office", async function(req, res) {
+    console.log(req.body.body);
+
+
+    const myArray = await Offices.deleteOne({ "_id": req.body.id }, function(err, deleteStatus) {
+        if (err) throw err;
+        return res.send(deleteStatus);
+    });
+
+});
+
+
+
+router.post("/update-user", async function(req, res) {
+    
 
     const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { location: req.body.location } }, function(err, updateStatus) {
         if (err) throw err;
@@ -165,18 +180,20 @@ router.post("/update-user", async function(req, res) {
 
 });
 
-
-
-router.post("/delete-office", async function(req, res) {
-    console.log(req.body.id);
-
-
-    const myArray = await Offices.deleteOne({ "_id": req.body.id }, function(err, deleteStatus) {
+router.post("/update-office-admin", async function(req, res) {
+    //console.log(req.body.permissions);
+ 
+    const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { "permissions.office_admin": req.body.permissions } }, function(err, updateStatus) {
         if (err) throw err;
-        return res.send(deleteStatus);
+    
+
+        return res.send(updateStatus);
     });
 
+
 });
+
+
 
 
 
