@@ -159,7 +159,7 @@
       </div>
     </div>
 
-    <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
+    
 
     <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h4>
     <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
@@ -547,18 +547,32 @@ function fuzzyTime(date) {
 export default {
   beforeMount() {
     this.refreshData();
+    console.log(this.$auth.userDB.permissions.office_admin);
+     if(this.$auth.userDB.permissions.office_admin){
+            setTimeout(() => {
+          
+                this.$refs.refreshoffice.click();
+            }, 1000);
+    }
 
+  },
+  updated(){
+       if(this.$auth.userDB.permissions.office_admin){
+            setTimeout(() => {
+           
+                this.$refs.refreshoffice.click();
+            }, 1000);
+     }
   },
   created() {
     this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
        this.offices = returnedOffices.data;
     })
+
+    
   },
   mounted() {
-     setTimeout(() => {
-       // console.log(this);
-        this.$refs.refreshoffice.click();
-    }, 500);
+    
   },
   data() {
     return {
