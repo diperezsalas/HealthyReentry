@@ -16,9 +16,9 @@
             <div class="px-4">
               <b>Status to set: </b>
               <p>
-                <strong v-if="userUpdateData.statusCodeToSet === 0" style="color:#00C851; font-size: 20px;">&#9899;</strong>
-               <strong v-else-if="userUpdateData.statusCodeToSet === 1" style="color:#FF9800; font-size: 20px;">&#x2688;</strong>
-               <strong v-else-if="userUpdateData.statusCodeToSet === 2" style="color:#DC3545; font-size: 20px;">&#x2688;</strong>
+               <strong v-if="userUpdateData.statusCodeToSet === 0" style="color:#00C851; font-size: 27px;">&#x2688;</strong>
+               <strong v-else-if="userUpdateData.statusCodeToSet === 1" style="color:#FF9800; font-size: 27px;">&#x2688;</strong>
+               <strong v-else-if="userUpdateData.statusCodeToSet === 2" style="color:#DC3545; font-size:  27px;">&#x2688;</strong>
 
                 {{ enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].label }}
          
