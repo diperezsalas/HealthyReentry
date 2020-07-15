@@ -22,7 +22,7 @@ Test
     </div>
   </div>
   <md-tabs class="mt-3" md-alignment="fixed" :md-active-tab="activeTab" style="min-height: 270px">
-    <md-tab class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectStatus(0)" :selectedIndex="activeTab">
+    <md-tab :md-disabled="disableTabGreen" class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectStatus(0)" :selectedIndex="activeTab">
       <div class="container">
         <h4 style="color:black" class="mt-2">No Signs or Symptoms</h4>
           <div class="question-muted-row">Do you have a fever? <b class="green">NO</b></div>
@@ -36,7 +36,7 @@ Test
       </div>
 
     </md-tab>
-    <md-tab class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
+    <md-tab :md-disabled="disableTabOrange" class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
       <div class="container">
         <h4 style="color:black" class="mt-2">Possible Exposure</h4>
 
@@ -58,7 +58,7 @@ Test
       </div>
   
     </md-tab>
-    <md-tab id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
+    <md-tab :md-disabled="disableTabRed" id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
       <div class="container">
       <h4 style="color:black" class="mt-2">Positive Diagnosis</h4>
          <div class="question-row"><input type="checkbox"  class="symptoms" id="fever" value=0 v-model="checkedSymptoms"  @change="check($event)">
@@ -152,7 +152,15 @@ export default {
         this.symps[symp] = true;
         this.checkedSymptoms.push(symp);
       }
+      
+      if(this.latestStatus.status == 2) {
+        this.disableTabGreen = true;
+        this.disableTabOrange = true;
+      }
 
+      if(this.latestStatus.status == 1) {
+        this.disableTabGreen = true;
+      }
 
       if (curStatus) {
         this.latestStatus = curStatus;
@@ -162,13 +170,9 @@ export default {
           this.selectedStatus = curStatus.status;
            this.disableSubmit = true;
           if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
-
           if (this.latestStatus.status !== 3) { //hahs status and not blue
             if (this.latestStatus.status > 0) { //either orange or red
               this.iconPath[0] = "/imgs/lens-green-disabled2.svg"
-      
-             
-              
               this.disableSubmit = true;
               if (this.latestStatus.status === 2) this.iconPath[1] = "/imgs/lens-orange-disabled2.svg" //red
                  this.disableSubmit = true;
@@ -207,6 +211,9 @@ export default {
       notificationDuration: 4000,
       selectedStatus: null,
       symps: [false,false,false,false,false,false],
+      disableTabGreen: false,
+      disableTabOrange: false,
+      disableTabRed: false,
       latestStatus: {
         status: null
       },
@@ -222,8 +229,6 @@ export default {
         "/imgs/lens-red.svg"
       ]
     };
-  },
-  watch: {
   },
   computed: Vuex.mapState({
     user: state => state.user,
@@ -249,33 +254,10 @@ export default {
     },
     selectStatus(status){
       this.selectedStatus=status;
-      console.log(this.latestStatus.status);
-      console.log(this.selectedStatus);
-     
-     
-      if(this.latestStatus.status == 0){
-
-     
-      }else if(this.latestStatus.status == 1 && this.selectedStatus == 0){
-        this.$refs.submitBtn.style.display='none';    
-      }else if(this.latestStatus.status == 1 && this.selectedStatus == 1){  
-         this.$refs.submitBtn.style.display='inline';     
-          
-      }else if(this.latestStatus.status == 1 && this.selectedStatus == 2){  
-         this.$refs.submitBtn.style.display='inline';       
-      }else if(this.latestStatus.status==2 && this.selectedStatus == 0){  
-          this.$refs.submitBtn.style.display='none';  
-      }else if(this.latestStatus.status==2 && this.selectedStatus == 1){  
-          this.$refs.submitBtn.style.display='none';  
-      }else if(this.latestStatus.status==2 && this.selectedStatus == 2){  
-          this.$refs.submitBtn.style.display='inline';  
-      }
 
       if (this.selectedStatus == 0) {
         this.symps[4] = [false,false,false,false,false,false];
-        this.checkedSymptoms = [];
-     
-         
+        this.checkedSymptoms = [];         
       }
 
       if (this.selectedStatus == 1) {
