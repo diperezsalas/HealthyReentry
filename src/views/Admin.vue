@@ -348,9 +348,11 @@
 
       </div>
 
-      <md-progress-bar md-mode="indeterminate" v-if="isLoading"></md-progress-bar>
+    <div v-if="isLoading" style="background: white;width: 100%;">
+          <md-progress-bar md-mode="indeterminate" ></md-progress-bar>
+    </div>
 
-      <table class="table table-striped table-hover table-sm">
+      <table style="margin-top:20px;" class="table table-striped table-hover table-sm">
 
         <thead>
           <tr>
