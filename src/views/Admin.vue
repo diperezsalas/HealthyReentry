@@ -159,7 +159,7 @@
       </div>
     </div>
 
-    <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
+    
 
     <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h4>
     <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
@@ -378,7 +378,7 @@
                 :class="(sortBy === 'selected' ? '' : ' disabled')"
                 @click="sortUsers('selected', !sortAsc)"
               >
-                {{ (sortAsc) ? '&#11205;' : '&#11206;' }}
+                {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Select
             </th>
@@ -388,13 +388,13 @@
               Office Admin
             </th>
 
-            <th style="width: 5%" class="text-center">
+            <th style="width: 10%" class="text-center">
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'statusCode' ? '' : ' disabled')"
                 @click="sortUsers('statusCode', !sortAsc)"
               >
-                {{ (sortAsc) ? '&#11205;' : '&#11206;' }}
+                {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Status
             </th>
@@ -405,7 +405,7 @@
                 :class="(sortBy === 'name' ? '' : ' disabled')"
                 @click="sortUsers('name', !sortAsc)"
               >
-                {{ (sortAsc) ? '&#11205;' : '&#11206;' }}
+                {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Name
             </th>
@@ -415,7 +415,7 @@
                 :class="(sortBy === 'officeCode' ? '' : ' disabled')"
                 @click="sortUsers('officeCode', !sortAsc)"
               >
-                {{ (sortAsc) ? '&#11205;' : '&#11206;' }}
+                {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Office
             </th>
@@ -425,7 +425,7 @@
                 :class="(sortBy === 'lastUpdated' ? '' : ' disabled')"
                 @click="sortUsers('lastUpdated', !sortAsc)"
               >
-                {{ (sortAsc) ? '&#11205;' : '&#11206;' }}
+                {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Last Updated
             </th>
@@ -435,7 +435,7 @@
                 :class="(sortBy === 'dateOfConsent' ? '' : ' disabled')"
                 @click="sortUsers('dateOfConsent', !sortAsc)"
               >
-                {{ (sortAsc) ? '&#11205;' : '&#11206;' }}
+                {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Consent Date
             </th>
@@ -547,18 +547,32 @@ function fuzzyTime(date) {
 export default {
   beforeMount() {
     this.refreshData();
+    console.log(this.$auth.userDB.permissions.office_admin);
+     if(this.$auth.userDB.permissions.office_admin){
+            setTimeout(() => {
+          
+                this.$refs.refreshoffice.click();
+            }, 1000);
+    }
 
+  },
+  updated(){
+       if(this.$auth.userDB.permissions.office_admin){
+            setTimeout(() => {
+           
+                this.$refs.refreshoffice.click();
+            }, 1000);
+     }
   },
   created() {
     this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
        this.offices = returnedOffices.data;
     })
+
+    
   },
   mounted() {
-     setTimeout(() => {
-       // console.log(this);
-        this.$refs.refreshoffice.click();
-    }, 500);
+    
   },
   data() {
     return {

@@ -9,6 +9,7 @@ Test
         <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
         <div> 
           <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
+
         </div>
     </div>
   </div>
@@ -143,6 +144,7 @@ let tabIds = ["tab-green", "tab-orange", "tab-red", "tab-blue"]
 export default {
   created() {
     this.$api.get("/api/status/get-current").then(returnedStatus => {
+      this.latestStatus = returnedStatus.data;
       let curStatus = returnedStatus.data;
       let symptoms = returnedStatus.data.symptoms;
 
@@ -158,15 +160,17 @@ export default {
         if (curStatus.status !== null) {
           this.activeTab = tabIds[curStatus.status];
           this.selectedStatus = curStatus.status;
-          // this.disableSubmit = true;
-          //if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
+           this.disableSubmit = true;
+          if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
 
-          /* if (this.latestStatus.status !== 3) { //hahs status and not blue
+          if (this.latestStatus.status !== 3) { //hahs status and not blue
             if (this.latestStatus.status > 0) { //either orange or red
               this.iconPath[0] = "/imgs/lens-green-disabled2.svg"
+              this.disableSubmit = true;
               if (this.latestStatus.status === 2) this.iconPath[1] = "/imgs/lens-orange-disabled2.svg" //red
+                 this.disableSubmit = true;
             }
-          } */
+          } 
         }
       } else {
         this.selectedStatus = 0; //default to green
@@ -201,7 +205,7 @@ export default {
       selectedStatus: null,
       symps: [false,false,false,false,false,false],
       latestStatus: {
-        status: 0
+        status: null
       },
       enableBlue: false,
       status: ["No Signs or Symptoms",
@@ -218,14 +222,36 @@ export default {
   },
   watch: {
 
+    selectedStatus() {
+      this.disableSubmit = false;
+      if (typeof this.selectedStatus === "number") {
+
+        if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
+        else { //selected green, orange, and red
+          if (this.latestStatus.status === 0) this.disableSubmit = false;
+          else if (this.latestStatus.status === 1) { //cur status is orange
+            if (this.selectedStatus === 1 || this.selectedStatus === 2) this.disableSubmit = false
+          } else if (this.latestStatus.status === 2) { //cur status is red
+            if (this.selectedStatus === 2) this.disableSubmit = false
+          }
+        }
+      }
+    } 
   },
   computed: Vuex.mapState({
     user: state => state.user,
   }),
   methods: {
     showModal(){
-      if(!this.checkedSymptoms.length == 0 || this.selectedStatus == 0){
-        this.showDialog=true;  
+      if(this.latestStatus.status == 0){
+        if(!this.checkedSymptoms.length == 0 || this.selectedStatus == 0){
+          this.showDialog = true;  }
+      }else if(this.latestStatus.status == 1){
+           console.log(this.latestStatus.status)
+           this.showDialog=false; 
+      }else if(this.latestStatus.status==2){
+          console.log(this.latestStatus.status)
+          this.showDialog=false; 
       }
     },
     selectStatus(status){
