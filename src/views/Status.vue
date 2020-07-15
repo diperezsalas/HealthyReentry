@@ -221,22 +221,6 @@ export default {
     };
   },
   watch: {
-
-    selectedStatus() {
-      this.disableSubmit = false;
-      if (typeof this.selectedStatus === "number") {
-
-        if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
-        else { //selected green, orange, and red
-          if (this.latestStatus.status === 0) this.disableSubmit = false;
-          else if (this.latestStatus.status === 1) { //cur status is orange
-            if (this.selectedStatus === 1 || this.selectedStatus === 2) this.disableSubmit = false
-          } else if (this.latestStatus.status === 2) { //cur status is red
-            if (this.selectedStatus === 2) this.disableSubmit = false
-          }
-        }
-      }
-    } 
   },
   computed: Vuex.mapState({
     user: state => state.user,
