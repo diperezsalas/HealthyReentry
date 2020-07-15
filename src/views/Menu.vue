@@ -1,10 +1,10 @@
 <template>
 <!-- <div class="mx-auto" style="transform: translateY(150%)"> -->
 <div>
+  <div style="height: 80px"></div>
   <div v-if="showAlert" class="alert alert-success" role="alert">
     You have sucessfully changed your office to {{user.location}}
   </div>
-  <div style="height: 80px"></div>
   <div style="height: 42px;" >
     <div v-if="latestStatus">
       <div  class="text-white text-center">
