@@ -16,10 +16,7 @@
             <div class="px-4">
               <b>Status to set: </b>
               <p>
-               <strong v-if="userUpdateData.statusCodeToSet === 0" style="color:#00C851; font-size: 27px;">&#x2688;</strong>
-               <strong v-else-if="userUpdateData.statusCodeToSet === 1" style="color:#FF9800; font-size: 27px;">&#x2688;</strong>
-               <strong v-else-if="userUpdateData.statusCodeToSet === 2" style="color:#DC3545; font-size:  27px;">&#x2688;</strong>
-
+                <i v-if="selectedUsers.length" :class="'fas fa-circle ' + selectedUsers[0].status.css_key"></i>
                 {{ enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].label }}
          
            
@@ -304,17 +301,17 @@
             <span class="dropdown-item text-muted"><small><i>Applies to selected persons only</i></small></span>
 
             <div class="dropdown-divider"></div>
-
-            <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
-              @click="userUpdateData.statusCodeToSet = 0;"
-            ><i class="fas fa-circle fa-xs en_green"></i> &nbsp;&nbsp; Mark green</span>
-            <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
-              @click="userUpdateData.statusCodeToSet = 1;"
-            ><i class="fas fa-circle fa-xs en_orange"></i> &nbsp;&nbsp; Mark orange</span>
-            <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
-              @click="userUpdateData.statusCodeToSet = 2;"
-            ><i class="fas fa-circle fa-xs en_red"></i> &nbsp;&nbsp; Mark red</span>
-
+            <div v-if="selectedUsers.length">
+              <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
+                @click="userUpdateData.statusCodeToSet = 0;">
+                <i class="fas fa-circle fa-xs en_green"></i> &nbsp;&nbsp; Mark green</span>
+              <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
+                @click="userUpdateData.statusCodeToSet = 1;">
+                <i class="fas fa-circle fa-xs en_orange"></i> &nbsp;&nbsp; Mark orange</span>
+              <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
+                @click="userUpdateData.statusCodeToSet = 2;">
+                <i class="fas fa-circle fa-xs en_red"></i> &nbsp;&nbsp; Mark red</span>
+            </div>
             <!-- <div class="dropdown-divider"></div> -->
 
             <!-- <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
