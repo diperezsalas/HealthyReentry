@@ -24,7 +24,7 @@
 
             <md-menu-content>
               <md-menu-item disabled>{{$auth.userDB.name}}</md-menu-item>
-                 <md-menu-item v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.office_admin">
+                 <md-menu-item v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.office_admin && !$auth.userDB.permissions.admin">
                 <router-link :to="{ name: 'admin' }">
                   {{$auth.userDB.location}} Admin 
                 </router-link>

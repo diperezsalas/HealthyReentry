@@ -167,7 +167,7 @@
     
 
     <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h4>
-    <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
+    <h4 v-if="$auth.userDB.permissions.office_admin && !$auth.userDB.permissions.admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
 
 
     <hr class="my-3"/>
