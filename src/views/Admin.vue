@@ -246,7 +246,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="pageNav">Items per page:</span>
             </div>
-            <select class="form-control" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
+            <select class="form-control" id="pageNav" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
               <option>10</option>
               <option>20</option>
               <option>50</option>

@@ -1,52 +1,61 @@
 <template>
     <div class="container container-task">
         <div style="height: 80px"></div>
-        <div class="row">
-            <div class="col-md-6">
-                <h2 style="color:white">Offices</h2>
-                <table class="table text-center" ><!--We create a table that needs all the Offices-->
+                <h4>Offices</h4>
+        <div class="row full-container">
+            <div class="col-md-12">
+
+
+                <div class="row mb-5" style="align-items: flex-end;">
+                    <input hidden = true v-model="id" type="text" class="form-control">
+                    <div class="col-md-5">
+                        <label for="name">Name</label>
+                        <input placeHolder="Name" v-model="name" type="text" id="name" class="form-control">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="address">Address</label>
+                        <input placeHolder="Address" v-model="address" type="text" id="address" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <div class="container-buttons">
+                            <!-- Button that adds the form data, it is only shown if the update variable is equal to 0-->
+                            <button v-if="update == 0" @click="saveTasks()" class="btn btn-success">Add</button>
+                            <!-- Button that modifies the task that we have previously selected, is only shown if the update variable is different from 0-->
+                            <button v-if="update != 0" @click="updateTasks()" class="btn btn-warning">Update</button>
+                            <!-- Button that cleans the form and initializes the variable to 0, it is only shown if the update variable is different from 0-->
+                            <button v-if="update != 0" @click="clearFields()" class="btn">Back</button>
+                        </div>
+                    </div>
+                </div>
+                
+
+
+                
+            </div>
+            <div class="col-md-12">
+                <table class="table table-striped" ><!--We create a table that needs all the Offices-->
                         <thead>
                             <tr>
                                 <th hidden=true scope="col">ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Address</th>
-                                <th scope="col">Admin</th>
+                                <th class="text-center" scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="task in arrayTasks" :key="task.id"> <!--We go through the array and load our table-->
                                 <td hidden=true v-text="task._id"></td>
-                                <td v-text="task.name"></td>
-                                <td v-text="task.address"></td>
-                                <td>
+                                <td width="30%" v-text="task.name"></td>
+                                <td width="60%" v-text="task.address"></td>
+                                <td class="text-center" style="min-width: 110px;" width="10%">
                                     <!--Modify button, which loads the form data with the selected task-->
-                                    <button class="btn" @click="loadFieldsUpdate(task)">Edit</button>
+                                    <button class="btn btn-info" @click="loadFieldsUpdate(task)"><i class="fa fa-pencil-alt"></i></button>
                                     <!--Button that deletes the task that we select-->
-                                    <button class="btn" @click="deleteTask(task)">Delete</button>
+                                    <button class="btn btn-danger" @click="deleteTask(task)"><i class="fa fa-times"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group"><!--Form for the creation or modification of our tasks-->
-                    <label hidden = true >ID</label>
-                    <input hidden = true v-model="id" type="text" class="form-control">
-
-                    <label style="color:white">Name</label>
-                    <input v-model="name" type="text" class="form-control">
-                    <br>
-                    <label style="color:white">Address</label>
-                    <input v-model="address" type="text" class="form-control">
-                </div>
-                <div class="container-buttons">
-                    <!-- Button that adds the form data, it is only shown if the update variable is equal to 0-->
-                    <button v-if="update == 0" @click="saveTasks()" class="btn btn-success">Add</button>
-                    <!-- Button that modifies the task that we have previously selected, is only shown if the update variable is different from 0-->
-                    <button v-if="update != 0" @click="updateTasks()" class="btn btn-warning">Update</button>
-                    <!-- Button that cleans the form and initializes the variable to 0, it is only shown if the update variable is different from 0-->
-                    <button v-if="update != 0" @click="clearFields()" class="btn">Back</button>
-                </div>
             </div>
         </div>
     </div>
@@ -233,3 +242,12 @@ import { json } from 'body-parser';
         }
     }
 </script>
+
+<style scoped>
+    .full-container{
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+        margin-top: 30px;
+    }
+</style>

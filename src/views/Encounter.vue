@@ -59,7 +59,7 @@
       <md-autocomplete v-model="selectedEmployee" :md-options="minUsers" :md-fuzzy-search="true" :md-open-on-focus="false" @md-selected="nameSelected()">
         <label>Search by email or name</label>
 
-        <template style="color:white" slot="md-autocomplete-item" slot-scope="{ item, term }">
+        <template slot="md-autocomplete-item" slot-scope="{ item, term }">
           <md-highlight-text :md-term="term">{{ item }}</md-highlight-text>
         </template>
 
