@@ -7,7 +7,7 @@ Test
   <div v-if="latestStatus">
     <div class="text-white text-center mt-3">
         <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
-        <div> 
+        <div v-if="latestStatus.status"> 
           <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
 
         </div>

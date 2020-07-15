@@ -9,11 +9,13 @@ export const authGuard = (to, from, next) => {
         if (authService.isAuthenticated) {
             if (authService.userDB) {
                 store.commit('setUser', authService.userDB);
+                store.commit('setUserReady', true);
                 routeUserFunction(authService.userDB);
             } else {
                 authService.$api.post('/api/user', authService.user).then(returnedUser => {
                     authService.userDB = returnedUser.data;
                     store.commit('setUser', authService.userDB);
+                    store.commit('setUserReady', true);
                     routeUserFunction(returnedUser.data);
                 });
             }

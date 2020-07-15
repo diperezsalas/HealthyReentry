@@ -111,13 +111,10 @@ export default {
     });
       this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
        this.offices = returnedOffices.data;
-    }),
-    setTimeout(()=>{
-        if(!this.user.location || this.user.location == '' || this.user.location == 'N/A'){
-          this.showDialog = true;
-        }
-      }, 5000);
-
+    });
+    if(!this.user.location || this.user.location == '' || this.user.location == 'N/A'){
+      this.showDialog = true;
+    }
   },
   mounted() {
     this.mapButtonCSS();

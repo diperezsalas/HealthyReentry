@@ -1,5 +1,5 @@
 <template>
-  <div class="px-2 pb-4">
+  <div v-if="userReady" class="px-2 pb-4">
     <div style="height: 80px"></div>
 
     <!-- Status Update Modal -->
@@ -161,7 +161,7 @@
 
     
 
-    <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard</h4>
+    <h4 v-if="$auth.userDB.permissions.admin" >Admin Dashboard {{userReady}}</h4>
     <h4 v-if="$auth.userDB.permissions.office_admin" >{{$auth.userDB.location}} Admin Dashboard</h4>
 
 
@@ -427,7 +427,7 @@
               >
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
-              Last Updated
+              Last Updated 
             </th>
             <th style="width: 15%">
               <span
@@ -495,6 +495,8 @@
 
 
 <script>
+import Vue from 'vue';
+import {Vuex, mapState} from 'vuex';
 import enumStatusMap from "../../server/util/enumStatusMap.js";
 import graphToCsv from "../../server/util/csvUtils.js";
 
@@ -546,33 +548,15 @@ function fuzzyTime(date) {
 
 export default {
   beforeMount() {
-    this.refreshData();
-    console.log(this.$auth.userDB.permissions.office_admin);
-     if(this.$auth.userDB.permissions.office_admin){
-            setTimeout(() => {
-          
-                this.$refs.refreshoffice.click();
-            }, 1000);
-    }
-
-  },
-  updated(){
-       if(this.$auth.userDB.permissions.office_admin){
-            setTimeout(() => {
-           
-                this.$refs.refreshoffice.click();
-            }, 1000);
-     }
-  },
+    
+    },
   created() {
     this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
-       this.offices = returnedOffices.data;
-    })
-
-    
+      this.offices = returnedOffices.data;
+    })    
   },
   mounted() {
-    
+    this.refreshData();
   },
   data() {
     return {
@@ -608,7 +592,8 @@ export default {
     selectedUsers() {
       return this.usersInView
                   .filter(u => u.selected);
-    }
+    },
+    ...mapState(['userReady'])
   },
   methods: {
     async downloadGraphForSelectedAsCSV() {
@@ -744,6 +729,10 @@ export default {
       this.updateUsersInView();
       this.isLoading = false;
 
+      if (this.$auth.userDB.permissions.office_admin){
+        this.$refs.refreshoffice.click();
+      }
+
     },
     async sendUpdateOfficeAdmin(me){
 
@@ -793,11 +782,6 @@ export default {
       });
       
       this.isLoading = false;
-       
-       setTimeout(() => {
-      //  console.log(this);
-        this.$refs.refreshoffice.click();
-       }, 500);
 
     },
     updInviewUserSelectedState(val) {

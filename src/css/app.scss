@@ -349,3 +349,9 @@
             font-size: 15px !important;
         }
     }
+    
+    @media (min-width: 700px) {
+        .table {
+            display: inline-table !important;
+        }
+    }

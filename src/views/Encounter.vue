@@ -195,7 +195,7 @@
 
 <script>
 import Vue from 'vue';
-import Vuex from 'vuex';
+import {Vuex, mapState} from 'vuex';
 import QRCode  from 'qrcode';
 import {
   QrcodeStream
@@ -206,13 +206,7 @@ export default {
     QrcodeStream
     // appAlerts
   },
-  created() {
-        setTimeout(()=>{
 
-     this.user = this.$auth.userDB;
-             }, 1000);
-
-  },
   beforeMount() {
     this.$api.get("/api/user/get-all").then(all => {
       const arrayToObject = (array) =>
@@ -237,20 +231,10 @@ export default {
     });
   },
   mounted() {
-    const buttonWidth = screen.width*0.6 > 280? screen.width*0.7 : 280;
-      const screenSize = screen.width > screen.height? screen.height : screen.width;
-    var viewScale = 4;
-    if (screenSize > 300) viewScale = screenSize/60;
-    // if (viewScale > 11) viewScale = 11;
-    // console.log("scale", Math.trunc((screen.width-30)/ 29));
-    // console.log("scale", Math.trunc((screen.height-30)/ 29));
-    // const largeScreenScale = 10;
-    // const viewScale = Math.trunc((screen.width-30)/ 29) > largeScreenScale? largeScreenScale : Math.trunc((screen.width-30)/ 29);
-        setTimeout(()=>{
-          QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
-            if (error) console.error(error)
-          })
-        }, 1001);
+    if (this.userReady) {
+          this.launchAfter();
+    }
+  
   },
   data() {
     return {
@@ -315,10 +299,26 @@ export default {
         // }]);
         this.disableSubmitUser = false;
       }
+    },
+     userReady(){
+       this.launchAfter();
     }
   },
-
+  computed: {
+    ...mapState(['userReady'])
+  },
   methods: {
+    launchAfter(){
+      this.user = this.$auth.userDB;
+      const buttonWidth = screen.width*0.6 > 280? screen.width*0.7 : 280;
+      const screenSize = screen.width > screen.height? screen.height : screen.width;
+      let viewScale = 4;
+      if (screenSize > 300) viewScale = screenSize/60;
+      QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
+        if (error) console.error(error)
+      })
+      console.log(this.user);
+    },
     nameSelected() {
       if (this.selectedEmployee) {
         var u = this.userDictionary[this.selectedEmployee];
