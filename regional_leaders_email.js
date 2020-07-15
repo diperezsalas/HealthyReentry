@@ -17,12 +17,12 @@ const fs = require('fs');
 var content = fs.readFileSync("./server/assets/email_templates/regionalLeadersReport.html").toString("utf-8");
 
 let leaders = {
-    "East": "trittenhouse@thorntontomasetti.com",
-    "West": "rtreece@thorntontomasetti.com",
-    "Mid-Atlantic and South": "mtamaro@thorntontomasetti.com",
-    "Midwest": "fehsan@thorntontomasetti.com",
-    "Europe": "pthompson@thorntontomasetti.com",
-    "Pacific Rim": "yzhu@thorntontomasetti.com"
+    "East": "diego.perez@nexplore.com",
+    "West": "shady.nawara@nexplore.com",
+    "Mid-Atlantic and South": "",
+    "Midwest": "",
+    "Europe": "",
+    "Pacific Rim": ""
 }
 
 let regions = {
