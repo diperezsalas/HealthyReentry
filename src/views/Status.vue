@@ -90,7 +90,7 @@ Test
       <router-link :to="{ name: 'menu' }">
           <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Back</div>  
       </router-link>
-        <div class="turner-button" @click="showModal()" id="nextBtn">
+        <div class="turner-button" @click="showModal()" id="nextBtn" ref="submitBtn">
         Submit
       </div>
    </md-dialog-actions>
@@ -166,6 +166,9 @@ export default {
           if (this.latestStatus.status !== 3) { //hahs status and not blue
             if (this.latestStatus.status > 0) { //either orange or red
               this.iconPath[0] = "/imgs/lens-green-disabled2.svg"
+      
+             
+              
               this.disableSubmit = true;
               if (this.latestStatus.status === 2) this.iconPath[1] = "/imgs/lens-orange-disabled2.svg" //red
                  this.disableSubmit = true;
@@ -227,24 +230,52 @@ export default {
   }),
   methods: {
     showModal(){
+     
       if(this.latestStatus.status == 0){
         if(!this.checkedSymptoms.length == 0 || this.selectedStatus == 0){
           this.showDialog = true;  }
-      }else if(this.latestStatus.status == 1){
-           console.log(this.latestStatus.status)
-           this.showDialog=false; 
-      }else if(this.latestStatus.status==2){
-          console.log(this.latestStatus.status)
+     
+      }else if(this.latestStatus.status == 1 && this.selectedStatus == 0){
           this.showDialog=false; 
+         
+      }else if(this.latestStatus.status == 1 && this.selectedStatus == 1){  
+           this.showDialog=true; 
+          
+      }else if(this.latestStatus.status == 1 && this.selectedStatus == 2){  
+           this.showDialog=true;      
+      }else if(this.latestStatus.status==2){  
+          this.showDialog=true; 
       }
     },
     selectStatus(status){
       this.selectedStatus=status;
+      console.log(this.latestStatus.status);
+      console.log(this.selectedStatus);
+     
+     
+      if(this.latestStatus.status == 0){
 
+     
+      }else if(this.latestStatus.status == 1 && this.selectedStatus == 0){
+        this.$refs.submitBtn.style.display='none';    
+      }else if(this.latestStatus.status == 1 && this.selectedStatus == 1){  
+         this.$refs.submitBtn.style.display='inline';     
+          
+      }else if(this.latestStatus.status == 1 && this.selectedStatus == 2){  
+         this.$refs.submitBtn.style.display='inline';       
+      }else if(this.latestStatus.status==2 && this.selectedStatus == 0){  
+          this.$refs.submitBtn.style.display='none';  
+      }else if(this.latestStatus.status==2 && this.selectedStatus == 1){  
+          this.$refs.submitBtn.style.display='none';  
+      }else if(this.latestStatus.status==2 && this.selectedStatus == 2){  
+          this.$refs.submitBtn.style.display='inline';  
+      }
 
       if (this.selectedStatus == 0) {
         this.symps[4] = [false,false,false,false,false,false];
         this.checkedSymptoms = [];
+     
+         
       }
 
       if (this.selectedStatus == 1) {
