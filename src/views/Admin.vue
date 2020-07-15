@@ -16,7 +16,11 @@
             <div class="px-4">
               <b>Status to set: </b>
               <p>
-                <i v-if="selectedUsers.length" :class="'fas fa-circle ' + selectedUsers[0].status.css_key"></i>
+
+               <strong v-if="userUpdateData.statusCodeToSet === 0" class="statusCircle" style="background:#00C851;"></strong>
+               <strong v-else-if="userUpdateData.statusCodeToSet === 1" class="statusCircle" style="background:#FF9800;"></strong>
+               <strong v-else-if="userUpdateData.statusCodeToSet === 2" class="statusCircle" style="background:#DC3545;"></strong>
+
                 {{ enumStatusMap.filter(s => s.code === userUpdateData.statusCodeToSet)[0].label }}
          
            
@@ -849,6 +853,15 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.statusCircle {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border-radius: 50%;
+  position: relative;
+  top: 1px;
 }
 
 </style>
