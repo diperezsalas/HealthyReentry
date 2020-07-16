@@ -10,7 +10,7 @@ import Encounter from '@/views/Encounter.vue';
 import Status from '@/views/Status.vue';
 import DisplayQR from '@/views/DisplayQR.vue';
 import Admin from '@/views/Admin.vue';
-import OfficeAdmin from '@/views/OfficeAdmin.vue';
+import OfficeAdmin from '@/views/Offices.vue';
 import NotFound from '@/views/404.vue';
 
 import store from '@/store/index.js';
