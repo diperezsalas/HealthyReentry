@@ -75,7 +75,8 @@ import { json } from 'body-parser';
                 users: [],
                 update:0,
                 arrayTasks:[], 
-                nameToUpdate: ''
+                nameToUpdate: '',
+                offices: []
             }
         },
 
@@ -113,21 +114,16 @@ import { json } from 'body-parser';
                             address: this.address
                         }
                         let res = await this.$api.post(apiurl , body);
-                     
-                            if (res.data) {
-                          
-                            
-                               me.refreshData();
-                               me.clearFields();
-
-                        
-
-                            }else{
-                               console.log("error saving location")
- 
-                            }
-               
-                
+                     if (this.offices.find(o=>o.name === this.name)) {
+                        alert('That offices is already registered');
+                     } else {
+                         if (res.data) {
+                            me.refreshData();
+                            me.clearFields();
+                         }else{
+                            console.log("error saving location")
+                         }
+                     }
             },
             async updateTasks(){/*This function is the same as the previous one, only it also sends the update variable that contains the id of the
                 task that we want to modify*/
