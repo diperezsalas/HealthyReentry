@@ -164,10 +164,32 @@ router.post("/update-user", async function(req, res) {
 });
 
 router.post("/update-office-admin", async function(req, res) {
+     
+
     const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { "permissions.office_admin": req.body.permissions } }, function(err, updateStatus) {
         if (err) throw err;
         return res.send(updateStatus);
     });
+});
+router.post("/update-role", async function(req, res) {
+
+        console.log(req.body.roleToSet);
+        if (req.body.roleToSet == "Admin"){
+                const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { "permissions.admin": true, "permissions.office_admin": false } }, function(err, updateStatus) {
+                    if (err) throw err;
+                    return res.send(updateStatus);
+                });
+        } else if (req.body.roleToSet == "Office Admin"){
+            const myArray = await User.updateOne({ "_id": req.body.id }, { $set: {  "permissions.admin": false, "permissions.office_admin": true } }, function(err, updateStatus) {
+                if (err) throw err;
+                return res.send(updateStatus);
+        });
+      }else{
+        const myArray = await User.updateOne({ "_id": req.body.id }, { $set: {  "permissions.admin": false, "permissions.office_admin": false } }, function(err, updateStatus) {
+            if (err) throw err;
+            return res.send(updateStatus);
+    }); 
+      }
 });
 
 

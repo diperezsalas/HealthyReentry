@@ -119,16 +119,12 @@
         </div>
       </div>
     </div>
-
-
-
-
       <!-- Update User Office Admin -->
-    <div class="modal fade" id="updateUserOfficeAdminModal" tabindex="-1" role="dialog" aria-labelledby="updateUserLocationLabel" aria-hidden="true">
+    <div class="modal fade" id="updateUserOfficeAdminModal" tabindex="-1" role="dialog" aria-labelledby="updateUserLocationLabel" aria-hidden="true" > 
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="updateUserLocationLabel">Do you like to change office admin profile? </h4>
+            <h4 class="modal-title" id="updateUserLocationLabel">Do you like to change user  profile? </h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="updInviewUserSelectedState(false); clearUpdateData()">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -136,29 +132,29 @@
           <div class="modal-body">
             <div v-if="selectedUsers.length > 0">
               <h6>
-                <i :class="'fas fa-circle ' + selectedUsers[0].status.css_key"></i>
+              
                 {{ selectedUsers[0].name }}
               </h6>
               <p>{{ selectedUsers[0].email }}</p>
               <div class="dropdown">
-                <button class="btn btn-secondary-outline dropdown-toggle" type="button" id="locDDMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ selectedUsers[0].office_admin }}
+                <button class="btn btn-secondary-outline dropdown-toggle" type="button" id="locDDMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                  {{ selectedUsers[0].role}}   
                 </button>
                 <div class="dropdown-menu overflow-auto mx-0" style="" aria-labelledby="locDDMenuButton">
-                  <p class="dropdown-item" v-for="ofc in ofc_admin" :key="ofc.id" @click="selectedUsers[0].office_admin =ofc">
-                    {{ ofc }}
-                  </p>
+                  <p class="dropdown-item" v-for="role in role_admin" :key="role.id" @click="selectedUsers[0].roleToSet= role">
+                      {{role}}
+                      </p>
                 </div>
                 <p >
                   <small><i>
-                    Will be updated to: {{ selectedUsers[0].office_admin }}
+                    Will be updated to: {{ selectedUsers[0].roleToSet  }}
                   </i></small>
                 </p>
               </div> 
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData() ">Close</button>
+            <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData();">Close</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateOfficeAdmin(selectedUsers[0])">Update</button>
           </div>
         </div>
@@ -357,7 +353,7 @@
 
         <thead>
           <tr>
-            <th style="width: 5%" class="text-center">
+            <th hidden=true style="width: 5%" class="text-center">
               <small hidden=true ><i hidden=true>
                 <span hidden=true
                   style="cursor: pointer;"
@@ -452,7 +448,7 @@
 
         <tbody>
           <tr   class="user-table" v-for="user in usersInView" :key="user.id">
-            <td  style="width: 5%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
+            <td hidden=true style="width: 5%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
               {{ (user.selected) ? '&#9745;' : '&#9744;' }}
             </td>
             <td   v-if="$auth.userDB.permissions.admin" style="width: 5%; cursor: pointer;" class="text-center" >
@@ -472,7 +468,7 @@
             
             </td>
             <td  hstyle="width: 5%" class="text-center">
-             {{   (user.office_admin) ? 'Office Admin' : 'User' }}
+             {{   (user.role) }}
             </td>
          
             <td  style="width: 25%">
@@ -574,6 +570,7 @@ export default {
     return {
       
       isLoading: false,
+      role: "",
       pageNo: 1,
       itemsOnPage: 10,
       nameFilter: "",
@@ -585,11 +582,12 @@ export default {
       incubationDays: 2,
       enumStatusMap: enumStatusMap,
       offices: [],
-      ofc_admin: [true,false],
+      role_admin: ["Admin","Office Admin", "User"],
       userUpdateData: {
         statusCodeToSet: -1,
         selectedUserIds: [],
-        locationToSet: null
+        locationToSet: null,
+        roleToSet:""
       }
     };
   },
@@ -608,6 +606,7 @@ export default {
     ...mapState(['userReady'])
   },
   methods: {
+  
     async downloadGraphForSelectedAsCSV() {
 
       let userEmails = this.selectedUsers.map(u => u.email);  
@@ -692,7 +691,15 @@ export default {
              symps[u.status[0].symptoms[i]] = true
           }
       
-
+         if(!u.permissions.office_admin && u.permissions.admin ){
+             this.role = "Admin"
+         }else if (u.permissions.office_admin && !u.permissions.admin){
+             this.role = "Office Admin"
+         } else if (u.permissions.office_admin && u.permissions.admin){
+           this.role = "Admin"
+         }else{
+            this.role = "User"
+         }
 
         let user = {
           id: u._id,
@@ -704,6 +711,8 @@ export default {
           status: status,
           allStatus: u.status,
           symptoms: symps,
+          role: this.role,
+          roleToSet: this.roleToSet,
           statusCode: status.code,
           lastUpdatedFormatted: updateDate,
           lastUpdated: hasStatus ? new Date(u.status[0].date) : null,
@@ -741,22 +750,21 @@ export default {
       this.updateUsersInView();
       this.isLoading = false;
 
-      if (this.$auth.userDB.permissions.office_admin){
-        this.$refs.refreshoffice.click();
-      }
+  
 
     },
     async sendUpdateOfficeAdmin(me){
-
+       
        const body = {
                         id: me.id, 
                         name: me.name,
                         email: me.email,
-                        permissions:me.office_admin
+                        permissions:me.office_admin,
+                        roleToSet:me.roleToSet
                         }
                       
         this.isLoading = true;
-         let res = await this.$api.post("/api/admin/update-office-admin", body);
+         let res = await this.$api.post("/api/admin/update-role", body);
         // this.clearUpdateData();
         // this.updInviewUserSelectedState(false);
          this.refreshData();
@@ -803,6 +811,7 @@ export default {
       this.userUpdateData.statusCodeToSet = -1;
       this.userUpdateData.selectedUserIds = [];
       this.userUpdateData.locationToSet = null;
+      this.userUpdateData.role = null;
     },
     sortUsers(key, inAsc) {
       this.sortBy = key;
