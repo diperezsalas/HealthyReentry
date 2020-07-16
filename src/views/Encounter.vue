@@ -1,144 +1,137 @@
 <template >
 <div>
-    <div style="height: 80px"></div>
+  <div style="height: 80px"></div>
 
-  <!-- <appAlerts v-bind:alerts="alerts"/> -->
   <h4 >Record Encounter</h4>
-  <!-- <hr class="my-2" /> -->
   <section class="container-box">
-  <div class="mt-2 alert-info3">
-      <p class="mb-0">
-        Search for colleagues by typing their name(s) or scanning their QR code.
-      </p>
+    <div class="mt-2 alert-info3">
         <p class="mb-0">
-          Log ALL encounters with colleagues where there is a breach of our current protocol.
+          Search for colleagues by typing their name(s) or scanning their QR code.
         </p>
-        
-      <p class="mb-0" style="margin-bottom: 0px !important;">
-        For a group encounter, check the <i>Group</i> box (only one person needs to submit to account for everyone in the group).
-      </p>
-  </div>
-
-  <h5 v-if="encountersToday && encountersToday.length > 0" class="mb-1 mt-5">Today's Recorded Encounter(s):</h5>
-  <div v-if="encountersToday  && encountersToday.length > 0" class="row mx-0 mb-2">
-    <div v-for="encounter in encountersToday" :key="encounter.id">
-      <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
+          <p class="mb-0">
+            Log ALL encounters with colleagues where there is a breach of our current protocol.
+          </p>
+          
+        <p class="mb-0" style="margin-bottom: 0px !important;">
+          For a group encounter, check the <i>Group</i> box (only one person needs to submit to account for everyone in the group).
+        </p>
     </div>
-  </div>
 
-  <div class="mt-2 alert-info2">
-      <p class="mb-0">
-        Show your QR Code to an employer
-      </p>
-  </div>
-
-  <div class="d-flex">
-    <canvas class="mx-auto" id="canvas"></canvas>
-  </div>
-
-  <div class="d-flex align-items-end">
-    <h5 class="mt-5 mb-0">Your New Encounter(s):</h5>
-    <a class="ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#what-counts-as-an-encounter-that-should-be-logged" target="blank">
-      <md-icon style="top: -9px; position: relative;" md-src="/imgs/warning.svg"></md-icon>
-    </a>
-  </div>
-
-  <div v-if="encountered" class="row mx-0 mt-2">
-    <div v-for="encounter in encountered" :key="encounter.id">
-      <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
-      <button type="button" class="close text-center" aria-label="Close" v-on:click="removeUser(encounter)" data-toggle="modal" data-target="#deleteUserModal">
-        <span class="text-center" aria-hidden="true">&times;</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="mb-0 d-flex align-items-center">
-    <div class="mt-1 px-0 mr-2 col" style="min-width:14rem;">
-      <!-- <autocomplete v-if="minUsers.length > 0" label="Encounters:" v-bind:items="minUsers" v-bind:split="splitChar" :frequentEncounters="frequentEncounters" placeholder="Search by email or name" @sendBack="getAutoFillUser"></autocomplete> -->
-
-      <md-autocomplete v-model="selectedEmployee" :md-options="minUsers" :md-fuzzy-search="true" :md-open-on-focus="false" @md-selected="nameSelected()">
-        <label>Search by email or name</label>
-
-        <template slot="md-autocomplete-item" slot-scope="{ item, term }">
-          <md-highlight-text :md-term="term">{{ item }}</md-highlight-text>
-        </template>
-
-        <template slot="md-autocomplete-empty" slot-scope="{ term }">
-          No user matching "{{ term }}" were found.
-        </template>
-      </md-autocomplete>
-
-      <!-- <p v-else class="text-muted"> No other user is available at this moment, please check again later.</p> -->
-    </div>
-    <div class="col px-0">
-      <div v-if="disableQRScanning" class="mr-auto">
-        <md-tooltip md-direction="top">Scanning QR code is not available on current browser</md-tooltip>
-        <i class="fas fa-qrcode fa-2x text-muted"></i>
-      </div>
-      <div v-else class="mr-auto" @click="preLaunchCamera()">
-        <md-tooltip md-direction="top">Open camera to scan QR code</md-tooltip>
-        <i class="fas fa-qrcode fa-2x"></i>
+    <h5 v-if="encountersToday && encountersToday.length > 0" class="mb-1 mt-5">Today's Recorded Encounter(s):</h5>
+    <div v-if="encountersToday  && encountersToday.length > 0" class="row mx-0 mb-2">
+      <div v-for="encounter in encountersToday" :key="encounter.id">
+        <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
       </div>
     </div>
 
-  </div>
-  <small>NOTE: You will only be able to search for employees who have opted into the app.</small>
+    <div class="mt-2 alert-info2">
+        <p class="mb-0">
+          Show your QR Code to an employer
+        </p>
+    </div>
 
+    <div class="d-flex">
+      <canvas class="mx-auto" id="canvas"></canvas>
+    </div>
 
-
-  <div class="form-check my-2">
-    <input v-if="encountered.length > 1" class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1">
-    <input v-else class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1" disabled>
     <div class="d-flex align-items-end">
-      <label class="form-check-label d-flex" for="defaultCheck1">
-        Group
-      </label>
-      <a class="mb-0 ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#when-should-i-use-the-group-checkbox" target="blank">
-        <md-icon class="md-size-1x m-0" md-src="/imgs/warning.svg" ></md-icon>
+      <h5 class="mt-5 mb-0">Your New Encounter(s):</h5>
+      <a class="ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#what-counts-as-an-encounter-that-should-be-logged" target="blank">
+        <md-icon style="top: -9px; position: relative;" md-src="/imgs/warning.svg"></md-icon>
       </a>
     </div>
 
-  </div>
-  <qrcode-stream v-if="camera!=='off'" @decode="onDecode" :camera="camera"></qrcode-stream>
-
-  <div class="row mt-5">
-    <legend style="font-family: endurance-bold;" class="col-form-label col-sm-1 pt-0">Date:</legend>
-    <div class="col-sm-11">
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="gridRadios" id="today" value="option1" @click="todaySelected=true;" checked>
-        <label class="form-check-label" for="today">
-          Today
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="gridRadios" id="customDate" value="option2" @click="todaySelected=false;showDatePicker=true">
-        <label  class="form-check-label" for="customDate">
-          Pick a Date
-        </label>
-        <md-datepicker v-if="showDatePicker" v-model="date" :md-disabled-dates="checkFuture">
-          <label>Select date</label>
-        </md-datepicker>
+    <div v-if="encountered" class="row mx-0 mt-2">
+      <div v-for="encounter in encountered" :key="encounter.id">
+        <span class="badge badge-pill badge-info mx-1">{{encounter.name}}</span>
+        <button type="button" class="close text-center" aria-label="Close" v-on:click="removeUser(encounter)" data-toggle="modal" data-target="#deleteUserModal">
+          <span class="text-center" aria-hidden="true">&times;</span>
+        </button>
       </div>
     </div>
-  </div>
 
-  <br>
+    <div class="mb-0 d-flex align-items-center">
+      <div class="mt-1 px-0 mr-2 col" style="min-width:14rem;">
 
-      <md-dialog-actions class="mx-4 my-2">
-         
-         <router-link :to="{ name: 'menu' }">
-             <div class="back"> Back</div>  
-         </router-link>
-           <div v-if="disableSubmitUser" class="turner-button" style="margin:initial">
-               Next
-          </div>
-           <div v-else class="turner-button" style="margin:initial" @click="showDialog=!showDialog">
-               Next
-          </div>
-        </md-dialog-actions>
-</section>
+        <md-autocomplete v-model="selectedEmployee" :md-options="minUsers" :md-fuzzy-search="true" :md-open-on-focus="false" @md-selected="nameSelected()">
+          <label>Search by email or name</label>
 
-  <!-- Modal -->
+          <template slot="md-autocomplete-item" slot-scope="{ item, term }">
+            <md-highlight-text :md-term="term">{{ item }}</md-highlight-text>
+          </template>
+
+          <template slot="md-autocomplete-empty" slot-scope="{ term }">
+            No user matching "{{ term }}" were found.
+          </template>
+        </md-autocomplete>
+
+      </div>
+      <div class="col px-0">
+        <div v-if="disableQRScanning" class="mr-auto">
+          <md-tooltip md-direction="top">Scanning QR code is not available on current browser</md-tooltip>
+          <i class="fas fa-qrcode fa-2x text-muted"></i>
+        </div>
+        <div v-else class="mr-auto" @click="preLaunchCamera()">
+          <md-tooltip md-direction="top">Open camera to scan QR code</md-tooltip>
+          <i class="fas fa-qrcode fa-2x"></i>
+        </div>
+      </div>
+
+    </div>
+    <small>NOTE: You will only be able to search for employees who have opted into the app.</small>
+
+    <div class="form-check my-2">
+      <input v-if="encountered.length > 1" class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1">
+      <input v-else class="mt-2 form-check-input" type="checkbox" v-model="isGroup" id="defaultCheck1" disabled>
+      <div class="d-flex align-items-end">
+        <label class="form-check-label d-flex" for="defaultCheck1">
+          Group
+        </label>
+        <a class="mb-0 ml-1" href="https://core-studio.gitbook.io/healthy-reentry/faq#when-should-i-use-the-group-checkbox" target="blank">
+          <md-icon class="md-size-1x m-0" md-src="/imgs/warning.svg" ></md-icon>
+        </a>
+      </div>
+
+    </div>
+    <qrcode-stream v-if="camera!=='off'" @decode="onDecode" :camera="camera"></qrcode-stream>
+
+    <div class="row mt-5">
+      <legend style="font-family: endurance-bold;" class="col-form-label col-sm-1 pt-0">Date:</legend>
+      <div class="col-sm-11">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gridRadios" id="today" value="option1" @click="todaySelected=true;" checked>
+          <label class="form-check-label" for="today">
+            Today
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="gridRadios" id="customDate" value="option2" @click="todaySelected=false;showDatePicker=true">
+          <label  class="form-check-label" for="customDate">
+            Pick a Date
+          </label>
+          <md-datepicker v-if="showDatePicker" v-model="date" :md-disabled-dates="checkFuture">
+            <label>Select date</label>
+          </md-datepicker>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <md-dialog-actions class="mx-4 my-2">
+      
+      <router-link :to="{ name: 'menu' }">
+          <div class="back"> Back</div>  
+      </router-link>
+        <div v-if="disableSubmitUser" class="turner-button" style="margin:initial">
+            Next
+        </div>
+        <div v-else class="turner-button" style="margin:initial" @click="showDialog=!showDialog">
+            Next
+        </div>
+      </md-dialog-actions>
+  </section>
+
   <md-dialog :md-active.sync="showDialog" :md-fullscreen="false">
       <md-dialog-title>Review Your Encounter</md-dialog-title>
       <md-subheader class="mx-2 mb-0">
@@ -160,13 +153,10 @@
             </li>
             <li class="list-group-item"><b>Date:</b>
               <p class="mb-0">{{showDisplayDate(date)}}</p>
-              <!-- <p v-else> Custom Date</p> -->
             </li>
           </ul>
         </div>
       </md-content>
-
-
 
       <md-dialog-actions class="mx-4 my-2">
         <md-button @click="showDialog = false">Go Back</md-button>
@@ -174,7 +164,6 @@
       </md-dialog-actions>
     </md-dialog>
 
-    <!-- Notifications -->
     <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="userAdded" md-persistent style="margin-bottom:55px; background-color: #004050">
       <span> Encounter added.</span>
     </md-snackbar>
@@ -188,7 +177,7 @@
       <span> QR code scanned successfully.</span>
     </md-snackbar>
 
-</div>
+  </div>
 </template>
 <script src="./vue-browser-detect-plugin.umd.js"></script>
 <script src="vue-qrcode-reader.browser.js"></script>
@@ -204,15 +193,12 @@ export default {
   name: "encounter",
   components: {
     QrcodeStream
-    // appAlerts
   },
 
   beforeMount() {
     this.$api.get("/api/user/get-all").then(all => {
       const arrayToObject = (array) =>
         array.reduce((obj, item) => {
-          // obj[item.name + "_" + item.email] = item
-          // console.log("item", item.email);
           obj[item.name] = item
           return obj
         }, {})
@@ -223,7 +209,6 @@ export default {
     this.$api.get("/api/encounters/find-frequent-encounters").then(mostEncountered => {
       const userToday = mostEncountered.data.filter(u=>u.encounteredToday===true);
       this.encountersToday = userToday;
-      // Vue.set(this, "frequentEncounters", mostEncountered.data.map(item=>item.name + "_" + item.email));
       Vue.set(this, "encountersToday", mostEncountered.data.filter(u=>u.encounteredToday===true));
       if (this.$route.params.scannedUser) {
         this.searchUserByEmail(this.$route.params.scannedUser);
@@ -232,7 +217,7 @@ export default {
   },
   mounted() {
     if (this.userReady) {
-          this.launchAfter();
+      this.launchAfter();
     }
   
   },
@@ -250,53 +235,22 @@ export default {
       encountered: [],
       userDictionary: [],
       minUsers: [],
-      //mostEncountered: [],
       todaySelected: true,
       date: new Date(),
       alerts: null,
-      // disableSubmitDate: false,
       disableSubmitUser: true,
       camera: 'off',
       encountersToday: null,
       isGroup: false,
       showDatePicker: false,
-      // frequentEncounters: null,
       showDialog: false,
       disableQRScanning: false
     };
   },
   watch: {
-    // selectedEmployee() {
-    //
-    //   if (this.selectedEmployee) {
-
-    //     var u = this.userDictionary[this.selectedEmployee];
-    //     if (!u) return;
-    //     if (this.encountered.length === 0){
-    //       let newList = [];
-    //       newList.push(u);
-    //       this.encountered = newList;
-    //     }
-    //     else if (this.encountered.map(e=>e._id).indexOf(u._id) === -1) {
-    //       this.encountered.push(u);
-    //     }
-    //     else{
-    //       //user already added as encounter
-    //       // this.$emit("getNotification", [{
-    //       //   message: "This user has already been added as your encounter.",
-    //       //   type: "warning"
-    //       // }]);
-    //     }
-    //   }
-    //   this.selectedEmployee = '';
-    // },
     encountered() {
       this.disableSubmitUser = true;
       if (this.encountered.length > 0) {
-        // this.$emit("getNotification", [{
-        //   message: "Please selector at least one TT employee as your encounter.",
-        //   type: "warning"
-        // }]);
         this.disableSubmitUser = false;
       }
     },
@@ -317,7 +271,6 @@ export default {
       QRCode.toCanvas(document.getElementById('canvas'), process.env.VUE_APP_URL + "encounter/" + this.user.email, {"scale": viewScale}, function (error) {
         if (error) console.error(error)
       })
-      console.log(this.user);
     },
     nameSelected() {
       if (this.selectedEmployee) {
@@ -333,9 +286,8 @@ export default {
           this.userAdded = true;
         }
         else{
-          this.dupUser = true;//user already added as encounter
+          this.dupUser = true;
         }
-        // this.selectedEmployee = null;
       }
     },
     checkFuture(date) {
@@ -343,10 +295,6 @@ export default {
     },
     preLaunchCamera() {
       if (this.$browserDetect.isChromeIOS) {
-        // this.$api.$emit("getNotification", [{
-        //   message: "This function cannot be used on Chrome IOS. Please scan the QR code using your device's native camera.",
-        //   type: "warning"
-        // }]);
         this.disableQRScanning = true;
       }
       else {
@@ -356,7 +304,6 @@ export default {
     },
     onDecode(incomingStr) {
       const decodedString = incomingStr.split("/").slice(-1)[0];
-      console.log("decodedString", decodedString);
       this.searchUserByEmail(decodedString);
     },
     searchUserByEmail(emailStr){
@@ -373,16 +320,12 @@ export default {
               this.selfScan = true;
               this.camera = 'off';
             }
-            else if (encountered.includes(res.data._id)){//encounter already exists
-              // this.$emit("encounterExists", [{
-              //   message: "Encounter already exists.",
-              //   type: "warning"
-              // }]);
+            else if (encountered.includes(res.data._id)){
               this.dupUser = true;
               this.camera = 'off';
             }
             else {
-              this.encountered.push(res.data);//adding scanned user to encounter
+              this.encountered.push(res.data);
               this.scanSucceed = true;
               this.camera = 'off';
             }
@@ -405,7 +348,6 @@ export default {
           this.encountered.push(u);
         }
         else{
-          //user already added as encounter
           this.$emit("getNotification", [{
             message: "This user has already been added as your encounter.",
             type: "warning"
@@ -415,7 +357,6 @@ export default {
     },
     formatDate() {
       var formattedDate = this.moment(this.date).format('YYYY/MM/DD');
-      // Vue.set(this, "date", formattedDate);
       return formattedDate;
     },
     removeUser(e) {
@@ -435,7 +376,7 @@ export default {
           this.$emit("encounterMsg");
           this.$router.push({
             name: 'menu'
-          }); //return back to menu after saving
+          });
         }
       });
     }
@@ -444,35 +385,18 @@ export default {
 </script>
 
 <style scoped>
-/* .wrapper {
-  position:absolute;
-  top:0;
-  right:0;
-  height:25px;
-  background:green;
-} */
-/* .d-flex {
-  max-width: 350px;
-} */
-/* .md-theme-default{
-  height: 400px;
-} */
-/* .md-list-item-content {
-  padding-top: 0px;
-  padding-bottom: 0px;
-} */
-#canvas{
-    height: initial !important;
-    width: 80% !important;
-    max-width: 400px ;
-}
-.md-dialog /deep/ .md-dialog-container {
-  transform: none;
-}
-.alert-info2{
-  color: black;
-}
-.container-box {
-  color: black
-}
+  #canvas{
+      height: initial !important;
+      width: 80% !important;
+      max-width: 400px ;
+  }
+  .md-dialog /deep/ .md-dialog-container {
+    transform: none;
+  }
+  .alert-info2{
+    color: black;
+  }
+  .container-box {
+    color: black
+  }
 </style>

@@ -2,8 +2,6 @@
 <div class="page-container" id="app">
   <Navbar v-if="$route.name != 'home'" />
   <section id="body-section">
-  <!-- <hr /> -->
-  <!-- <md-content class="mx-3" style="max-width:600px"> -->
   <md-content class="mx-auto" style="padding-bottom:20px;background: transparent">
     <router-view class="px-3" @disclosureMsg="disclosureMsg" @statusMsg="statusMsg" @encounterMsg="encounterMsg"/>
   </md-content>
@@ -69,13 +67,8 @@ export default {
   bottom: 0;
   width: 100%;
   background-color: rgb(52, 58, 64);
-  /* color: white; */
-  /* text-align: center; */
 }
 
-/* #app {
-  height: 100vh-80px;
-} */
 .md-dialog /deep/ .md-dialog-container {
   transform: none;
 }

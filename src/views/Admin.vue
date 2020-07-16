@@ -2,7 +2,6 @@
   <div v-if="userReady" class="px-2 pb-4">
     <div style="height: 80px"></div>
 
-    <!-- Status Update Modal -->
     <div class="modal fade" id="updateConfModal" tabindex="-1" role="dialog" aria-labelledby="updateConfModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -276,16 +275,14 @@
                 :style="'cursor: ' + (((pageNo-1) < 1) ? 'not-allowed' : 'pointer') "
                 @click="setPageNo(pageNo-1)"
                 :class="'input-group-text ' + (((pageNo-1) < 1) ? 'disabled' : '') "
-                id="pageNav"
-              ><i class="fas fa-chevron-left"></i></span>
+                id="pageNav"><i class="fas fa-chevron-left"></i></span>
             </div>
             <div class="input-group-append">
               <span
                 :style="'cursor: ' + (((pageNo) * itemsOnPage >= users.length) ? 'not-allowed' : 'pointer') "
                 @click="setPageNo(pageNo+1)"
                 :class="'input-group-text ' + (((pageNo) * itemsOnPage >= users.length) ? 'disabled' : '') "
-                id="pageNav"
-              ><i class="fas fa-chevron-right"></i></span>
+                id="pageNav"><i class="fas fa-chevron-right"></i></span>
             </div>
           </div>
 
@@ -316,12 +313,7 @@
                 @click="userUpdateData.statusCodeToSet = 2;">
                 <i class="fas fa-circle fa-xs en_red"></i> &nbsp;&nbsp; Mark red</span>
             </div>
-            <!-- <div class="dropdown-divider"></div> -->
-
-            <!-- <span class="dropdown-item" data-toggle="modal" data-target="#updateConfModal"
-              @click="userUpdateData.statusCodeToSet = 3;"
-            ><i class="fas fa-circle fa-xs en_blue"></i> &nbsp;&nbsp; Mark blue</span> -->
-
+           
           </div>
 
         </div>
@@ -384,14 +376,13 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'selected' ? '' : ' disabled')"
-                @click="sortUsers('selected', !sortAsc)"
-              >
+                @click="sortUsers('selected', !sortAsc)">
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Select
             </th>
 
-           <th  v-if="$auth.userDB.permissions.admin" c  style="width: 5%" class="text-center">
+           <th v-if="$auth.userDB.permissions.admin" c  style="width: 5%" class="text-center">
            
               Office Admin
             </th>
@@ -400,8 +391,7 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'statusCode' ? '' : ' disabled')"
-                @click="sortUsers('statusCode', !sortAsc)"
-              >
+                @click="sortUsers('statusCode', !sortAsc)">
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Status
@@ -411,8 +401,7 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'name' ? '' : ' disabled')"
-                @click="sortUsers('name', !sortAsc)"
-              >
+                @click="sortUsers('name', !sortAsc)">
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Name
@@ -421,8 +410,7 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'officeCode' ? '' : ' disabled')"
-                @click="sortUsers('officeCode', !sortAsc)"
-              >
+                @click="sortUsers('officeCode', !sortAsc)">
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Office
@@ -431,8 +419,7 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'lastUpdated' ? '' : ' disabled')"
-                @click="sortUsers('lastUpdated', !sortAsc)"
-              >
+                @click="sortUsers('lastUpdated', !sortAsc)">
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Last Updated 
@@ -441,8 +428,7 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'dateOfConsent' ? '' : ' disabled')"
-                @click="sortUsers('dateOfConsent', !sortAsc)"
-              >
+                @click="sortUsers('dateOfConsent', !sortAsc)">
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
               Consent Date
@@ -463,8 +449,7 @@
                 class="text-secondary">
                  {{   (user.office_admin) ? '&#9745;' : '&#9744;' }}
               </div>
-              
-             
+
             
             </td>
             <td style="width: 5%" class="text-center">
@@ -518,17 +503,16 @@ function downloadCSV(content, fileName) {
   document.body.removeChild(dlTrigger);
 }
 
-// ref: https://stackoverflow.com/questions/7641791/javascript-library-for-human-friendly-relative-date-formatting
 function fuzzyTime(date) {
 
-  var delta = Math.round((+new Date - date) / 1000);
+  let delta = Math.round((+new Date - date) / 1000);
 
-  var minute = 60,
+  let minute = 60,
       hour = minute * 60,
       day = hour * 24,
       week = day * 7;
 
-  var fuzzy;
+  let fuzzy;
 
   if (isNaN(delta)) {
     fuzzy = '---';
@@ -555,9 +539,7 @@ function fuzzyTime(date) {
 }
 
 export default {
-  beforeMount() {
-    
-    },
+
   created() {
     this.$api.get("/api/status/get-all-offices").then( returnedOffices => {
       this.offices = returnedOffices.data;
@@ -623,7 +605,6 @@ export default {
         fileTxt += `Name,${u.name}\r\nStatus,${u.status.label}\r\nUpdated,${u.lastUpdated}\r\n${gCSV}\r\n`;
         c++;
       });
-      //downloadCSV(fileTxt, `encounters(graph)_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
       this.isLoading = false;
     },
     downloadSelectedAsCSV() {
@@ -687,8 +668,6 @@ export default {
             
              symps[u.status[0].symptoms[i]] = true
           }
-      
-
 
         let user = {
           id: u._id,
@@ -718,7 +697,6 @@ export default {
 
       let apiurl = `/api/admin/get-all-users`;
       let userData = await this.$api.get(apiurl);
-      //console.log(userData);
       var users = userData.data;
       users.sort((a, b) => (a.name < b.name) ? -1 : 1)
       this.users = users;
@@ -729,10 +707,7 @@ export default {
         let loc = office.name || 'unknown';
         officesSet.add(loc);
       });
-     /*  this.users.forEach(u => {
-        let loc = u.location || 'unknown';
-        officesSet.add(loc);
-      }); */
+
       this.officesList = Array.from(officesSet).map(o => { return { LocationName:o, selected: true } });
       this.updateUsersInView();
       this.isLoading = false;
@@ -743,7 +718,6 @@ export default {
 
     },
     async sendUpdateOfficeAdmin(me){
-
        const body = {
                         id: me.id, 
                         name: me.name,
@@ -753,19 +727,15 @@ export default {
                       
         this.isLoading = true;
          let res = await this.$api.post("/api/admin/update-office-admin", body);
-        // this.clearUpdateData();
-        // this.updInviewUserSelectedState(false);
          this.refreshData();
-          this.updateUsersInView();
+         this.updateUsersInView();
          this.isLoading = false;                                      
-
-
     },
+
     async sendUpdateData() {
 
       this.userUpdateData.selectedUserIds = this.selectedUsers
                                                 .map(u => { return { userId: u.id }});
-                                                console.log(this.selectedUsers);
       this.isLoading = true;
       let res = await this.$api.post("/api/admin/update-users", this.userUpdateData);
       let updatedUsers = res.data;
@@ -774,7 +744,6 @@ export default {
         let idx = this.users.findIndex(u => u._id === nu._id);
         this.users[idx] = nu;
         this.users[idx].status = [this.users[idx].status];
-       // console.log(this.users);
         this.refreshData();
         this.updateUsersInView();
         const color = enumStatusMap.filter(s => s.code === this.users[idx].status[0].status)[0].label;
@@ -792,14 +761,17 @@ export default {
       this.isLoading = false;
 
     },
+
     updInviewUserSelectedState(val) {
       this.usersInView.forEach(u => u.selected = (val === 'invert') ? !u.selected : val);
     },
+
     async clearUpdateData() {
       this.userUpdateData.statusCodeToSet = -1;
       this.userUpdateData.selectedUserIds = [];
       this.userUpdateData.locationToSet = null;
     },
+
     sortUsers(key, inAsc) {
       this.sortBy = key;
       this.sortAsc = inAsc;
@@ -810,24 +782,25 @@ export default {
         ?  i : 0;
       });
     },
+
     setPageNo(newNo) {
       if (newNo < 1 || ((newNo-1) * this.itemsOnPage) > this.users.length) return;
       this.pageNo = parseInt(newNo);
       this.updateUsersInView();
     },
+
     setItemsOnPage(newNo) {
       if (newNo < 1) return;
       this.itemsOnPage = parseInt(newNo);
       this.updateUsersInView();
     },
+
     setOfficeFilterForAll(val) {
       this.officesList.forEach(o => o.selected = val);
     },
+
     setOfficeFilterForOneOffice(val) {
-    
-    
       this.officesList.forEach(o => o.LocationName = val);
-  
     }
   }
 };

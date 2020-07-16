@@ -40,7 +40,7 @@ const Encounter = require('../../models/Encounter');
  *        500:
  *          description: Server error.
  */
-router.post("/add-one", function (req, res) {
+router.post("/add-one", function(req, res) {
 
     var encounter = new Encounter({
         users: []
@@ -50,7 +50,7 @@ router.post("/add-one", function (req, res) {
 
     if (req.body.id) {
         encounter.users.push(req.body.id); // req.user will be added presave
-        encounter.save(function (err, savedEncounter) {
+        encounter.save(function(err, savedEncounter) {
             if (!err) return res.json(savedEncounter);
             else return res.status("500").send(err);
         });
@@ -60,10 +60,10 @@ router.post("/add-one", function (req, res) {
         User.findOne({
                 "email": req.body.email.toLowerCase()
             })
-            .exec(function (err, user) {
+            .exec(function(err, user) {
                 if (!err) {
                     encounter.users.push(user); // req.user will be added presave
-                    encounter.save(function (error, savedEncounter) {
+                    encounter.save(function(error, savedEncounter) {
                         if (!error) return res.json(savedEncounter);
                         else return res.status("500").send(error);
                     });
@@ -111,10 +111,10 @@ router.post("/add-one", function (req, res) {
  *        500:
  *          description: Server error.
  */
-router.post("/add-many", function (req, res) {
+router.post("/add-many", function(req, res) {
 
-    return new Promise(function (resolve, reject) {
-        let ids = req.body.encounters.reduce(function (out, x) {
+    return new Promise(function(resolve, reject) {
+        let ids = req.body.encounters.reduce(function(out, x) {
             out.push(x._id);
             return out;
         }, []);
@@ -150,7 +150,7 @@ router.post("/add-many", function (req, res) {
         } else {
 
             // this add enounters with the sender user only
-            ids.forEach(function (id) {
+            ids.forEach(function(id) {
 
                 var e = new Encounter({
                     users: []
@@ -179,7 +179,6 @@ router.post("/add-many", function (req, res) {
             return prd;
         }
 
-
         function combinations(n, r) {
             if (n == r) {
                 return 1;
@@ -192,8 +191,7 @@ router.post("/add-many", function (req, res) {
         function isDone() {
 
             if (encounters.length === numEncounters) {
-                Encounter.insertMany(encounters, function (err, docs) {
-                    // console.log(docs);
+                Encounter.insertMany(encounters, function(err, docs) {
                     if (err) {
                         console.log("error in insert Many", err);
                         resolve(res.status(500).send());
@@ -206,9 +204,6 @@ router.post("/add-many", function (req, res) {
         }
 
     });
-
-
-
 });
 
 
@@ -238,13 +233,13 @@ router.post("/add-many", function (req, res) {
  *        500:
  *          description: Server error.
  */
-router.get("/find-frequent-encounters", function (req, res) {
+router.get("/find-frequent-encounters", function(req, res) {
     //https://docs.mongodb.com/manual/tutorial/query-arrays/
 
     var checkDate = new Date();
     var pastDate = checkDate.getDate() - 7;
     checkDate.setDate(pastDate);
-    const today = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    const today = new Date().toJSON().slice(0, 10).replace(/-/g, '/');
 
     // returns only email, profile name, and _id
     let include = {
@@ -261,17 +256,17 @@ router.get("/find-frequent-encounters", function (req, res) {
         }).populate("users", include).sort({
             "date": -1
         })
-        .exec(function (err, encounters) {
+        .exec(function(err, encounters) {
             var frequentEncounters = [];
-            encounters.forEach(function (e) {
+            encounters.forEach(function(e) {
 
-                e.users.forEach(function (user) {
+                e.users.forEach(function(user) {
                     var index = frequentEncounters.findIndex(obj => obj._id == user._id);
                     if (index === -1 && user.id != req.user.id) {
                         var jsonString = JSON.stringify(user);
                         var userObj = JSON.parse(jsonString);
 
-                        const eDate = new Date(e.date).toJSON().slice(0,10).replace(/-/g,'/');
+                        const eDate = new Date(e.date).toJSON().slice(0, 10).replace(/-/g, '/');
 
                         if (eDate === today) {
                             userObj.encounteredToday = true;
@@ -303,13 +298,13 @@ router.get("/find-frequent-encounters", function (req, res) {
  *        500:
  *          description: Server error.
  */
-router.post("/get-graph", function (req, res) {
+router.post("/get-graph", function(req, res) {
 
-    eg(req.user.email).then(function (graph) {
+    eg(req.user.email).then(function(graph) {
 
         var headers = "Email, Number Of Direct Encounters, Degree of Separation , Status";
 
-        var csv = graph.map(function (d) {
+        var csv = graph.map(function(d) {
                 return JSON.stringify(Object.values(d));
             })
             .join('\n')
@@ -330,8 +325,8 @@ router.post("/get-graph", function (req, res) {
         var day = dateObj.getUTCDate();
         var year = dateObj.getUTCFullYear();
 
-        var newdate = month + "/" + day + "/"+ year;
-        var fileName = req.user.name + "-" + req.body.status + "-"+ newdate + ".csv";
+        var newdate = month + "/" + day + "/" + year;
+        var fileName = req.user.name + "-" + req.body.status + "-" + newdate + ".csv";
         const mailOptions = {
             to: variables.ADMIN_USERS,
             from: process.env.SENDGRID_EMAIL,
@@ -348,7 +343,7 @@ router.post("/get-graph", function (req, res) {
 
         };
 
-        sendEmail(mailOptions).then(function () {
+        sendEmail(mailOptions).then(function() {
             return res.json(graph);
         });
 
@@ -356,14 +351,13 @@ router.post("/get-graph", function (req, res) {
 
 
     function sendEmail(mailOptions) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             // https://github.com/sendgrid/sendgrid-python/blob/master/USAGE.md#post-mailsend
-            sgClient.send(mailOptions, function (err) {
+            sgClient.send(mailOptions, function(err) {
                 if (err) {
                     console.log("email failed", err);
                     reject();
                 }
-
                 resolve();
             });
 
@@ -371,9 +365,6 @@ router.post("/get-graph", function (req, res) {
 
     }
 
-
 });
-
-
 
 module.exports = router;

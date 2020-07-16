@@ -1,15 +1,12 @@
-Test
 <template>
 <div>
-    <div style="height: 80px"></div>
-
+  <div style="height: 80px"></div>
   <h4>Report Your Health Status</h4>
   <div v-if="latestStatus">
     <div class="text-white text-center mt-3">
         <i class="bright-blue far fa-clock"></i><span class="last-update"> Last Updated on:</span> <span class="last-date">{{showDisplayDate(new Date(latestStatus.date))}}</span>
         <div v-if="latestStatus.status"> 
           <i :class="'fas fa-circle fa-xs ' + enumStatusMap.filter(s => s.code === latestStatus.status)[0].css_key "></i> <span class="symtomps">{{status[latestStatus.status]}}</span>
-
         </div>
     </div>
   </div>
@@ -32,31 +29,25 @@ Test
           
            <div class="question-muted-row">Have you tested positive for COVID-19 in the past 14 days? <b class="green">NO</b></div>
            <div class="question-muted-row">Have you experienced any symptoms of COVID-19 in the past 14 days? <b class="green">NO</b></div>
-           
       </div>
-
     </md-tab>
+
     <md-tab :md-disabled="disableTabOrange" class="px-0" id="tab-orange" md-label="Orange" :md-icon="iconPath[1]" @click="selectStatus(1);" :selectedIndex="activeTab">
       <div class="container">
         <h4 style="color:black" class="mt-2">Possible Exposure</h4>
-
-           <div class="question-row"><input  type="checkbox"  class="symptoms" id="fever2" value=0 v-model="checkedSymptoms"  @change="check($event)">
+          <div class="question-row"><input  type="checkbox"  class="symptoms" id="fever2" value=0 v-model="checkedSymptoms"  @change="check($event)">
           <label for="fever2">Do you have a fever?</label></div>
           <div class="question-row"><input type="checkbox" class="symptoms" id="breath2" value=1 v-model="checkedSymptoms" @change="check($event)">
           <label for="breath2">Do you have shortness of breath?</label></div>
           <div class="question-row"><input type="checkbox" class="symptoms" id="cough2" value=2 v-model="checkedSymptoms" @change="check($event)">
           <label for="cough2">Do you have a cough?</label></div>
-           <div class="question-row"><input type="checkbox" class="symptoms" id="knowingly2" value=3 v-model="checkedSymptoms" @change="check($event)">
-         <label for="knowingly2">Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label></div>
-          
+          <div class="question-row"><input type="checkbox" class="symptoms" id="knowingly2" value=3 v-model="checkedSymptoms" @change="check($event)">
+          <label for="knowingly2">Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label></div>
           <div class="question-row"><input type="checkbox" class="symptoms" id="positive2" value=4 v-model="checkedSymptoms" @change="check($event)">
           <label for="positive2">Have you tested positive for COVID-19 in the past 14 days?</label></div>
-           <div class="question-row"><input type="checkbox" class="symptoms" id="symptoms2" value=5 v-model="checkedSymptoms" @change="check($event)">
-         <label for="symptoms2">Have you experienced any symptoms of COVID-19 in the past 14 days?</label></div>
-
-        
+          <div class="question-row"><input type="checkbox" class="symptoms" id="symptoms2" value=5 v-model="checkedSymptoms" @change="check($event)">
+          <label for="symptoms2">Have you experienced any symptoms of COVID-19 in the past 14 days?</label></div>
       </div>
-  
     </md-tab>
     <md-tab :md-disabled="disableTabRed" id="tab-red" md-label="Red" :md-icon="iconPath[2]" @click="selectStatus(2)" :selectedIndex="activeTab">
       <div class="container">
@@ -67,37 +58,27 @@ Test
           <label for="breath">Do you have shortness of breath?</label></div>
           <div class="question-row"><input type="checkbox" class="symptoms" id="cough" value=2 v-model="checkedSymptoms" @change="check($event)">
           <label for="cough">Do you have a cough?</label></div>
-           <div class="question-row"><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
+          <div class="question-row"><input type="checkbox" class="symptoms" id="knowingly" value=3 v-model="checkedSymptoms" @change="check($event)">
           <label for="knowingly"> Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</label></div>
-          
           <div class="question-row"><input type="checkbox" class="symptoms" id="positive" value=4 v-model="checkedSymptoms" @change="check($event)">
           <label for="positive">Have you tested positive for COVID-19 in the past 14 days?</label></div>
-           <div class="question-row"><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
-         <label for="symptoms">Have you experienced any symptoms of COVID-19 in the past 14 days?</label></div>
-        
-         <li hidden=true>Taken a COVID-19 test and received a positive result, <b>OR</b></li>
-        <li hidden=true>Received an isolation order from your country, state or local government, or a public health authority.</li>
-
+          <div class="question-row"><input type="checkbox" class="symptoms" id="symptoms" value=5 v-model="checkedSymptoms" @change="check($event)">
+          <label for="symptoms">Have you experienced any symptoms of COVID-19 in the past 14 days?</label></div>
+          <li hidden=true>Taken a COVID-19 test and received a positive result, <b>OR</b></li>
+          <li hidden=true>Received an isolation order from your country, state or local government, or a public health authority.</li>
       </div>
     </md-tab>
-    
   </md-tabs>
   
-  <!-- Button trigger modal -->
-
     <md-dialog-actions class="mx-4 my-2">
-      
       <router-link :to="{ name: 'menu' }">
           <div class="add-office" v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin"> Back</div>  
       </router-link>
-        <div class="turner-button" @click="showModal()" id="nextBtn" ref="submitBtn">
+      <div class="turner-button" @click="showModal()" id="nextBtn" ref="submitBtn">
         Submit
       </div>
    </md-dialog-actions>
-
-
    <li hidden=true><span>Checked Symptoms: {{ checkedSymptoms}}</span></li>
-
 
   <!-- Modal -->
   <md-dialog :md-active.sync="showDialog" :md-fullscreen="false">
@@ -106,7 +87,6 @@ Test
       Review the details below then click <b class="ml-1 mr-0 px-0">Submit</b>. To edit, click <b class="ml-1 mr-0 px-0">Go Back</b>.
     </md-subheader>
     <md-content class="mx-4">
-
       <div class="card mx-auto">
         <div class="card-header">
           <h6>Status Detail</h6>
@@ -122,9 +102,6 @@ Test
         </ul>
       </div>
     </md-content>
-
-
-
     <md-dialog-actions class="mx-4 my-2">
       <md-button @click="showDialog=false">Go Back</md-button>
       <md-button class="md-accent md-raised text-white" @click="showDialog=false; submitEncounter()">Submit</md-button>
@@ -136,11 +113,10 @@ Test
 </div>
 </template>
 <script>
-// import store from "store/index.js";
 import Vuex from 'vuex';
 import enumStatusMap from "../../server/util/enumStatusMap.js";
 
-let tabIds = ["tab-green", "tab-orange", "tab-red", "tab-blue"]
+let tabIds = ["tab-green", "tab-orange", "tab-red"]
 export default {
   created() {
     this.$api.get("/api/status/get-current").then(returnedStatus => {
@@ -168,38 +144,22 @@ export default {
         if (curStatus.status !== null) {
           this.activeTab = tabIds[curStatus.status];
           this.selectedStatus = curStatus.status;
-           this.disableSubmit = true;
-          if (this.latestStatus.status === 3 || this.latestStatus.status === 0) this.disableSubmit = false; //always disabled for blue
-          if (this.latestStatus.status !== 3) { //hahs status and not blue
-            if (this.latestStatus.status > 0) { //either orange or red
+          this.disableSubmit = true;
+          if (this.latestStatus.status === 0) this.disableSubmit = false;
+            if (this.latestStatus.status > 0) { 
               this.iconPath[0] = "/imgs/lens-green-disabled2.svg"
               this.disableSubmit = true;
-              if (this.latestStatus.status === 2) this.iconPath[1] = "/imgs/lens-orange-disabled2.svg" //red
+              if (this.latestStatus.status === 2) this.iconPath[1] = "/imgs/lens-orange-disabled2.svg"
                  this.disableSubmit = true;
             }
-          } 
         }
       } else {
-        this.selectedStatus = 0; //default to green
+        this.selectedStatus = 0; 
       }
     });
   },
   mounted() {
-
-    // TEST TEST TEST
-    // use this when status submitted -- this saves number
-    // $.post("/api/encounters/get-graph", { status: "yellow"}).then(getEncounters => {
-    //  console.log("encounters in last 14 days", getEncounters);
-    // });
-    // use this when status change to yellow and up critical ones... this need string
-    // $.post("/api/status/report", { status: 1 }).then(savedStatus => {
-    //  console.log("status Saved", savedStatus);
-    // });
     const buttonWidth = screen.width * 0.6 > 280 ? screen.width * 0.7 : 280;
-
-    // window.$("#nextBtn").css("width", buttonWidth + 'px');
-
-
   },
   data() {
     
@@ -217,7 +177,6 @@ export default {
       latestStatus: {
         status: null
       },
-      enableBlue: false,
       status: ["No Signs or Symptoms",
         " Possible Exposure",
         "Positive Diagnosis"
@@ -256,7 +215,7 @@ export default {
       this.selectedStatus=status;
 
       if (this.selectedStatus == 0) {
-        this.symps[4] = [false,false,false,false,false,false];
+        this.symps[4] = false;
         this.checkedSymptoms = [];         
       }
 
@@ -275,33 +234,19 @@ export default {
 
     },
     check(e) {
-
-
-          this.symps= [false,false,false,false,false,false];
-          
-          for (let i = 0; i < 5; i++) {
-            
-             this.symps[this.checkedSymptoms[i]] = true
-          }
+      this.symps= [false,false,false,false,false,false];
+      for (let i = 0; i < 5; i++) {
+          this.symps[this.checkedSymptoms[i]] = true
+      }
        
-    if(this.symps[4] === true){
-      this.selectedStatus = 2;
-      this.activeTab = tabIds[2];
-    } else {
-      this.selectedStatus = 1;
-      this.activeTab = tabIds[1];
-    }
+      if(this.symps[4] === true){
+        this.selectedStatus = 2;
+        this.activeTab = tabIds[2];
+      } else {
+        this.selectedStatus = 1;
+        this.activeTab = tabIds[1];
+      }
 
-    // if(this.checkedSymptoms[4] != true){
-    //   console.log("GO TO RED")
-    //   this.activeTab = tabIds[2];
-    // } 
-
-    // if(this.checkedSymptoms.length==6){
-    //   console.log("GO TO RED")
-    //   this.activeTab = tabIds[2];
-    // } 
-    
      if(this.checkedSymptoms.length==0){
       this.selectedStatus = 0;
       this.activeTab = tabIds[0]; 
@@ -312,7 +257,6 @@ export default {
       return this.moment(date).format('ll');
     },
     submitEncounter() {
-      // use this when status submitted -- this saves number
       const body = {
         status: this.selectedStatus,
         symptoms: this.checkedSymptoms
@@ -325,8 +269,7 @@ export default {
 
           this.$router.push({
             name: 'menu'
-          }); //return back to menu after saving
-
+          }); 
         }
       });
     }

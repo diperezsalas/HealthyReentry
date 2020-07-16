@@ -23,11 +23,11 @@ router.use(function(req, res, next) {
             office_admin_location = req.user.location;
             office_admin_permmision = true;
             next();
-        }else{
+        } else {
             res.status("404").send("Not found");
-        }    
-        
-        
+        }
+
+
     }
 });
 
@@ -54,14 +54,13 @@ router.get("/get-all-users", async function(req, res) {
     let include = {
         "_id": 1,
         "dateOfConsent": 1,
-        "permissions":1,
+        "permissions": 1,
         "name": 1,
         "email": 1,
         "location": 1
     }
 
     const users = await User.find({}, include).exec();
-
 
     for (let u of users) {
         let nu = u.toObject();
@@ -103,7 +102,6 @@ router.get("/get-all-offices", async function(req, res) {
 });
 
 
-///search-office
 router.get("/search-office", async function(req, res) {
     let office_id = req.query.id
 
@@ -121,7 +119,6 @@ router.get("/search-office", async function(req, res) {
         let nu = u.toObject();
         ret.push(nu)
     }
-
     res.json(ret);
 });
 
@@ -142,63 +139,36 @@ router.post("/add-office", async function(req, res) {
 
 
 router.post("/update-office", async function(req, res) {
-
-
     const myArray = await Offices.updateOne({ "_id": req.body.id }, { $set: { name: req.body.name, address: req.body.address } }, function(err, updateStatus) {
         if (err) throw err;
 
         return res.send(updateStatus);
     });
-
-
 });
-
-
 
 router.post("/delete-office", async function(req, res) {
     console.log(req.body.body);
-
-
     const myArray = await Offices.deleteOne({ "_id": req.body.id }, function(err, deleteStatus) {
         if (err) throw err;
         return res.send(deleteStatus);
     });
-
 });
 
 
-
 router.post("/update-user", async function(req, res) {
-    
-
     const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { location: req.body.location } }, function(err, updateStatus) {
         if (err) throw err;
 
         return res.send(updateStatus);
     });
-
-
 });
 
 router.post("/update-office-admin", async function(req, res) {
-    //console.log(req.body.permissions);
- 
     const myArray = await User.updateOne({ "_id": req.body.id }, { $set: { "permissions.office_admin": req.body.permissions } }, function(err, updateStatus) {
         if (err) throw err;
-    
-
         return res.send(updateStatus);
     });
-
-
 });
-
-
-
-
-
-
-
 
 
 /**
@@ -250,7 +220,7 @@ router.post("/update-users", async function(req, res) {
         }
 
         if (newOfficeAdminStatus) {
-            user.permissions.office_admin= data.newOfficeAdminStatus;
+            user.permissions.office_admin = data.newOfficeAdminStatus;
             await user.save();
         }
 
@@ -273,16 +243,12 @@ router.post("/update-users", async function(req, res) {
 
             savedStatus = await st.save();
 
-            // trigger graph update only if the post request was meant to update status
             const triggerData = {
                 user: user,
                 statusEnum: statusEnum
             };
-
-            // dont holdup the response for current trigger to percolate
             triggerUpdateQueue.push(triggerData);
             triggerQueue(ls);
-
         } else {
 
             const st = await Status.find({ "user": user._id })
@@ -346,9 +312,6 @@ router.post("/get-graph", async function(req, res) {
     }
     res.json(graphs);
 });
-
-
-
 
 const triggerUpdateQueue = [];
 

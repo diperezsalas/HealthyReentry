@@ -66,40 +66,25 @@
 
         </md-content>
 
-
-
-
       </md-dialog-content>
 
       <md-dialog-actions>
-        <!-- <md-button class="md-primary text-muted" @click="showDialog = false">
-          <router-link :to="{ name: 'home' }"> <p class="mb-0 text-muted">Close</p> </router-link>
-        </md-button> -->
         <button type="button" class="btn btn-md text-white" @click="showDialog = false">
           <router-link :to="{ name: 'home' }"> <p class="mb-0 text-muted">Close</p> </router-link>
         </button>
         <button type="button" class="btn btn-md text-white md-accent" @click="showDialog = false;submit()" :disabled="!consentBool">
           Submit
         </button>
-        <!-- <md-button class="md-primary text-white" @click="showDialog = false;submit()" :disabled="!consentBool">Submit</md-button> -->
       </md-dialog-actions>
     </md-dialog>
   </md-content>
 
-  <!-- <md-button class="md-primary md-raised" @click="showDialog = true">Show Dialog</md-button> -->
 
 </div>
 </template>
 <script>
 export default {
   props: ["user"],
-  created() {},
-  mounted() {
-    // $(window).on('load',function(){
-    //     $('#exampleModalLong').modal('show');
-    // });
-    // window.$('#disclosure').modal('show');
-  },
   data() {
     return {
       consentBool: false,
@@ -111,7 +96,6 @@ export default {
   },
   methods: {
     submit: function() {
-      // console.log("submitting");
       this.$api.get("/api/user/consent-signed").then(consent => {
         this.$emit("disclosureMsg");
         this.$auth.userDB = consent.data;
@@ -129,7 +113,6 @@ export default {
   text-align: center;
 }
 
-/* .md-dialog{ -webkit-transform: translate(0%,0%); transform: translate(0%,0%); } */
 .md-dialog /deep/ .md-dialog-container {
   transform: none;
 }
@@ -139,11 +122,6 @@ export default {
   border-width: 1px;
   border-color: lightgray;
 }
-
-/* .md-card-header {
-  background-color: #f2f2f2;
-} */
-
 .md-dialog-title {
   background-color: #f2f2f2;
 }

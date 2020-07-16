@@ -10,7 +10,6 @@
           <div class="text-inherit">
             At Turner Construction the health and safety of our employees is our top priority.
           </div>
-          <!-- <router-link :to="{ name: 'menu' }"> -->
             <div class="turner-button"  @click="login()">
                Get Started
             </div>
@@ -26,9 +25,6 @@
 </template>
 <script>
 export default {
-
-  created() {
-  },
   data() { 
     return { 
         url: process.env.VUE_APP_DOC_URL, 
