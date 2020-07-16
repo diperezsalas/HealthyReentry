@@ -113,10 +113,10 @@ import { json } from 'body-parser';
                             name: this.name,
                             address: this.address
                         }
-                        let res = await this.$api.post(apiurl , body);
                      if (this.offices.find(o=>o.name === this.name)) {
-                        alert('That offices is already registered');
+                         alert('That offices is already registered');
                      } else {
+                        let res = await this.$api.post(apiurl , body);
                          if (res.data) {
                             me.refreshData();
                             me.clearFields();
