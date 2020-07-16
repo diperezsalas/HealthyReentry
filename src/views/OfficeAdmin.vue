@@ -10,11 +10,11 @@
                     <input hidden = true v-model="id" type="text" class="form-control">
                     <div class="col-md-5">
                         <label for="name">Name</label>
-                        <input placeHolder="Name" v-model="name" type="text" id="name" class="form-control">
+                        <input autocomplete="off" placeHolder="Name" v-model="name" type="text" id="name" class="form-control">
                     </div>
                     <div class="col-md-5">
                         <label for="address">Address</label>
-                        <input placeHolder="Address" v-model="address" type="text" id="address" class="form-control">
+                        <input autocomplete="off" placeHolder="Address" v-model="address" type="text" id="address" class="form-control">
                     </div>
                     <div class="col-md-2">
                         <div class="container-buttons">
@@ -49,9 +49,9 @@
                                 <td width="60%" v-text="task.address"></td>
                                 <td class="text-center" style="min-width: 110px;" width="10%">
                                     <!--Modify button, which loads the form data with the selected task-->
-                                    <button class="btn btn-info" @click="loadFieldsUpdate(task)"><i class="fa fa-pencil-alt"></i></button>
+                                    <button style="margin-right: 10px;" class="btn-custom btn btn-info" @click="loadFieldsUpdate(task)"><i class="fa fa-pencil-alt"></i></button>
                                     <!--Button that deletes the task that we select-->
-                                    <button class="btn btn-danger" @click="deleteTask(task)"><i class="fa fa-times"></i></button>
+                                    <button class="btn-custom btn btn-danger" @click="deleteTask(task)"><i class="fa fa-times"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -249,5 +249,11 @@ import { json } from 'body-parser';
         padding: 20px;
         border-radius: 20px;
         margin-top: 30px;
+    }
+
+    .btn-custom {
+        font-size: 13px;
+        width: 35px;
+        height: 35px;
     }
 </style>

@@ -99,7 +99,7 @@
                 <button class="btn btn-secondary-outline dropdown-toggle" type="button" id="locDDMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   {{ selectedUsers[0].officeCode }}
                 </button>
-                <div class="dropdown-menu overflow-auto mx-0" style="height:400px" aria-labelledby="locDDMenuButton">
+                <div class="dropdown-menu overflow-auto mx-0" style="max-height:400px" aria-labelledby="locDDMenuButton">
                   <p class="dropdown-item" v-for="ofc in officesList" :key="ofc.LocationID" @click="userUpdateData.locationToSet = ofc.LocationName">
                     {{ ofc.LocationName }}
                   </p>
@@ -722,18 +722,18 @@ export default {
       var users = userData.data;
       users.sort((a, b) => (a.name < b.name) ? -1 : 1)
       this.users = users;
+      this.offices.sort((a, b) => a.name < b.name ? -1 : 1);
+        officesSet.add('N/A');
       this.offices.forEach(office => {
        
         let loc = office.name || 'unknown';
         officesSet.add(loc);
       });
-        officesSet.add('N/A');
      /*  this.users.forEach(u => {
         let loc = u.location || 'unknown';
         officesSet.add(loc);
       }); */
       this.officesList = Array.from(officesSet).map(o => { return { LocationName:o, selected: true } });
-      this.officesList.sort((a, b) => a.LocationName < b.LocationName ? -1 : 1);
       this.updateUsersInView();
       this.isLoading = false;
 
