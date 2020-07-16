@@ -238,16 +238,15 @@ export default {
       for (let i = 0; i < 5; i++) {
           this.symps[this.checkedSymptoms[i]] = true
       }
-       
       if(this.symps[4] === true){
         this.selectedStatus = 2;
         this.activeTab = tabIds[2];
-      } else {
+      } else if(this.latestStatus.status !== 2){
         this.selectedStatus = 1;
         this.activeTab = tabIds[1];
       }
 
-     if(this.checkedSymptoms.length==0){
+     if(this.checkedSymptoms.length==0 && this.latestStatus.status !== 2 && this.latestStatus.status !== 1){
       this.selectedStatus = 0;
       this.activeTab = tabIds[0]; 
     } 
