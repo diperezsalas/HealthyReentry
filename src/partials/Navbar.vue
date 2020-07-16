@@ -39,6 +39,12 @@
                   Offices
                </router-link>
                </md-menu-item> 
+
+              <md-menu-item  v-if="$auth.userDB && $auth.userDB.permissions && $auth.userDB.permissions.admin">
+               <router-link :to="{ name: 'adminusers' }">
+                  Users
+               </router-link>
+               </md-menu-item> 
               <!-- <md-menu-item>Profile</md-menu-item> -->
               <md-menu-item @click="logout()">Log out</md-menu-item>
             </md-menu-content>

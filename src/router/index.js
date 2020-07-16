@@ -11,6 +11,7 @@ import Status from '@/views/Status.vue';
 import DisplayQR from '@/views/DisplayQR.vue';
 import Admin from '@/views/Admin.vue';
 import OfficeAdmin from '@/views/Offices.vue';
+import UsersAdmin from '@/views/Users.vue';
 import NotFound from '@/views/404.vue';
 
 import store from '@/store/index.js';
@@ -119,6 +120,16 @@ export default new VueRouter({
       component: Admin,
       meta: {
         title: route => "Healthy Reentry: Admin View"
+      },
+      beforeEnter: authGuard,
+      props: true
+    },
+    {
+      path: '/adminusers',
+      name: 'adminusers',
+      component: UsersAdmin,
+      meta: {
+        title: route => "Healthy Reentry: Users Admin View"
       },
       beforeEnter: authGuard,
       props: true
