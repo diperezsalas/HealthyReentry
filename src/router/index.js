@@ -156,7 +156,7 @@ router.beforeEach((to, from, next) => {
                     }
                 });
 
-            } else if (to.meta.access !== 'full') {
+            } else if (this.user.dateOfConsent) {
                 authService.loginWithRedirect();
 
             }

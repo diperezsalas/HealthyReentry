@@ -33,7 +33,14 @@ export default {
 },
   methods: {
     login() {
-      if (this.$auth.isAuthenticated === false) this.$auth.loginWithRedirect();
+      if (this.$auth.isAuthenticated === false) {
+        this.$auth.loginWithRedirect();
+      }
+      else if(!this.$auth.userDB.dateOfConsent){
+          this.$router.push('/disclosure');
+      } else {
+        this.$router.push('/menu');
+      }
     }
   }
 };
