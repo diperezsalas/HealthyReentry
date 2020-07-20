@@ -382,10 +382,6 @@
               Select
             </th>
 
-           <th v-if="$auth.userDB.permissions.admin" c  style="width: 5%" class="text-center">
-           
-              Office Admin
-            </th>
 
             <th style="width: 10%" class="text-center">
               <span
@@ -441,17 +437,10 @@
             <td style="width: 5%; cursor: pointer;" class="text-center" @click="user.selected = !user.selected">
               {{ (user.selected) ? '&#9745;' : '&#9744;' }}
             </td>
-            <td   v-if="$auth.userDB.permissions.admin" style="width: 5%; cursor: pointer;" class="text-center" >
-              <div
-                data-toggle="modal"
-                data-target="#updateUserOfficeAdminModal"
-                @click="updInviewUserSelectedState(false); clearUpdateData(); user.selected = true; "
-                class="text-secondary">
-                 {{   (user.office_admin) ? '&#9745;' : '&#9744;' }}
-              </div>
+    
 
             
-            </td>
+       
             <td style="width: 5%" class="text-center">
               <i :class="'fas fa-circle ' + user.status.css_key + ' ' + user.id"></i>
             </td>
