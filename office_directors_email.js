@@ -18,8 +18,7 @@ var content = fs.readFileSync("./server/assets/email_templates/officeDirectorsRe
 
 let directors = {
     "Madrid": "diego.perez@nexplore.com", 
-    "Minessotta": "shady.nawara@nexplore.com"
-   
+    "Mineapolis": "shady.nawara@nexplore.com"
 }
 
 
