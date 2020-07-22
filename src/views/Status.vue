@@ -11,9 +11,9 @@
     </div>
   </div>
 
-  <div class="mt-2 alert-info2">
+  <div class="mt-4 mb-4 alert-info3 bright-blue2">
     <div>
-      <p class="mb-2">
+      <p style="margin-bottom: 0 !important;">
         Click on a color to see the definition, then select the appropriate color that matches your current status in regards to COVID-19. Click <b>Submit</b>.
       </p>
     </div>
@@ -22,13 +22,13 @@
     <md-tab :md-disabled="disableTabGreen" class="px-0" id="tab-green" md-label="Green" :md-icon="iconPath[0]" @click="selectStatus(0)" :selectedIndex="activeTab">
       <div class="container">
         <h4 style="color:black" class="mt-2">No Signs or Symptoms</h4>
-          <div class="question-muted-row">Do you have a fever? <b class="green">NO</b></div>
-          <div class="question-muted-row">Do you have shortness of breath? <b class="green">NO</b></div>
-          <div class="question-muted-row">Do you have a cough? <b class="green">NO</b></div>
-          <div class="question-muted-row">Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19? <b class="green">NO</b></div>
+          <div class="question-muted-row"><div>Do you have a fever?</div> <b class="green">NO</b></div>
+          <div class="question-muted-row"><div>Do you have shortness of breath?</div> <b class="green">NO</b></div>
+          <div class="question-muted-row"><div>Do you have a cough?</div> <b class="green">NO</b></div>
+          <div class="question-muted-row"><div>Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?</div> <b class="green">NO</b></div>
           
-           <div class="question-muted-row">Have you tested positive for COVID-19 in the past 14 days? <b class="green">NO</b></div>
-           <div class="question-muted-row">Have you experienced any symptoms of COVID-19 in the past 14 days? <b class="green">NO</b></div>
+           <div class="question-muted-row"><div>Have you tested positive for COVID-19 in the past 14 days?</div> <b class="green">NO</b></div>
+           <div class="question-muted-row"><div>Have you experienced any symptoms of COVID-19 in the past 14 days?</div> <b class="green">NO</b></div>
       </div>
     </md-tab>
 
@@ -103,9 +103,12 @@
       </div>
     </md-content>
     <md-dialog-actions class="mx-4 my-2">
-      <md-button @click="showDialog=false">Go Back</md-button>
-      <md-button class="md-accent md-raised text-white" @click="showDialog=false; submitEncounter()">Submit</md-button>
+        <div class="add-office" @click="showDialog=false">Back</div>  
+        <div class="turner-button" style="margin:initial" @click="showDialog=false; submitEncounter()">
+            Submit
+        </div>
     </md-dialog-actions>
+    
   </md-dialog>
 
   <!-- notifications -->
@@ -298,7 +301,7 @@ label {
     display: flex;
     align-items: center;
     margin-bottom: 4px;
-    background: #fafafa;
+    color: #8193ae;
     transition: all .3s;
 }
 .question-row:hover{
@@ -307,11 +310,10 @@ label {
 
 .question-muted-row {
       padding: 5px;
-      background: #fafafa;
       font-size: 13px;
       margin-bottom: 4px;
-      display: flex;
-      justify-content: space-between;
+      color: #8193ae;
+      
   }
 .turner-button {
     margin: 0;

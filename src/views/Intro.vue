@@ -4,7 +4,7 @@
     <div class="row home-intro">
       <div class="col">
         <div>
-          <img class="intro-logo" src="/imgs/turner-white.svg" alt="healthy reentry logo" style="margin-bottom: 10px">
+          <img class="intro-logo" src="/imgs/turner-white.svg" alt="healthy reentry logo" style="margin: 10px">
           <div class="down-logo">COVID Health Check by<br>Turner Construction</div>
 
           <div class="text-inherit">
@@ -14,7 +14,7 @@
                Get Started
             </div>
             <div class="img-container">
-              <img class="home-icon" src="/imgs/home-icon.svg" alt="healthy reentry logo" style="margin-bottom: 10px">
+              <img class="home-icon" src="/imgs/home-icon.svg" alt="healthy reentry logo" style="margin: 30px 0">
             </div>
 
 

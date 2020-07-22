@@ -30,9 +30,11 @@
               <li v-for="usr in selectedUsers" :key="usr._id">{{ usr.name }}</li>
             </ul>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-secondary" @click="sendUpdateData">Submit</button>
+          <div class="modal-footer" style="display: flex; justify-content: space-between;">
+            <div class="add-office" data-dismiss="modal">Close</div>  
+            <div class="turner-button" style="margin:initial" @click="sendUpdateData">
+                Submit
+            </div>
           </div>
         </div>
       </div>
@@ -172,18 +174,31 @@
 
     <hr class="my-3"/>
 
-    <div class="mb-2">
+    <div class="mb-2 container-box">
 
-      <div class="row mb-1">
+      
 
-        <div class="col-lg-3 col-md-6 mb-1">
 
-            <button v-if="$auth.userDB.permissions.admin" class="btn btn-outline-tertiary btn-secondary dropdown-toggle" type="button" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Office List               
-            </button>
-             <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
-              Refresh 
-             </button> 
+      <div class="mb-2 button-section">
+        
+        <div style="display:flex; align-items: flex-end;">
+          <div >
+
+          <small><i>
+            <span v-if="$auth.userDB.permissions.admin" class="text-muted ml-3">
+              <span v-if="allOfficesSelected">
+                All offices selected
+              </span>
+              <span v-else>
+                {{ officesSelectedCount }} offices selected
+              </span>
+            </span>
+          </i></small>
+
+            <div v-if="$auth.userDB.permissions.admin" class="turner-button button2" style="margin:initial" id="officeListMenu" data-toggle="dropdown">
+              Office List 
+          </div>
+
           <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
             <div class="row">
@@ -216,88 +231,15 @@
 
           </div>
 
-          <small><i>
-          <span v-if="$auth.userDB.permissions.admin" class="text-muted ml-3">
-            <span v-if="allOfficesSelected">
-              All offices selected
-            </span>
-            <span v-else>
-              {{ officesSelectedCount }} offices selected
-            </span>
-          </span>
-          </i></small>
-
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-1">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Filter by name"
-            v-model="nameFilter"
-            @keyup="updateUsersInView"
-            />
-        </div>
 
-        <div class="col-lg-3 col-md-6 mb-1">
+        <div >
 
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="pageNav">Items per page:</span>
-            </div>
-            <select class="form-control" id="pageNav" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
-              <option>10</option>
-              <option>20</option>
-              <option>50</option>
-              <option>100</option>
-              <option>{{ users.length }}</option>
-            </select>
-          </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-1">
-
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="pageNav">Current page:</span>
-            </div>
-            <input
-              type="number"
-              min="1"
-              class="form-control"
-              v-model="pageNo"
-              aria-label="Current page number"
-              aria-describedby="pageNav"
-            />
-            <div class="input-group-append">
-              <span
-                :style="'cursor: ' + (((pageNo-1) < 1) ? 'not-allowed' : 'pointer') "
-                @click="setPageNo(pageNo-1)"
-                :class="'input-group-text ' + (((pageNo-1) < 1) ? 'disabled' : '') "
-                id="pageNav"><i class="fas fa-chevron-left"></i></span>
-            </div>
-            <div class="input-group-append">
-              <span
-                :style="'cursor: ' + (((pageNo) * itemsOnPage >= users.length) ? 'not-allowed' : 'pointer') "
-                @click="setPageNo(pageNo+1)"
-                :class="'input-group-text ' + (((pageNo) * itemsOnPage >= users.length) ? 'disabled' : '') "
-                id="pageNav"><i class="fas fa-chevron-right"></i></span>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="d-flex mb-2">
-
-        <div class="mr-auto">
-
-          <button id="actionDropdown" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div style="margin-left: 10px" class="turner-button button2" id="actionDropdown" data-toggle="dropdown" >
             Mark Status
-          </button>
+          </div>
+
           <div class="dropdown-menu" aria-labelledby="actionDropdown">
             <span class="dropdown-item text-muted"><small><i>Applies to selected persons only</i></small></span>
 
@@ -318,10 +260,22 @@
 
         </div>
 
-        <div>
-          <button id="downloadDropdown" type="button" class="btn btn-outline-secondary ml-2 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="col-lg-3 col-md-6">
+          <input  style="min-width: 180px; border-radius: 20px; padding: 20px;"
+            type="text"
+            class="form-control"
+            placeholder="Filter by name"
+            v-model="nameFilter"
+            @keyup="updateUsersInView"
+            />
+        </div>
+        </div>
+
+        <div >
+          <div class="turner-button button1" style="margin-right: 10px" id="downloadDropdown" data-toggle="dropdown">
             Download
-          </button>
+        </div>
+
           <div class="dropdown-menu" aria-labelledby="downloadDropdown">
             <span class="dropdown-item text-muted"><small><i>Applies to selected persons only</i></small></span>
 
@@ -469,6 +423,59 @@
         </tbody>
 
       </table>
+
+      <div class="row mb-1 mt-5">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-3 col-md-6 ">
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="pageNav">Items per page:</span>
+            </div>
+            <select class="form-control" id="pageNav" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>{{ users.length }}</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-1">
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="pageNav">Current page:</span>
+            </div>
+            <input
+              type="number"
+              min="1"
+              class="form-control"
+              v-model="pageNo"
+              aria-label="Current page number"
+              aria-describedby="pageNav"
+            />
+            <div class="input-group-append">
+              <span
+                :style="'cursor: ' + (((pageNo-1) < 1) ? 'not-allowed' : 'pointer') "
+                @click="setPageNo(pageNo-1)"
+                :class="'input-group-text ' + (((pageNo-1) < 1) ? 'disabled' : '') "
+                id="pageNav"><i class="fas fa-chevron-left"></i></span>
+            </div>
+            <div class="input-group-append">
+              <span
+                :style="'cursor: ' + (((pageNo) * itemsOnPage >= users.length) ? 'not-allowed' : 'pointer') "
+                @click="setPageNo(pageNo+1)"
+                :class="'input-group-text ' + (((pageNo) * itemsOnPage >= users.length) ? 'disabled' : '') "
+                id="pageNav"><i class="fas fa-chevron-right"></i></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
   </div>
@@ -824,6 +831,12 @@ input[type=number] {
   border-radius: 50%;
   position: relative;
   top: 1px;
+}
+
+.button-section{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 
 </style>

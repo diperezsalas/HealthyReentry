@@ -7,13 +7,13 @@
   </md-content>
 
   <!-- Notifications -->
-  <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showDisclosureMsg" md-persistent class="px-2" style="margin-bottom:55px; background-color: #004050">
+  <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showDisclosureMsg" md-persistent class="px-2" style="margin-bottom:55px; background-color: #0194f4">
     <span> Your consent has been submitted. A copy of the disclosure and consent has been sent to your {{companyInitials}} email for reference (keep an eye out for an email from {{sender}}).</span>
   </md-snackbar>
-  <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showStatusMsg" md-persistent style="margin-bottom:55px; background-color: #004050">
+  <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showStatusMsg" md-persistent style="margin-bottom:55px; background-color: #0194f4">
     <span> Status successfully recorded.</span>
   </md-snackbar>
-  <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showEncounterMsg" md-persistent style="margin-bottom:55px; background-color: #004050">
+  <md-snackbar md-position="center" :md-duration="notificationDuration" :md-active.sync="showEncounterMsg" md-persistent style="margin-bottom:55px; background-color: #0194f4">
     <span> Encounter submitted successfully.</span>
   </md-snackbar>
   </section>
@@ -42,6 +42,15 @@ export default {
     };
   },
   mounted() {
+    $(window).scroll(function(){
+    if ($(this).scrollTop() <= 10){
+      $(".md-toolbar").attr("style", 'background: none !important' );
+      console.log('less',$(this).scrollTop());
+    } else {
+      $(".md-toolbar").attr("style", 'background: rgba(0,38,89,0.9) !important')
+      console.log('up', $(this).scrollTop());
+    }
+  });
   },
   methods: {
     login() {

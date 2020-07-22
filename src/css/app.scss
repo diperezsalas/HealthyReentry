@@ -6,7 +6,7 @@
     @import "~vue-material/dist/vue-material";
     // vue material theme customization
     @import "~vue-material/dist/theme/engine"; // Import the theme engine
-    @include md-register-theme("default", ( primary: #004050, // The primary color of your application
+    @include md-register-theme("default", ( primary: #0194f4, // The primary color of your application
     accent: #00a3ad // The accent or secondary color
     ));
     @import "~vue-material/dist/theme/all"; // Apply the theme
@@ -40,14 +40,14 @@
     }
     
     html {
-        background-color: $primary-color-dark;
-        background-image: linear-gradient(to bottom right, $primary-color-dark, $primary-color-dark);
+        //background-color: $primary-color-dark;
+        //background: linear-gradient(143deg, #00275D, #011322);
     }
     
     body {
         font-family: endurance-regular;
         margin: 0 auto;
-        background: none;
+        background: linear-gradient(143deg, #00275D, #011322);
         .container-box {
             background: white;
             border-radius: 20px;
@@ -102,7 +102,6 @@
             border-radius: 20px;
         }
         .md-toolbar.md-theme-default.md-primary {
-            background: $primary-color-dark !important;
             position: fixed;
             top: 0;
             z-index: 10;
@@ -135,6 +134,19 @@
             background: white;
             display: block;
             overflow-x: auto;
+            th {
+                padding-bottom: 20px;
+            }
+            td {
+                border: none;
+            }
+            thead {
+                background: $primary-color;
+                color: white;
+            }
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #eaf1fa;
         }
         .md-list-item-content.md-ripple:hover {
             background: #aaaaaa;
@@ -152,8 +164,14 @@
             background-image: linear-gradient(to bottom right, $button1, $bright-blue);
             transition: all .3s;
             cursor: pointer;
+            &.button1 {
+                background: $bright-blue;
+            }
+            &.button2 {
+                background: $primary-color;
+            }
             &:hover {
-                box-shadow: 2px 2px 2px #dadada;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
                 background-image: linear-gradient(to bottom right, $bright-blue, $button1);
             }
         }
@@ -180,7 +198,7 @@
             img {
                 position: relative;
                 left: -50%;
-                max-width: 300px;
+                max-width: 190px;
             }
         }
         .disabled {
@@ -311,7 +329,8 @@
                 font-family: endurance-light;
                 max-width: 310px;
                 font-size: 12px;
-                margin: 20px auto;
+                padding: 20px;
+                margin: 0 auto;
                 a {
                     color: $bright-blue;
                 }
@@ -330,6 +349,37 @@
         }
         .badge-info {
             background-color: $primary-color-dark;
+        }
+        .md-theme-default.md-active.md-icon-label {
+            border-bottom: 5px solid $bright-blue2;
+        }
+        .md-button:active {
+            background: none;
+        }
+        .md-button:not(.md-active) .md-ripple {
+            background: $light-blue;
+        }
+        .md-tabs-indicator {
+            background-color: inherit !important;
+        }
+        .md-tabs-navigation {
+            padding: 10px;
+        }
+        .md-tab-label {
+            font-weight: 700;
+            color: black;
+        }
+        .add-office {
+            cursor: pointer;
+            color: $primary-color;
+        }
+        .bright-blue2 {
+            background: $bright-blue2;
+            color: white;
+            font-size: 14px;
+            &::after {
+                border-top-color: $bright-blue2;
+            }
         }
     }
     
