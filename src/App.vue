@@ -45,10 +45,8 @@ export default {
     $(window).scroll(function(){
     if ($(this).scrollTop() <= 10){
       $(".md-toolbar").attr("style", 'background: none !important' );
-      console.log('less',$(this).scrollTop());
     } else {
       $(".md-toolbar").attr("style", 'background: rgba(0,38,89,0.9) !important')
-      console.log('up', $(this).scrollTop());
     }
   });
   },

@@ -169,124 +169,74 @@
 
     <hr class="my-3"/>
 
-    <div class="mb-2">
+    <div class="mb-2 container-box">
 
-      <div class="row mb-1">
+      <div class="mb-2 button-section">
 
-        <div class="col-lg-3 col-md-6 mb-1">
+        <div style="display:flex; align-items: flex-end; flex-wrap: wrap;">
 
-            <button v-if="$auth.userDB.permissions.admin" class="btn btn-outline-tertiary btn-secondary dropdown-toggle" type="button" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Office List               
-            </button>
-             <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
-              Refresh 
-             </button> 
-          <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
+          <div>
+            <small><i>
+            <span v-if="$auth.userDB.permissions.admin" class="text-muted ml-3">
+              <span v-if="allOfficesSelected">
+                All offices selected
+              </span>
+              <span v-else>
+                {{ officesSelectedCount }} offices selected
+              </span>
+            </span>
+            </i></small>
 
-            <div class="row">
-              <div class="col-12 pl-3">
-                <button class="btn btn-outline-secondary" type="button" @click="setOfficeFilterForAll(true); updateUsersInView();">
-                  Select All
-                </button>
-                <button class="btn btn-outline-secondary mx-2" type="button" @click="setOfficeFilterForAll(false); updateUsersInView();">
-                  Select None
-                </button>
+              <div v-if="$auth.userDB.permissions.admin" class="turner-button button2" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true"  style="margin:10px" aria-expanded="false">
+                Office List               
               </div>
-            </div>
+              <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
+                Refresh 
+              </button> 
+            <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
-            <hr />
+              <div class="row">
+                <div class="col-12 pl-3">
+                  <button class="btn btn-outline-secondary" type="button" @click="setOfficeFilterForAll(true); updateUsersInView();">
+                    Select All
+                  </button>
+                  <button class="btn btn-outline-secondary mx-2" type="button" @click="setOfficeFilterForAll(false); updateUsersInView();">
+                    Select None
+                  </button>
+                </div>
+              </div>
 
-            <div class="row overflow-auto mx-0" style="height:400px">
-              <div class="col">
-                <p v-for="ofc in officesList" :key="ofc.LocationID" class="pl-4">
-                  <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
-                  {{ofc.LocationName}}
-                </p>
+              <hr />
+
+              <div class="row overflow-auto mx-0" style="height:400px">
+                <div class="col">
+                  <p v-for="ofc in officesList" :key="ofc.LocationID" class="pl-4">
+                    <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
+                    {{ofc.LocationName}}
+                  </p>
+                </div>
+              <div class="col-6">
+                  <p v-for="ofc in officesList.slice(15)" :key="ofc.LocationID">
+                    <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
+                    {{ofc.LocationName}}
+                  </p>
+                </div>
               </div>
-             <div class="col-6">
-                <p v-for="ofc in officesList.slice(15)" :key="ofc.LocationID">
-                  <input class="form-check-input" type="checkbox" v-model="ofc.selected" @change="updateUsersInView">
-                  {{ofc.LocationName}}
-                </p>
-              </div>
+
             </div>
 
           </div>
 
-          <small><i>
-          <span v-if="$auth.userDB.permissions.admin" class="text-muted ml-3">
-            <span v-if="allOfficesSelected">
-              All offices selected
-            </span>
-            <span v-else>
-              {{ officesSelectedCount }} offices selected
-            </span>
-          </span>
-          </i></small>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-1">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Filter by name"
-            v-model="nameFilter"
-            @keyup="updateUsersInView"
-            />
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-1">
-
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="pageNav">Items per page:</span>
-            </div>
-            <select class="form-control" id="pageNav" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
-              <option>10</option>
-              <option>20</option>
-              <option>50</option>
-              <option>100</option>
-              <option>{{ users.length }}</option>
-            </select>
-          </div>
-
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-1">
-
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="pageNav">Current page:</span>
-            </div>
-            <input
-              type="number"
-              min="1"
+          <div >
+            <input  style="min-width: 180px; border-radius: 20px; padding: 20px;margin:10px"
+              type="text"
               class="form-control"
-              v-model="pageNo"
-              aria-label="Current page number"
-              aria-describedby="pageNav"
-            />
-            <div class="input-group-append">
-              <span
-                :style="'cursor: ' + (((pageNo-1) < 1) ? 'not-allowed' : 'pointer') "
-                @click="setPageNo(pageNo-1)"
-                :class="'input-group-text ' + (((pageNo-1) < 1) ? 'disabled' : '') "
-                id="pageNav"
-              ><i class="fas fa-chevron-left"></i></span>
-            </div>
-            <div class="input-group-append">
-              <span
-                :style="'cursor: ' + (((pageNo) * itemsOnPage >= users.length) ? 'not-allowed' : 'pointer') "
-                @click="setPageNo(pageNo+1)"
-                :class="'input-group-text ' + (((pageNo) * itemsOnPage >= users.length) ? 'disabled' : '') "
-                id="pageNav"
-              ><i class="fas fa-chevron-right"></i></span>
-            </div>
+              placeholder="Filter by name"
+              v-model="nameFilter"
+              @keyup="updateUsersInView"
+              />
           </div>
-
         </div>
-
       </div>
 
 
@@ -496,6 +446,58 @@
 
       </table>
 
+      <div class="row mb-1 mt-5">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-3 col-md-6 ">
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="pageNav">Items per page:</span>
+            </div>
+            <select class="form-control" id="pageNav" v-model="itemsOnPage" @change="setItemsOnPage(itemsOnPage)">
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>{{ users.length }}</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-1">
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="pageNav">Current page:</span>
+            </div>
+            <input
+              type="number"
+              min="1"
+              class="form-control"
+              v-model="pageNo"
+              aria-label="Current page number"
+              aria-describedby="pageNav"
+            />
+            <div class="input-group-append">
+              <span
+                :style="'cursor: ' + (((pageNo-1) < 1) ? 'not-allowed' : 'pointer') "
+                @click="setPageNo(pageNo-1)"
+                :class="'input-group-text ' + (((pageNo-1) < 1) ? 'disabled' : '') "
+                id="pageNav"><i class="fas fa-chevron-left"></i></span>
+            </div>
+            <div class="input-group-append">
+              <span
+                :style="'cursor: ' + (((pageNo) * itemsOnPage >= users.length) ? 'not-allowed' : 'pointer') "
+                @click="setPageNo(pageNo+1)"
+                :class="'input-group-text ' + (((pageNo) * itemsOnPage >= users.length) ? 'disabled' : '') "
+                id="pageNav"><i class="fas fa-chevron-right"></i></span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 </template>

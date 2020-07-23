@@ -71,9 +71,11 @@
               <li v-for="usr in selectedUsers" :key="usr._id">{{ usr.name }}</li>
             </ul>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="downloadGraphForSelectedAsCSV">Download</button>
+          <div class="modal-footer" style="display: flex; justify-content: space-between;">
+            <div class="add-office" data-dismiss="modal">Close</div>  
+            <div class="turner-button" style="margin:initial" data-dismiss="modal" @click="downloadGraphForSelectedAsCSV">
+                Download
+            </div>
           </div>
         </div>
       </div>
@@ -113,10 +115,13 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData()">Close</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="sendUpdateData">Update</button>
+          <div class="modal-footer" style="display: flex; justify-content: space-between;">
+            <div class="add-office" data-dismiss="modal" @click="updInviewUserSelectedState(false); clearUpdateData()">Close</div>  
+            <div class="turner-button" style="margin:initial" data-dismiss="modal" @click="sendUpdateData">
+                Update
+            </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -181,7 +186,7 @@
 
       <div class="mb-2 button-section">
         
-        <div style="display:flex; align-items: flex-end;">
+        <div style="display:flex; align-items: flex-end; flex-wrap: wrap;">
           <div >
 
           <small><i>
@@ -195,7 +200,7 @@
             </span>
           </i></small>
 
-            <div v-if="$auth.userDB.permissions.admin" class="turner-button button2" style="margin:initial" id="officeListMenu" data-toggle="dropdown">
+            <div v-if="$auth.userDB.permissions.admin" class="turner-button button2" style="margin:10px" id="officeListMenu" data-toggle="dropdown">
               Office List 
           </div>
 
@@ -236,7 +241,7 @@
 
         <div >
 
-          <div style="margin-left: 10px" class="turner-button button2" id="actionDropdown" data-toggle="dropdown" >
+          <div style="margin: 10px" class="turner-button button2" id="actionDropdown" data-toggle="dropdown" >
             Mark Status
           </div>
 
@@ -260,8 +265,8 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6">
-          <input  style="min-width: 180px; border-radius: 20px; padding: 20px;"
+        <div >
+          <input  style="min-width: 180px; border-radius: 20px; padding: 20px;margin:10px"
             type="text"
             class="form-control"
             placeholder="Filter by name"
@@ -272,7 +277,7 @@
         </div>
 
         <div >
-          <div class="turner-button button1" style="margin-right: 10px" id="downloadDropdown" data-toggle="dropdown">
+          <div class="turner-button button1" style="margin: 10px" id="downloadDropdown" data-toggle="dropdown">
             Download
         </div>
 
@@ -425,7 +430,7 @@
       </table>
 
       <div class="row mb-1 mt-5">
-        <div class="col-lg-6"></div>
+        <div class="col-lg-5"></div>
         <div class="col-lg-3 col-md-6 ">
 
           <div class="input-group">
@@ -443,7 +448,7 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-1">
+        <div class="col-lg-4 col-md-6 mb-1">
 
           <div class="input-group">
             <div class="input-group-prepend">
@@ -822,21 +827,6 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
-}
-
-.statusCircle {
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  border-radius: 50%;
-  position: relative;
-  top: 1px;
-}
-
-.button-section{
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
 }
 
 </style>

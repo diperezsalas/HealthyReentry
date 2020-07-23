@@ -22,20 +22,21 @@
           <div style="position:relative;">
             <router-link class="mx-auto" :to="{ name: 'status', params: { id: user._id}}">
               <div class="text-white menu-link">
+              <div class="color-hover"></div>
                 <i class="menu-icon far fa-clock"></i> 
                 <div>Report Your Status</div>
                 <i class="arrow fas fa-arrow-right"></i>
               </div>
             </router-link>
-            <div class="color-hover"></div>
           </div>
       </div>
       </div>
       <div class="center bottom">
         <div v-if="user" class="control-button">
-          <div>
+          <div style="position:relative;">
             <router-link class="mx-auto" :to="{ name: 'encounter', params: { id: user._id}}">
               <div class="text-white menu-link">
+                <div class="color-hover"></div>
                 <i class="menu-icon fas fa-microphone-alt"></i>
                 <div>Record Encounter</div>
                 <i class="arrow fas fa-arrow-right"></i>
@@ -97,6 +98,16 @@ export default {
   },
   mounted() {
     this.mapButtonCSS();
+    $('.menu-link').hover(function (){
+      $(this).find('.color-hover').stop(true).animate({
+        width: "100%"
+      }, 300);
+    }, function (){
+      $(this).find('.color-hover').stop(true).animate({
+        width: "0"
+    }, 300);
+    });
+    
   },
   updated() {
     this.mapButtonCSS();

@@ -99,12 +99,11 @@ export default {
     font-size: 10px;
     color: rgba(255,255,255,0.7);
 }
-.display-name {
-    font-size: 9px;
-}
+
 .display-name{
+  font-size: 9px;
   position: absolute;
-  right: 50px;
+  right: 60px;
 }
 .md-icon-button {
   margin-right: -15px !important;

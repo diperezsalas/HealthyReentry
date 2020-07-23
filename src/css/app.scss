@@ -238,13 +238,18 @@
             justify-content: space-between;
             &.menu {
                 height: 40vh;
+                *:not(.color-hover) {
+                    z-index: 3;
+                }
             }
             .control-button {
                 .color-hover {
-                    background: black;
+                    background: $button1;
                     height: 100%;
                     position: absolute;
                     border-radius: 5px;
+                    top: 0;
+                    left: 0;
                     width: 0;
                 }
                 .menu-link {
@@ -261,7 +266,6 @@
                     transition: all .3s;
                     &:hover {
                         color: $primary-color !important;
-                        background: $button1;
                         .menu-icon {
                             color: white;
                         }
@@ -380,6 +384,20 @@
             &::after {
                 border-top-color: $bright-blue2;
             }
+        }
+        .statusCircle {
+            width: 12px;
+            height: 12px;
+            display: inline-block;
+            border-radius: 50%;
+            position: relative;
+            top: 1px;
+        }
+        .button-section {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
     }
     
