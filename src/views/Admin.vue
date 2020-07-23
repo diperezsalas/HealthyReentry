@@ -202,7 +202,11 @@
 
             <div v-if="$auth.userDB.permissions.admin" class="turner-button button2" style="margin:10px" id="officeListMenu" data-toggle="dropdown">
               Office List 
+              <i style="margin-left: 10px" class="fas fa-long-arrow-alt-down"></i>
           </div>
+          <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
+                Refresh 
+              </button> 
 
           <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
@@ -243,6 +247,7 @@
 
           <div style="margin: 10px" class="turner-button button2" id="actionDropdown" data-toggle="dropdown" >
             Mark Status
+            <i style="margin-left: 10px" class="fas fa-long-arrow-alt-down"></i>
           </div>
 
           <div class="dropdown-menu" aria-labelledby="actionDropdown">

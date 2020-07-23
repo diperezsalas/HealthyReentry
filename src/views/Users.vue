@@ -188,7 +188,8 @@
             </i></small>
 
               <div v-if="$auth.userDB.permissions.admin" class="turner-button button2" id="officeListMenu" data-toggle="dropdown" aria-haspopup="true"  style="margin:10px" aria-expanded="false">
-                Office List               
+                Office List
+                <i style="margin-left: 10px" class="fas fa-long-arrow-alt-down"></i>               
               </div>
               <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
                 Refresh 
