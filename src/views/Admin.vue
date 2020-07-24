@@ -661,8 +661,12 @@ export default {
       let st = (this.itemsOnPage * (this.pageNo - 1));
       let ed = (this.itemsOnPage * (this.pageNo));
       let pageFilteredUsers = nameFilteredUsers.slice(st, ed);
+      this.transformUsersInView(pageFilteredUsers);
+    },
 
-      this.usersInView = pageFilteredUsers.map(u => {
+    transformUsersInView(users) {
+      
+      this.usersInView = users.map(u => {
         let hasStatus = u.status[0] && u.status[0].status !== null && u.status[0].status !== undefined;
         let code = (hasStatus) ? u.status[0].status : -1;
         let status = enumStatusMap.filter(i => i.code === code)[0];
@@ -694,8 +698,8 @@ export default {
 
         return user;
       });
-
     },
+
     async refreshData() {
 
       this.isLoading = true;
@@ -782,12 +786,19 @@ export default {
       this.sortBy = key;
       this.sortAsc = inAsc;
       let i = this.sortAsc ? 1 : -1;
+      
+      this.transformUsersInView(this.users);
+
       this.usersInView.sort((a, b) => {
         return (a[this.sortBy] < b[this.sortBy])
         ? -i : (a[this.sortBy] > b[this.sortBy])
         ?  i : 0;
       });
-    },
+
+      let st = (this.itemsOnPage * (this.pageNo - 1));
+      let ed = (this.itemsOnPage * (this.pageNo));
+      this.usersInView = this.usersInView.slice(st, ed);
+     },
 
     setPageNo(newNo) {
       if (newNo < 1 || ((newNo-1) * this.itemsOnPage) > this.users.length) return;
