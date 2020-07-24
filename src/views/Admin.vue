@@ -616,7 +616,13 @@ export default {
     downloadSelectedAsCSV() {
       let tot = "Print Name, Company, Status,LastUpdated, Do you have a fever?, Do you have shortness of breath?,Do you have a cough?, Have you knowingly been in contact or proximate contact in the past 14 days with anyone who has tested positive for COVID-19 or who has or had symptoms of COVID-19?, Have you tested positive for COVID-19 in the past 14 days?, Have you experienced any symptoms of COVID-19 in the past 14 days?";
       let selectedUsersWithStatus = [];
-
+     
+        if(this.selectedUsers.length === 0){
+          console.log(false);
+          this.updInviewUserSelectedState(true)
+        }else{
+          console.log(true);
+        }
       for (let user of this.selectedUsers){
         for (let userStatus of user.allStatus){
           let userTemp = { ...user };
@@ -718,8 +724,8 @@ export default {
       this.updateUsersInView();
       this.isLoading = false;
 
-      if (this.$auth.userDB.permissions.office_admin){
-        this.$refs.refreshoffice.click();
+      if (this.$auth.userDB.permissions.office_admin && !this.$auth.userDB.permissions.admin){
+         this.$refs.refreshoffice.click();
       }
 
     },
@@ -782,11 +788,13 @@ export default {
       this.sortBy = key;
       this.sortAsc = inAsc;
       let i = this.sortAsc ? 1 : -1;
-      this.usersInView.sort((a, b) => {
+      console.log(this.users);
+      this.users.sort((a, b) => {
         return (a[this.sortBy] < b[this.sortBy])
         ? -i : (a[this.sortBy] > b[this.sortBy])
         ?  i : 0;
       });
+      //this.refreshData();
     },
 
     setPageNo(newNo) {
