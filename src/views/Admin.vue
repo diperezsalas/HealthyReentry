@@ -618,10 +618,10 @@ export default {
       let selectedUsersWithStatus = [];
      
         if(this.selectedUsers.length === 0){
-          console.log(false);
+         
           this.updInviewUserSelectedState(true)
         }else{
-          console.log(true);
+         
         }
       for (let user of this.selectedUsers){
         for (let userStatus of user.allStatus){
