@@ -620,8 +620,6 @@ export default {
         if(this.selectedUsers.length === 0){
          
           this.updInviewUserSelectedState(true)
-        }else{
-         
         }
       for (let user of this.selectedUsers){
         for (let userStatus of user.allStatus){
