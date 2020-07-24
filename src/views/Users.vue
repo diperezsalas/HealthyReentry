@@ -699,6 +699,16 @@ export default {
             
              symps[u.status[0].symptoms[i]] = true
           }
+      
+         if(!u.permissions.office_admin && u.permissions.admin ){
+             this.role = "Admin"
+         }else if (u.permissions.office_admin && !u.permissions.admin){
+             this.role = "Office Admin"
+         } else if (u.permissions.office_admin && u.permissions.admin){
+           this.role = "Admin"
+         }else{
+            this.role = "User"
+         }
 
         let user = {
           id: u._id,
@@ -710,6 +720,8 @@ export default {
           status: status,
           allStatus: u.status,
           symptoms: symps,
+          role: this.role,
+          roleToSet: this.roleToSet,
           statusCode: status.code,
           lastUpdatedFormatted: updateDate,
           lastUpdated: hasStatus ? new Date(u.status[0].date) : null,
