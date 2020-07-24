@@ -331,7 +331,7 @@
               <span
                 style="cursor: pointer"
                 :class="(sortBy === 'selected' ? '' : ' disabled')"
-                @click="sortUsers('selected', !sortAsc)"
+                @click="sortUsers('role', !sortAsc)"
               >
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
@@ -340,14 +340,14 @@
 
            <th  v-if="$auth.userDB.permissions.admin" c  style="width: 5%" class="text-center">
            
-              Role
+              Admin
             </th>
 
             <th  style="width: 10%" class="text-center">
               <span
                 style="cursor: pointer"
-                :class="(sortBy === 'statusCode' ? '' : ' disabled')"
-                @click="sortUsers('statusCode', !sortAsc)"
+                :class="(sortBy === 'role' ? '' : ' disabled')"
+                @click="sortUsers('role', !sortAsc)"
               >
                 {{ (sortAsc) ? '&#x21f5;' : '&#x21c5;' }}
               </span>
