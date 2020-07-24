@@ -666,6 +666,10 @@ export default {
       let ed = (this.itemsOnPage * (this.pageNo));
       let pageFilteredUsers = nameFilteredUsers.slice(st, ed);
       this.transformUsersInView(pageFilteredUsers);
+      if(this.sortBy){
+          this.sortUsers(this.sortBy, this.sortAsc);
+      }
+        
     },
 
     transformUsersInView(users) {
@@ -806,7 +810,7 @@ export default {
 
     setPageNo(newNo) {
       if (newNo < 1 || ((newNo-1) * this.itemsOnPage) > this.users.length) return;
-      this.pageNo = parseInt(newNo);
+      this.pageNo = parseInt(newNo); 
       this.updateUsersInView();
     },
 

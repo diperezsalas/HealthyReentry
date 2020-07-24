@@ -682,7 +682,9 @@ export default {
       let pageFilteredUsers = nameFilteredUsers.slice(st, ed);
 
       this.transformUsersInView(pageFilteredUsers);
-
+      if(this.sortBy){
+          this.sortUsers(this.sortBy, this.sortAsc);
+      }
     },
 
     transformUsersInView(users) {
