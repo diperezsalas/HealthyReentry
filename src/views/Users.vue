@@ -665,6 +665,7 @@ export default {
       downloadCSV(csv, `office-stats_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
     updateUsersInView() {
+      console.log('this.nameFilter');
 
       let officeArr = this.officesList
                             .filter(o => o.selected)

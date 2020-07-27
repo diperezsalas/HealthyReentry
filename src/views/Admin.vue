@@ -794,8 +794,20 @@ export default {
       this.sortBy = key;
       this.sortAsc = inAsc;
       let i = this.sortAsc ? 1 : -1;
+
+      let officeArr = this.officesList
+                            .filter(o => o.selected)
+                            .map(o => o.LocationName);
+      let officeFilteredUsers = this.users.filter(u => officeArr.includes(u.location));
+
+      let nameFilteredUsers = officeFilteredUsers;
+
+      if(this.nameFilter !== "") {
+        let nfLower = this.nameFilter.toLowerCase();
+        nameFilteredUsers = nameFilteredUsers.filter(u => u.name.toLowerCase().includes(nfLower));
+      }
       
-      this.transformUsersInView(this.users);
+      this.transformUsersInView(nameFilteredUsers);
 
       this.usersInView.sort((a, b) => {
         return (a[this.sortBy] < b[this.sortBy])
