@@ -191,7 +191,9 @@
                 Office List
                 <i style="margin-left: 10px" class="fas fa-long-arrow-alt-down"></i>               
               </div>
-       
+              <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
+                Refresh 
+              </button> 
             <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
               <div class="row">
@@ -663,7 +665,6 @@ export default {
       downloadCSV(csv, `office-stats_${new Date().toLocaleDateString()}:${new Date().getHours()}:${new Date().getMinutes()}.csv`);
     },
     updateUsersInView() {
-      console.log('this.nameFilter');
 
       let officeArr = this.officesList
                             .filter(o => o.selected)
@@ -826,8 +827,20 @@ export default {
       this.sortBy = key;
       this.sortAsc = inAsc;
       let i = this.sortAsc ? 1 : -1;
+
+      let officeArr = this.officesList
+                            .filter(o => o.selected)
+                            .map(o => o.LocationName);
+      let officeFilteredUsers = this.users.filter(u => officeArr.includes(u.location));
+
+      let nameFilteredUsers = officeFilteredUsers;
+
+      if(this.nameFilter !== "") {
+        let nfLower = this.nameFilter.toLowerCase();
+        nameFilteredUsers = nameFilteredUsers.filter(u => u.name.toLowerCase().includes(nfLower));
+      }
       
-      this.transformUsersInView(this.users);
+      this.transformUsersInView(nameFilteredUsers);
 
       this.usersInView.sort((a, b) => {
         return (a[this.sortBy] < b[this.sortBy])
