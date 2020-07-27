@@ -204,9 +204,7 @@
               Office List 
               <i style="margin-left: 10px" class="fas fa-long-arrow-alt-down"></i>
           </div>
-          <button hidden=true v-else  @click="setOfficeFilterForOneOffice($auth.userDB.location); updateUsersInView();" ref="refreshoffice">
-                Refresh 
-              </button> 
+   
 
           <div class="dropdown-menu p-2 custom-dd-size" aria-labelledby="officeListMenu">
 
@@ -731,7 +729,9 @@ export default {
       this.isLoading = false;
 
       if (this.$auth.userDB.permissions.office_admin && !this.$auth.userDB.permissions.admin){
-         this.$refs.refreshoffice.click();
+
+         this.setOfficeFilterForOneOffice(this.$auth.userDB.location);
+          this.updateUsersInView();
       }
 
     },
